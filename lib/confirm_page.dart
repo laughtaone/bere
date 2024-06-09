@@ -82,6 +82,18 @@ class ConfirmPage extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: 20),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  'BeReal.を開く>',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ),
             ],
           ),
         )
