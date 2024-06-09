@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'take_display.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+
 
 
 class SettingsPage extends StatelessWidget {
@@ -87,9 +91,7 @@ class SettingsPage extends StatelessWidget {
                   leading: const Icon(Icons.person),
                   title: const Text('開発者のX'),
                   value: const Text('@suupusoup'),
-                  onPressed: (context) {
-                    // 画面遷移処理
-                  },
+                  onPressed: (BuildContext context) {},
                 ),
                 SettingsTile.switchTile(
                   onToggle: (value) {
@@ -106,6 +108,8 @@ class SettingsPage extends StatelessWidget {
       ),
     );
   }
+
+
 }
 
 

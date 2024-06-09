@@ -55,6 +55,7 @@
 	<array>
 		<string>https</string>
 		<string>http</string>
+		<string>twitter</string>
 	</array>
 </dict>
 </plist>
