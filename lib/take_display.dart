@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
+import 'main.dart';
 import 'confirm_page.dart';
 
 class TakePage extends StatefulWidget {
@@ -83,12 +84,7 @@ class _TakePageState extends State<TakePage> {
               ),
             ],
           ),
-          leading: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.settings),
-            color: Colors.white,
-            iconSize: 24,
-          ),
+          leading: Setting(),
           backgroundColor: Colors.black,
         ),
         body: FutureBuilder<void>(
