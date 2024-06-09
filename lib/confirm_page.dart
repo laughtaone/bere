@@ -41,12 +41,9 @@ class ConfirmPage extends StatelessWidget {
               ),
             ],
           ),
-          leading: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.settings),
-            color: Colors.white,
-            iconSize: 24,
-          ),
+          actions: <Widget>[
+            Setting()
+          ],
           backgroundColor: Colors.black,
         ),
 
@@ -77,7 +74,7 @@ class ConfirmPage extends StatelessWidget {
                         child: Icon(
                           Icons.close,
                           color: Colors.white,
-                          size: 25,
+                          size: 30,
                         ),
                       ),
                     ),
