@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'dart:io';
 import 'main.dart';
 import 'take_display.dart';
@@ -13,9 +14,11 @@ class ConfirmPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -44,29 +47,43 @@ class ConfirmPage extends StatelessWidget {
           ),
           backgroundColor: Colors.black,
         ),
-      // body: Center(
-      //   child: Image.file(File(imagePath)),
-      // ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children:[
-            Text(
-              '撮影した画像の保存・スクショは一切できません。',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children:[
+              CautionEnableSukusho(),
+              Stack(
+                alignment: AlignmentDirectional.topEnd,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.file(File(imagePath)),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black.withOpacity(0.5),
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 25,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            Image.file(File(imagePath)),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.radio_button_unchecked),
-              color: Colors.white,
-              iconSize: 80,
-            ),
-          ],
+            ],
+          ),
         )
       ),
     );

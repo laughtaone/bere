@@ -98,17 +98,7 @@ class _TakePageState extends State<TakePage> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 5, bottom: 15), // 余白を設定
-                    child: Text(
-                      '撮影した画像の保存・スクショは一切できません',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  CautionEnableSukusho(),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16.0),
@@ -133,6 +123,27 @@ class _TakePageState extends State<TakePage> {
               return Center(child: CircularProgressIndicator());
             }
           },
+        ),
+      ),
+    );
+  }
+}
+
+class CautionEnableSukusho extends StatelessWidget {
+  const CautionEnableSukusho({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 5, bottom: 15), // 余白を設定
+      child: Text(
+        '撮影した画像の保存・スクショは一切できません',
+        style: TextStyle(
+          fontSize: 12,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
