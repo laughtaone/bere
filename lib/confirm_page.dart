@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'dart:io';
 import 'main.dart';
 import 'take_display.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 
@@ -84,7 +86,7 @@ class ConfirmPage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               TextButton(
-                onPressed: () {},
+                onPressed: _launchBeReal,
                 child: Text(
                   'BeReal.を開く>',
                   style: TextStyle(
@@ -100,6 +102,12 @@ class ConfirmPage extends StatelessWidget {
       ),
     );
   }
+
+  Future _launchBeReal() async {
+    final url = Uri.parse('bereal://');
+    launchUrl(url);
+  }
+
 }
 
 
