@@ -48,12 +48,9 @@ class SettingsPage extends StatelessWidget {
               ),
               tiles: <SettingsTile>[
                 SettingsTile(
-                  leading: const Icon(Icons.info),
-                  title: const Text('アプリのバージョン'),
-                  value: Text(
-                    'aa',
-                    style: SettingValueTextStyle.myTextStyle,
-                  )
+                  title: Text(
+                    'このアプリはBeReal.を楽しむことをサポートするものです。\nまた当アプリは、BeReal.の独創的なアイデアを尊重しており、BeReal.が発明したアイデアを保護するため、当アプリでは撮影後の画像データの保存・スクショは一切できません。保存したい場合は、BeReal.アプリでベストショットの撮影に挑戦してみてください！',
+                  ),
                 )
               ],
             ),
@@ -139,6 +136,7 @@ class SettingTitleTextStyle {
   static final TextStyle myTextStyle = TextStyle(
     fontSize: 17,
     color: Colors.white,
+    fontWeight: FontWeight.bold,
   );
 }
 
