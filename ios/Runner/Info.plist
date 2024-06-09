@@ -56,6 +56,5 @@
 		<string>https</string>
 		<string>http</string>
 	</array>
-	<key>LSApplicationQueriesSchemes</key>
 </dict>
 </plist>
