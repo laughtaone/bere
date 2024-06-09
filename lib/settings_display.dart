@@ -83,23 +83,23 @@ class SettingsPage extends StatelessWidget {
             ),
             SettingsSection(
               title: Text(
-                'このアプリについて',
+                '開発者について',
                 style: SettingTitleTextStyle.myTextStyle,
               ),
               tiles: <SettingsTile>[
                 SettingsTile.navigation(
                   leading: const Icon(Icons.person),
-                  title: const Text('開発者のX'),
+                  title: const Text('X'),
                   value: const Text('@suupusoup'),
-                  onPressed: (BuildContext context) {},
-                ),
-                SettingsTile.switchTile(
-                  onToggle: (value) {
-                    // トグル切り替え処理
+                  onPressed: (BuildContext context) {
+                    _launchDeveloperX('twitter://user?id=suupusoup', secondUrl: 'https://x.com/suupusoup');
                   },
-                  initialValue: true,
-                  leading: const Icon(Icons.format_paint),
-                  title: const Text('Enable custom theme'),
+                ),
+                SettingsTile.navigation(
+                  leading: const Icon(Icons.person),
+                  title: const Text('TikTok'),
+                  value: const Text('@suupusoup'),
+                  onPressed: (BuildContext context) { _launchTikTok();},
                 ),
               ],
             ),
@@ -110,6 +110,28 @@ class SettingsPage extends StatelessWidget {
   }
 
 
+
+
+  Future<void> _launchDeveloperX(String url, {String? secondUrl}) async {
+    try {
+      if (await canLaunchUrlString(url)) {
+        final xURL = Uri.parse(url);
+        await launchUrl(xURL);
+      } else if (secondUrl != null && await canLaunchUrlString(secondUrl)) {
+        await launchUrlString(secondUrl);
+      } else {
+        // 任意のエラー処理
+      }
+    } catch (e) {
+      // エラーハンドリング
+      print('エラーが発生しました: $e');
+    }
+  }
+
+  Future _launchTikTok() async {
+    final url = Uri.parse('https://www.tiktok.com/@suupusoup');
+    launchUrl(url);
+  }
 }
 
 
