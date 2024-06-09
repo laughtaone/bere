@@ -51,7 +51,15 @@ class SettingsPage extends StatelessWidget {
                   title: Text(
                     'このアプリはBeReal.を楽しむことをサポートするものです。\nまた当アプリは、BeReal.の独創的なアイデアを尊重しており、BeReal.が発明したアイデアを保護するため、当アプリでは撮影後の画像データの保存・スクショは一切できません。保存したい場合は、BeReal.アプリでベストショットの撮影に挑戦してみてください！',
                   ),
-                )
+                ),
+                SettingsTile.navigation(
+                  leading: const Icon(Icons.contact_support),
+                  title: const Text('X'),
+                  value: const Text('@suupusoup'),
+                  onPressed: (BuildContext context) {
+                    _launchDeveloperX('twitter://user?id=suupusoup', secondUrl: 'https://x.com/suupusoup');
+                  },
+                ),
               ],
             ),
             SettingsSection(
