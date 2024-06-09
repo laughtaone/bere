@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'take_display.dart';
 
 
 void main() {
@@ -28,21 +29,39 @@ class StartPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'BeRehearsal.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'BeRehearsal.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'To support enjoying BeReal.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
               TextButton(
-                onPressed: () {  },
+                onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TakePage()),  // 画面遷移
+                    );
+                  },
                 child: Text(
                   'はじめる>',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 35,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
