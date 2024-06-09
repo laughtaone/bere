@@ -57,6 +57,14 @@ class TakePage extends StatelessWidget {
                 color: Colors.white,
                 iconSize: 80,
               ),
+              Text(
+                'test',
+                style: TextStyle(
+                  fontFamily: 'NotoSansJP-ExtraBold',
+                  color: Colors.white,
+                  fontSize: 30,
+                )
+              )
             ],
           )
         ),
