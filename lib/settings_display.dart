@@ -34,6 +34,7 @@ class SettingsPage extends StatelessWidget {
             },
           ),
         ],
+        automaticallyImplyLeading: false, // 戻るボタン非表示
       ),
       body: Theme(
         data: ThemeData.dark(),

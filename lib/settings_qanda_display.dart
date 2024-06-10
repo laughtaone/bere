@@ -23,19 +23,16 @@ class QandAPage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.close,
-              size: 30,
+        leading: IconButton(
+          icon: Icon(
+              Icons.arrow_back_ios,
+              size: 20,
               color: Colors.white,
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-        automaticallyImplyLeading: false, // 戻るボタン非表示
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Theme(
         data: ThemeData.dark(),
@@ -43,23 +40,17 @@ class QandAPage extends StatelessWidget {
           platform: DevicePlatform.iOS,
           sections: [
             SettingsSection(
-              title: Text(
-                'このアプリについて',
-                style: SettingTitleTextStyle.myTextStyle,
-              ),
-              tiles: <SettingsTile>[
+              title: Text('General Questions'),
+              tiles: [
                 SettingsTile(
-                  title: Text(
-                    'このアプリはBeReal.を楽しむことをサポートするものです。\nまた当アプリは、BeReal.の独創的なアイデアを尊重しており、BeReal.が発明したアイデアを保護するため、当アプリでは撮影後の画像データの保存・スクショは一切できません。保存したい場合は、BeReal.アプリでベストショットの撮影に挑戦してみてください！',
-                  ),
+                  leading: Icon(Icons.help),
+                  title: Text('How old are you?'),
+                  onPressed: null,
                 ),
-                SettingsTile.navigation(
-                  leading: const Icon(Icons.contact_support),
-                  title: const Text('X'),
-                  value: const Text('@suupusoup'),
-                  onPressed: (BuildContext context) {
-                    _launchDeveloperX('twitter://user?id=suupusoup', secondUrl: 'https://x.com/suupusoup');
-                  },
+                SettingsTile(
+                  leading: Icon(Icons.hdr_auto),
+                  title: Text('I am 20 years old!'),
+                  onPressed: null,
                 ),
               ],
             ),
@@ -69,29 +60,6 @@ class QandAPage extends StatelessWidget {
     );
   }
 
-
-
-
-  Future<void> _launchDeveloperX(String url, {String? secondUrl}) async {
-    try {
-      if (await canLaunchUrlString(url)) {
-        final xURL = Uri.parse(url);
-        await launchUrl(xURL);
-      } else if (secondUrl != null && await canLaunchUrlString(secondUrl)) {
-        await launchUrlString(secondUrl);
-      } else {
-        // 任意のエラー処理
-      }
-    } catch (e) {
-      // エラーハンドリング
-      print('エラーが発生しました: $e');
-    }
-  }
-
-  Future _launchTikTok() async {
-    final url = Uri.parse('https://www.tiktok.com/@suupusoup');
-    launchUrl(url);
-  }
 }
 
 
