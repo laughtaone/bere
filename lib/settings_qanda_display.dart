@@ -40,23 +40,40 @@ class QandAPage extends StatelessWidget {
           platform: DevicePlatform.iOS,
           sections: [
             SettingsSection(
-              title: Text('General Questions'),
+              // title: Text('General Questions'),
+              title: Text(''),
               tiles: [
-                SettingsTile(
-                  leading: Icon(Icons.help),
-                  title: Text('How old are you?'),
-                  onPressed: null,
-                ),
-                SettingsTile(
-                  leading: Icon(Icons.hdr_auto),
-                  title: Text('I am 20 years old!'),
-                  onPressed: null,
-                ),
+                QMethod('How old?'),
+                AMethod('I am 20 years old!'),
+              ],
+            ),
+            SettingsSection(
+              // title: Text('General Questions'),
+              title: Text(''),
+              tiles: [
+                QMethod('How old?'),
+                AMethod('I am 20 years old!'),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  SettingsTile QMethod(String qText) {
+    return SettingsTile(
+      leading: Icon(Icons.help),
+      title: Text(qText),
+      onPressed: null,
+    );
+  }
+
+  SettingsTile AMethod(String aText) {
+    return SettingsTile(
+      leading: Icon(Icons.hdr_auto),
+      title: Text(aText),
+      onPressed: null,
     );
   }
 
