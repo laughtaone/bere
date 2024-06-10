@@ -61,8 +61,9 @@ class _TakePageState extends State<TakePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
           title: Column(
