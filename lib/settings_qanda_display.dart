@@ -43,16 +43,16 @@ class QandAPage extends StatelessWidget {
               // title: Text('General Questions'),
               title: Text(''),
               tiles: [
-                QMethod('How old?'),
-                AMethod('I am 20 years old!'),
+                QMethod('撮影した画像をどうしても保存したいです。どうすればいいですか？'),
+                AMethod('撮影した画像を保存する方法は、現地点ではありません。\nこのアプリのユーザー数が増加し、かつ撮影した画像を保存したいという方が増えたら、保存の対応を検討します。'),
               ],
             ),
             SettingsSection(
               // title: Text('General Questions'),
               title: Text(''),
               tiles: [
-                QMethod('How old?'),
-                AMethod('I am 20 years old!'),
+                QMethod('なぜそんなに保存を禁止するのでしょうか？'),
+                AMethod('本アプリはBeReal.の撮影を楽しむことのみを目的として作ったため、本アプリで撮影したBeReal.を忠実に再現した画像がインターネット上に出回り、BeReal.の画像と見分けがつかなくなるとBeReal.が発明した革新的なアイデアを台無しにしてしまう恐れがあると考えているからです。'),
               ],
             ),
           ],
