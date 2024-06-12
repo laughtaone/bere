@@ -6,7 +6,20 @@ import 'package:url_launcher/url_launcher.dart';
 import 'settings_display.dart';
 
 
+void main() {
+  runApp(
+    QandAPageHome()
+  );
+}
 
+class QandAPageHome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: QandAPage(),
+    );
+  }
+}
 
 class QandAPage extends StatelessWidget {
   // const SettingsPage({super.key});
@@ -14,6 +27,7 @@ class QandAPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text(
@@ -30,30 +44,99 @@ class QandAPage extends StatelessWidget {
               color: Colors.white,
             ),
           onPressed: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
           },
         ),
       ),
       body: Theme(
         data: ThemeData.dark(),
-        child: SettingsList(
-          platform: DevicePlatform.iOS,
-          sections: [
-            SettingsSection(
-              // title: Text('General Questions'),
-              title: Text(''),
-              tiles: [
-                QMethod('撮影した画像をどうしても保存したいです。どうすればいいですか？'),
-                AMethod('撮影した画像を保存する方法は、現地点ではありません。\nこのアプリのユーザー数が増加し、かつ撮影した画像を保存したいという方が増えたら、保存の対応を検討します。'),
-              ],
-            ),
-            SettingsSection(
-              // title: Text('General Questions'),
-              title: Text(''),
-              tiles: [
-                QMethod('なぜそんなに保存を禁止するのでしょうか？'),
-                AMethod('本アプリはBeReal.の撮影を楽しむことのみを目的として作ったため、本アプリで撮影したBeReal.を忠実に再現した画像がインターネット上に出回り、BeReal.の画像と見分けがつかなくなるとBeReal.が発明した革新的なアイデアを台無しにしてしまう恐れがあると考えているからです。'),
-              ],
+        child: Stack(
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: 250.0,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xFF7d7d7d),
+              ),
+              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.all(25),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 2.0),
+                            child: Icon(
+                              Icons.help_outline,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 8.0), // アイコンとテキストの間に余白を設定することができます
+                              child: Text(
+                                '質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 2,
+                      // width: ,
+                      color: Colors.white,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 3.0),
+                            child: Icon(
+                              Icons.chat_bubble_outline,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 8.0), // アイコンとテキストの間に余白を設定することができます
+                              child: Text(
+                                '回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // TextButton.icon(
+                    //   onPressed: () {},
+                    //   icon: Icon(Icons.help_outline),
+                    //   label: Text('質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文'),
+                    //   style: TextButton.styleFrom(iconColor: Colors.black),
+                    // )
+                  ],
+                ),
+              ),
             ),
           ],
         ),
