@@ -50,99 +50,17 @@ class QandAPage extends StatelessWidget {
       ),
       body: Theme(
         data: ThemeData.dark(),
-        child: Stack(
-          children: [
-            Wrap(
-              // constraints: BoxConstraints(
-              //   maxHeight: 250.0,
-              // ),
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF7d7d7d),
-                  ),
-                  padding: EdgeInsets.all(5),
-                  margin: EdgeInsets.all(25),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 2.0),
-                              child: Icon(
-                                Icons.help_outline,
-                                color: Colors.white,
-                                size: 24,
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 8.0), // アイコンとテキストの間に余白を設定することができます
-                                child: Text(
-                                  '質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 2,
-                        // width: ,
-                        color: Colors.white,
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 3.0),
-                              child: Icon(
-                                Icons.chat_bubble_outline,
-                                color: Colors.white,
-                                size: 24,
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 8.0), // アイコンとテキストの間に余白を設定することができます
-                                child: Text(
-                                  '回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // TextButton.icon(
-                      //   onPressed: () {},
-                      //   icon: Icon(Icons.help_outline),
-                      //   label: Text('質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文'),
-                      //   style: TextButton.styleFrom(iconColor: Colors.black),
-                      // )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              QAWidget(
+                qText: '質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文',
+                aText: '回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文',
+              ),
+            ]
+          ),
+        )
+      )
     );
   }
 
@@ -178,4 +96,102 @@ class SettingValueTextStyle {
     color: Colors.white,
     fontSize: 17,
   );
+}
+
+
+
+
+// Q＆A用のウィジェット
+class QAWidget extends StatelessWidget {
+  final String qText;
+  final String aText;
+
+  const QAWidget({
+    Key? key,
+    required this.qText,
+    required this.aText,
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: [
+        Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFF7d7d7d),
+                  ),
+                  padding: EdgeInsets.all(5),
+                  margin: EdgeInsets.all(25),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 2.0),
+                              child: Icon(
+                                Icons.help_outline,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  qText,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 1,
+                        color: Colors.white,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 3.0),
+                              child: Icon(
+                                Icons.chat_bubble_outline,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  aText,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+      ],
+    );
+  }
 }
