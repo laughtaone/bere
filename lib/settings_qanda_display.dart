@@ -53,10 +53,10 @@ class QandAPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text(
-                '節名',
-                style: TextStyle(color: Colors.white),
-              ),
+              // Text(
+              //   '節名',
+              //   style: TextStyle(color: Colors.white),
+              // ),
               qaWidget(
                 qText: 'BeRehearsal.で撮影した写真を保存するにはどうすればいいですか？',
                 aText: '現地点では、BeRehearsal.で撮影した写真を保存する機能はありません。また、スクショもできないような仕様となっています。\nこれは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像に見分けがつかなくなり、BeReal.アプリでひとときの瞬間を撮影する楽しみを奪ってしまうことを防ぐためです。\nなお、BeReal.との見分けをつける方法として、内と外で別々の2枚の画像で保存する機能の実装を検討しています。',
@@ -74,25 +74,6 @@ class QandAPage extends StatelessWidget {
 
 }
 
-
-// class SettingTitleTextStyle {
-//   static final TextStyle myTextStyle = TextStyle(
-//     fontSize: 17,
-//     color: Colors.white,
-//     fontWeight: FontWeight.bold,
-//   );
-// }
-
-// class SettingValueTextStyle {
-//   static final TextStyle myTextStyle = TextStyle(
-//     color: Colors.white,
-//     fontSize: 17,
-//   );
-// }
-
-
-
-
 // Q＆A用のウィジェット
 class qaWidget extends StatelessWidget {
   final String qText;
@@ -109,79 +90,90 @@ class qaWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: qaBackgroundColor(),
-          ),
-          padding: EdgeInsets.all(5),
-          margin: EdgeInsets.all(25),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 2.0),
-                      child: Icon(
-                        Icons.help_outline,
-                        color: qaContentsColor(),
-                        size: qaIconSize(),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          qText,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontSize: qaTextSize(),
+        Column(
+          children: [
+            Text(
+              'data',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: qaTitleSize(),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: qaBackgroundColor(),
+              ),
+              padding: EdgeInsets.only(left: 5, right: 5, bottom: 5),
+              margin: EdgeInsets.only(left: 25, right: 25, bottom: 25),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 2.0),
+                          child: Icon(
+                            Icons.help_outline,
                             color: qaContentsColor(),
+                            size: qaIconSize(),
                           ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                height: 1,
-                color: qaContentsColor(),
-              ),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 3.0),
-                      child: Icon(
-                        Icons.chat_bubble_outline,
-                        color: qaContentsColor(),
-                        size: qaIconSize(),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          aText,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontSize: qaTextSize(),
-                            color: qaContentsColor(),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              qText,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: qaTextSize(),
+                                color: qaContentsColor(),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    height: 1,
+                    color: qaContentsColor(),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 3.0),
+                          child: Icon(
+                            Icons.chat_bubble_outline,
+                            color: qaContentsColor(),
+                            size: qaIconSize(),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              aText,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: qaTextSize(),
+                                color: qaContentsColor(),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
@@ -189,7 +181,14 @@ class qaWidget extends StatelessWidget {
 
 
 
-  // QA部分の文字サイズを一括指定
+
+  // QA部分のタイトルサイズを一括指定
+  double qaTitleSize() {
+    final qaIconSize = 20.0;
+    return qaIconSize;
+  }
+
+  // QA部分のアイコンサイズを一括指定
   double qaIconSize() {
     final qaIconSize = 24.0;
     return qaIconSize;
