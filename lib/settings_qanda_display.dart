@@ -90,90 +90,95 @@ class qaWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       children: [
-        Column(
-          children: [
-            Text(
-              'data',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: qaTitleSize(),
+        Container(
+          padding: EdgeInsets.only(left: 5, right: 5, bottom: 5),
+          margin: EdgeInsets.only(left: 25, right: 25, bottom: 25),
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'data',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: qaTitleSize(),
+                  ),
+                ),
               ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: qaBackgroundColor(),
-              ),
-              padding: EdgeInsets.only(left: 5, right: 5, bottom: 5),
-              margin: EdgeInsets.only(left: 25, right: 25, bottom: 25),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 2.0),
-                          child: Icon(
-                            Icons.help_outline,
-                            color: qaContentsColor(),
-                            size: qaIconSize(),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: qaBackgroundColor(),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 2.0),
+                            child: Icon(
+                              Icons.help_outline,
+                              color: qaContentsColor(),
+                              size: qaIconSize(),
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              qText,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                fontSize: qaTextSize(),
-                                color: qaContentsColor(),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                qText,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontSize: qaTextSize(),
+                                  color: qaContentsColor(),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: 1,
-                    color: qaContentsColor(),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 3.0),
-                          child: Icon(
-                            Icons.chat_bubble_outline,
-                            color: qaContentsColor(),
-                            size: qaIconSize(),
+                    Container(
+                      height: 1,
+                      color: qaContentsColor(),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 3.0),
+                            child: Icon(
+                              Icons.chat_bubble_outline,
+                              color: qaContentsColor(),
+                              size: qaIconSize(),
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              aText,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                fontSize: qaTextSize(),
-                                color: qaContentsColor(),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                aText,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontSize: qaTextSize(),
+                                  color: qaContentsColor(),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
