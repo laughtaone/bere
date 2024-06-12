@@ -6,22 +6,22 @@ import 'package:url_launcher/url_launcher.dart';
 import 'settings_display.dart';
 
 
-void main() {
-  runApp(
-    QandAPageHome()
-  );
-}
+// void main() {
+//   runApp(
+//     QAPageHome()
+//   );
+// }
 
-class QandAPageHome extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: QandAPage(),
-    );
-  }
-}
+// class QAPageHome extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: QAPage(),
+//     );
+//   }
+// }
 
-class QandAPage extends StatelessWidget {
+class QAPage extends StatelessWidget {
   // const SettingsPage({super.key});
 
   @override
@@ -44,7 +44,7 @@ class QandAPage extends StatelessWidget {
               color: Colors.white,
             ),
           onPressed: () {
-            // Navigator.pop(context);
+            Navigator.pop(context);
           },
         ),
       ),
@@ -58,14 +58,29 @@ class QandAPage extends StatelessWidget {
               //   style: TextStyle(color: Colors.white),
               // ),
               qaWidget(
-                titleText: '本アプリについて',
-                qText: 'BeRehearsal.で撮影した写真を保存するにはどうすればいいですか？',
-                aText: '現地点では、BeRehearsal.で撮影した写真を保存する機能はありません。また、スクショもできないような仕様となっています。\nこれは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像の2つに見分けがつかなくなり、BeReal.アプリでひとときの瞬間を撮影する楽しみを奪ってしまうことを防ぐためです。\nなお、BeReal.との見分けをつける方法として、内と外で別々の2枚の画像で保存する機能の実装を検討しています。',
+                titleText: 'このアプリについて',
+                qText: 'BeReal.と機能は同じですか？',
+                aText: '本アプリはBeReal.を再現したものであるため機能は同じですが、外/内カメラの切り替えにかける時間や画像処理など細かい部分には、多少の差がある可能性があります。\nまた本アプリは、Flutterというプログラミング言語を用いていますが、BeReal.はSwiftなどのFlutter以外のプログラミング言語を用いている可能性があるため、プログラミング言語による差も少なからず生じている可能性があります。'
               ),
               qaWidget(
                 titleText: '',
-                qText: 'BeReal.と機能は同じですか？',
-                aText: '本アプリはBeReal.を再現したものであるため機能は同じですが、外/内カメラの切り替えにかける時間や画像処理など細かい部分には、多少の差がある可能性があります。\nまた本アプリは、Flutterというプログラミング言語を用いていますが、BeReal.はSwiftなどのFlutter以外のプログラミング言語を用いている可能性があるため、プログラミング言語による差も少なからず生じている可能性があります。'
+                qText: 'このアプリのプログラムを見たいです。',
+                aText: '今後、GitHubへの公開を検討しています。'
+              ),
+              qaWidget(
+                titleText: '',
+                qText: 'このアプリでバグを見つけました！',
+                aText: 'お手数ですが、至急開発者(スウプ)のXのDMより教えていただければ幸いです!'
+              ),
+              qaWidget(
+                titleText: '開発者について',
+                qText: 'このアプリを通してアプリ開発者にお金は入っていますか？',
+                aText: '本アプリには、広告を掲載していない上、通信機能を実装しておらず、データや使用状況の収集もプログラム的に不可能であるため、本アプリを通して、アプリ開発者であるスウプには1円たりともお金は入っていませんのでご安心ください。\n\nあくまで開発者が「n回の再撮影」と表示されずにBeReal.の撮影の練習をしたいという目的で開発したアプリです。'
+              ),
+              qaWidget(
+                titleText: '',
+                qText: '機能の追加など、このアプリへの要望・感想を開発者に伝えたいです。',
+                aText: '開発者(スウプ)のXのDMより教えていただければ幸いです。'
               ),
             ]
           ),
@@ -103,18 +118,7 @@ class qaWidget extends StatelessWidget {
           margin: EdgeInsets.only(left: 25, right: 25, bottom: 25),
           child: Column(
             children: [
-              Container(
-                padding: EdgeInsets.only(bottom: 10),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  titleText,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: qaTitleSize(),
-                    fontFamily: qaTitleTextFont(),
-                  ),
-                ),
-              ),
+              necessityQATitle(titleText),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -128,7 +132,7 @@ class qaWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 2.0),
+                            padding: EdgeInsets.only(top: 1.5),
                             child: Icon(
                               Icons.help_outline,
                               color: qaContentsColor(),
@@ -154,7 +158,7 @@ class qaWidget extends StatelessWidget {
                     ),
                     Container(
                       height: 1,
-                      color: qaContentsColor(),
+                      color: qaLineColor(),
                     ),
                     Container(
                       padding: EdgeInsets.all(10),
@@ -229,16 +233,42 @@ class qaWidget extends StatelessWidget {
     return qaTitleTextFont;
   }
 
-  // アイコン・文字色・仕切り線の背景色を指定
+  // アイコン・文字の色を指定
   Color qaContentsColor() {
     final qaContentsColor = Colors.white;
     return qaContentsColor;
   }
 
-  // アイコン・文字色・仕切り線の背景色を指定
+  // アイコン・文字・仕切り線の背景色を指定
   Color qaBackgroundColor() {
     final qaBackgroundColor = Color(0xFF555555);
     return qaBackgroundColor;
   }
 
+  // 仕切り線の色を指定
+  Color qaLineColor() {
+    final qaLineColor = Color(0xFFbbbbbb);
+    return qaLineColor;
+  }
+
+
+  Widget necessityQATitle(String valutitleText) {
+    if (titleText != '') {
+      return Container(
+        padding: EdgeInsets.only(bottom: 10),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          titleText,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: qaTitleSize(),
+            fontFamily: qaTitleTextFont(),
+          ),
+        ),
+      );
+    } else {
+      return SizedBox.shrink();
+    }
+  }
 }
+

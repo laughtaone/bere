@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'take_display.dart';
-import 'settings_qanda_display.dart';
+import 'settings_qa_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -48,8 +48,13 @@ class SettingsPage extends StatelessWidget {
               ),
               tiles: <SettingsTile>[
                 SettingsTile(
-                  title: Text(
-                    'このアプリはBeReal.を楽しむことをサポートするものです。\nまた当アプリは、BeReal.の独創的なアイデアを尊重しており、BeReal.が発明したアイデアを保護するため、当アプリでは撮影後の画像データの保存・スクショは一切できません。保存したい場合は、BeReal.アプリでベストショットの撮影に挑戦してみてください！',
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      pointList(pointListText: '本アプリはBeReal.さまに許可をとって作成したアプリではない、非公式のBeReal.リハーサルアプリです。'),
+                      pointList(pointListText: '本アプリでは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像の見分けが付かず、BeReal.で撮影する楽しみを奪ってしまうことを防ぐため、撮影した写真を保存・スクショすることができません。'),
+                      pointList(pointListText: '今後、2アプリを見分けることができるようにしながら保存機能を実現するため、内側と外側で2枚の別々の画像で保存する機能の実装を検討しています！'),
+                    ],
                   ),
                 ),
                 SettingsTile.navigation(
@@ -58,7 +63,7 @@ class SettingsPage extends StatelessWidget {
                   // value: const Text(''),
                   onPressed: (context) {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => QandAPage(),
+                      builder: (_) => QAPage(),
                     ));
                   },
                 ),
@@ -155,4 +160,55 @@ class SettingValueTextStyle {
     color: Colors.white,
     fontSize: 17,
   );
+}
+
+
+
+class pointList extends StatelessWidget {
+  final String pointListText;
+
+  const pointList({
+    Key? key,
+    required this.pointListText,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: [
+        Container(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(4),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 5.0),
+                      child: Icon(
+                        Icons.check,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          pointListText,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
