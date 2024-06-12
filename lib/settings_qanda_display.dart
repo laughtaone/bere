@@ -53,9 +53,17 @@ class QandAPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Text(
+                '節名',
+                style: TextStyle(color: Colors.white),
+              ),
               qaWidget(
-                qText: '質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文質問文',
-                aText: '回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文回答文',
+                qText: 'BeRehearsal.で撮影した写真を保存するにはどうすればいいですか？',
+                aText: '現地点では、BeRehearsal.で撮影した写真を保存する機能はありません。また、スクショもできないような仕様となっています。\nこれは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像に見分けがつかなくなり、BeReal.アプリでひとときの瞬間を撮影する楽しみを奪ってしまうことを防ぐためです。\nなお、BeReal.との見分けをつける方法として、内と外で別々の2枚の画像で保存する機能の実装を検討しています。',
+              ),
+              qaWidget(
+                qText: '',
+                aText: '',
               ),
             ]
           ),
