@@ -58,12 +58,14 @@ class QandAPage extends StatelessWidget {
               //   style: TextStyle(color: Colors.white),
               // ),
               qaWidget(
+                titleText: '本アプリについて',
                 qText: 'BeRehearsal.で撮影した写真を保存するにはどうすればいいですか？',
-                aText: '現地点では、BeRehearsal.で撮影した写真を保存する機能はありません。また、スクショもできないような仕様となっています。\nこれは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像に見分けがつかなくなり、BeReal.アプリでひとときの瞬間を撮影する楽しみを奪ってしまうことを防ぐためです。\nなお、BeReal.との見分けをつける方法として、内と外で別々の2枚の画像で保存する機能の実装を検討しています。',
+                aText: '現地点では、BeRehearsal.で撮影した写真を保存する機能はありません。また、スクショもできないような仕様となっています。\nこれは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像の2つに見分けがつかなくなり、BeReal.アプリでひとときの瞬間を撮影する楽しみを奪ってしまうことを防ぐためです。\nなお、BeReal.との見分けをつける方法として、内と外で別々の2枚の画像で保存する機能の実装を検討しています。',
               ),
               qaWidget(
-                qText: '',
-                aText: '',
+                titleText: '',
+                qText: 'BeReal.と機能は同じですか？',
+                aText: '本アプリはBeReal.を再現したものであるため機能は同じですが、外/内カメラの切り替えにかける時間や画像処理など細かい部分には、多少の差がある可能性があります。\nまた本アプリは、Flutterというプログラミング言語を用いていますが、BeReal.はSwiftなどのFlutter以外のプログラミング言語を用いている可能性があるため、プログラミング言語による差も少なからず生じている可能性があります。'
               ),
             ]
           ),
@@ -74,15 +76,21 @@ class QandAPage extends StatelessWidget {
 
 }
 
+
+
+
+
 // Q＆A用のウィジェット
 class qaWidget extends StatelessWidget {
   final String qText;
   final String aText;
+  final String titleText;
 
   const qaWidget({
     Key? key,
     required this.qText,
     required this.aText,
+    required this.titleText
   }) : super(key: key);
 
 
@@ -91,17 +99,19 @@ class qaWidget extends StatelessWidget {
     return Wrap(
       children: [
         Container(
-          padding: EdgeInsets.only(left: 5, right: 5, bottom: 5),
+          padding: EdgeInsets.only(left: 5, right: 5, bottom: 3),
           margin: EdgeInsets.only(left: 25, right: 25, bottom: 25),
           child: Column(
             children: [
               Container(
+                padding: EdgeInsets.only(bottom: 10),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'data',
+                  titleText,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: qaTitleSize(),
+                    fontFamily: qaTitleTextFont(),
                   ),
                 ),
               ),
@@ -134,6 +144,7 @@ class qaWidget extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: qaTextSize(),
                                   color: qaContentsColor(),
+                                  fontFamily: qaTextFont(),
                                 ),
                               ),
                             ),
@@ -167,6 +178,7 @@ class qaWidget extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: qaTextSize(),
                                   color: qaContentsColor(),
+                                  fontFamily: qaTextFont(),
                                 ),
                               ),
                             ),
@@ -189,7 +201,7 @@ class qaWidget extends StatelessWidget {
 
   // QA部分のタイトルサイズを一括指定
   double qaTitleSize() {
-    final qaIconSize = 20.0;
+    final qaIconSize = 21.0;
     return qaIconSize;
   }
 
@@ -203,6 +215,18 @@ class qaWidget extends StatelessWidget {
   double qaTextSize() {
     final qaTextSize = 16.0;
     return qaTextSize;
+  }
+
+  // QA部分の文字フォントを一括指定
+  String qaTextFont() {
+    final qaTextFont = 'NotoSansJP-Medium';
+    return qaTextFont;
+  }
+
+  // QA部分のタイトルの文字フォントを一括指定
+  String qaTitleTextFont() {
+    final qaTitleTextFont = 'NotoSansJP-SemiBold';
+    return qaTitleTextFont;
   }
 
   // アイコン・文字色・仕切り線の背景色を指定

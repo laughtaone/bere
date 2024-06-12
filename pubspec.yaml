@@ -94,14 +94,26 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
   fonts:
-    - family: NotoSansJP
+    # NotoSansJP
+    - family: NotoSansJP-ExtraBold
       fonts:
-        - asset: assets/fonts/NotoSansJP-Black.ttf
-        - asset: assets/fonts/NotoSansJP-Bold.ttf
-        - asset: assets/fonts/NotoSansJP-ExtraBold.ttf
-        - asset: assets/fonts/NotoSansJP-ExtraLight.ttf
-        - asset: assets/fonts/NotoSansJP-Light.ttf
-        - asset: assets/fonts/NotoSansJP-Medium.ttf
-        - asset: assets/fonts/NotoSansJP-Regular.ttf
-        - asset: assets/fonts/NotoSansJP-SemiBold.ttf
-        - asset: assets/fonts/NotoSansJP-Thin.ttf
+      - asset: fonts/NotoSansJP/NotoSansJP-ExtraBold.ttf
+    - family: NotoSansJP-SemiBold
+      fonts:
+      - asset: fonts/NotoSansJP/NotoSansJP-SemiBold.ttf
+    - family: NotoSansJP-Bold
+      fonts:
+      - asset: fonts/NotoSansJP/NotoSansJP-Bold.ttf
+    - family: NotoSansJP-Medium
+      fonts:
+      - asset: fonts/NotoSansJP/NotoSansJP-Medium.ttf
+    - family: NotoSansJP-Regular
+      fonts:
+      - asset: fonts/NotoSansJP/NotoSansJP-Regular.ttf
+    - family: NotoSansJP-SemiBold
+      fonts:
+      - asset: fonts/NotoSansJP/NotoSansJP-SemiBold.ttf
+    - family: NotoSansJP-Thin
+      fonts:
+      - asset: fonts/NotoSansJP/NotoSansJP-Thin.ttf
+
