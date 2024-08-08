@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
 import 'confirm_page.dart';
+import 'settings_display.dart';
+import 'package:settings_ui/settings_ui.dart';
 
 class TakePage extends StatefulWidget {
   @override
@@ -59,8 +61,9 @@ class _TakePageState extends State<TakePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
           title: Column(
@@ -83,12 +86,9 @@ class _TakePageState extends State<TakePage> {
               ),
             ],
           ),
-          leading: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.settings),
-            color: Colors.white,
-            iconSize: 24,
-          ),
+          actions: <Widget>[
+            Setting()
+          ],
           backgroundColor: Colors.black,
         ),
         body: FutureBuilder<void>(
@@ -149,3 +149,30 @@ class CautionEnableSukusho extends StatelessWidget {
     );
   }
 }
+
+
+// 設定ボタンの内容
+class Setting extends StatelessWidget {
+  const Setting({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SettingsPage(),
+            fullscreenDialog: true,
+          ),
+        );
+      },
+      icon: Icon(Icons.settings),
+      color: Colors.white,
+      iconSize: 27,
+    );
+  }
+}
+

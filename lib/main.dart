@@ -52,11 +52,11 @@ class StartPage extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => TakePage()),  // 画面遷移
-                    );
-                  },
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TakePage()),  // 画面遷移
+                  );
+                },
                 child: Text(
                   'はじめる>',
                   style: TextStyle(
