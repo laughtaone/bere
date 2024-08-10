@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'dart:io';
-import 'main.dart';
-import 'take_display.dart';
+import '../main.dart';
+import '../one/take_display.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 

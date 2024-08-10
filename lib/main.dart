@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'take_display.dart';
+import 'one/take_display.dart';
 
 
 void main() {

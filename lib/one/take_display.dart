@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
-import 'confirm_page.dart';
-import 'settings_display.dart';
+import '../two/confirm_page.dart';
+import '../settings/settings_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class TakePage extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'take_display.dart';
+import '../one/take_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'settings_display.dart';
@@ -60,7 +60,7 @@ class QAPage extends StatelessWidget {
               qaWidget(
                 titleText: 'このアプリについて',
                 qText: 'BeReal.と機能は同じですか？',
-                aText: '本アプリはBeReal.を再現したものであるため機能は同じですが、外/内カメラの切り替えにかける時間や画像処理など細かい部分には、多少の差がある可能性があります。\nまた本アプリは、Flutterというプログラミング言語を用いていますが、BeReal.はSwiftなどのFlutter以外のプログラミング言語を用いている可能性があるため、プログラミング言語による差も少なからず生じている可能性があります。'
+                aText: '本アプリはBeReal.を再現したため、機能は同じですが、外/内カメラの切り替えにかける時間や画像処理など細かい部分には、多少の差がある可能性があります。\nまた本アプリは、Flutterというプログラミング言語を用いていますが、BeReal.はSwiftなどのFlutter以外のプログラミング言語を用いている可能性があるため、プログラミング言語による差も少なからず生じている可能性があります。'
               ),
               qaWidget(
                 titleText: '',
@@ -74,13 +74,18 @@ class QAPage extends StatelessWidget {
               ),
               qaWidget(
                 titleText: '開発者について',
-                qText: 'このアプリを通してアプリ開発者にお金は入っていますか？',
-                aText: '本アプリには、広告を掲載していない上、通信機能を実装しておらず、データや使用状況の収集もプログラム的に不可能であるため、本アプリを通して、アプリ開発者であるスウプには1円たりともお金は入っていませんのでご安心ください。\n\nあくまで開発者が「n回の再撮影」と表示されずにBeReal.の撮影の練習をしたいという目的で開発したアプリです。'
+                qText: 'このアプリを通して、アプリ開発者にお金は入っていますか？',
+                aText: '本アプリには、広告を掲載していない上、通信機能を実装しておらず、データや使用状況の収集もプログラム的に不可能であるため、本アプリを通して、アプリ開発者であるスウプには1円たりともお金・使用データは入っていませんのでご安心ください。\n\nあくまで開発者が「n回の再撮影」と表示されずにBeReal.の撮影の練習をしたいという目的で開発したアプリです。'
               ),
               qaWidget(
                 titleText: '',
                 qText: '機能の追加など、このアプリへの要望・感想を開発者に伝えたいです。',
                 aText: '開発者(スウプ)のXのDMより教えていただければ幸いです。'
+              ),
+              qaWidget(
+                titleText: 'BeReal.運営者さまへ\n (For BeReal. developers)',
+                qText: 'BeReal.の運営者からですが、至急、このアプリの配信の中止をしてください。\n（English translation by Google Translate: This is a message from the BeReal. developers to please stop distributing this rehearsal app as soon as possible.）',
+                aText: 'この度は、勝手にリハーサルアプリの作成・配信を行い、大変申し訳ありません。まずは、BeReal.運営者であることを確認し、必要に応じ、即時、配信の中止を行います。そのため、お手数ですが、当アプリ開発者のX(@suupusoup)のDMまでお願いいたします。\n(English translation by Google Translate: I am very sorry for creating and distributing this rehearsal app without permission. First of all, I will confirm that you are the operator of BeReal., and if necessary, I will immediately stop the distribution. Therefore, I apologize for the inconvenience, but please send a DM to X (@suupusoup), the developer of this rehearsal app.)'
               ),
             ]
           ),
@@ -115,7 +120,7 @@ class qaWidget extends StatelessWidget {
       children: [
         Container(
           padding: EdgeInsets.only(left: 5, right: 5, bottom: 3),
-          margin: EdgeInsets.only(left: 25, right: 25, bottom: 25),
+          margin: EdgeInsets.only(left: 20, right: 20, bottom: 25),
           child: Column(
             children: [
               necessityQATitle(titleText),
@@ -127,7 +132,7 @@ class qaWidget extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: qaWidgetContainerPadding(),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -161,7 +166,7 @@ class qaWidget extends StatelessWidget {
                       color: qaLineColor(),
                     ),
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: qaWidgetContainerPadding(),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -203,6 +208,11 @@ class qaWidget extends StatelessWidget {
 
 
 
+  // QA部分の余白を一括指定
+  EdgeInsets qaWidgetContainerPadding() {
+    return EdgeInsets.all(15);
+  }
+
   // QA部分のタイトルサイズを一括指定
   double qaTitleSize() {
     final qaIconSize = 21.0;
@@ -217,13 +227,13 @@ class qaWidget extends StatelessWidget {
 
   // QA部分の文字サイズを一括指定
   double qaTextSize() {
-    final qaTextSize = 16.0;
+    final qaTextSize = 15.5;
     return qaTextSize;
   }
 
   // QA部分の文字フォントを一括指定
   String qaTextFont() {
-    final qaTextFont = 'NotoSansJP-Medium';
+    final qaTextFont = 'NotoSansJP-Regular';
     return qaTextFont;
   }
 
@@ -241,7 +251,7 @@ class qaWidget extends StatelessWidget {
 
   // アイコン・文字・仕切り線の背景色を指定
   Color qaBackgroundColor() {
-    final qaBackgroundColor = Color(0xFF555555);
+    final qaBackgroundColor = Color(0xFF2e2e2e);
     return qaBackgroundColor;
   }
 
