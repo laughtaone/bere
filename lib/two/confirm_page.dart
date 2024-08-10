@@ -5,7 +5,7 @@ import 'dart:io';
 import '../main.dart';
 import '../one/take_display.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:berehearsal/custom/custom.dart';
 
 
 // ConfirmPageの定義
@@ -19,7 +19,7 @@ class ConfirmPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: allBackgroundColor(),
         appBar: AppBar(
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -41,10 +41,8 @@ class ConfirmPage extends StatelessWidget {
               ),
             ],
           ),
-          actions: <Widget>[
-            Setting()
-          ],
-          backgroundColor: Colors.black,
+          backgroundColor: allBackgroundColor(),
+          automaticallyImplyLeading: false,
         ),
 
         body: Center(

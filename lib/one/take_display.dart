@@ -4,6 +4,7 @@ import 'dart:io';
 import '../two/confirm_page.dart';
 import '../settings/settings_display.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:berehearsal/custom/custom.dart';
 
 class TakePage extends StatefulWidget {
   @override
@@ -64,8 +65,9 @@ class _TakePageState extends State<TakePage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: allBackgroundColor(),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -89,7 +91,7 @@ class _TakePageState extends State<TakePage> {
           actions: <Widget>[
             Setting()
           ],
-          backgroundColor: Colors.black,
+          backgroundColor: allBackgroundColor(),
         ),
         body: FutureBuilder<void>(
           future: _initializeControllerFuture,

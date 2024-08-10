@@ -4,6 +4,7 @@ import '../one/take_display.dart';
 import 'settings_qa_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:berehearsal/custom/custom.dart';
 
 
 
@@ -13,8 +14,9 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: allBackgroundColor(),
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: allBackgroundColor(),
         title: const Text(
           '設定',
           style: TextStyle(
@@ -41,6 +43,21 @@ class SettingsPage extends StatelessWidget {
         child: SettingsList(
           platform: DevicePlatform.iOS,
           sections: [
+            SettingsSection(
+              title: Text(
+                'スタート画面',
+                style: SettingTitleTextStyle.myTextStyle,
+              ),
+              tiles: [
+                SettingsTile.switchTile(
+                  leading: Icon(Icons.directions_run_outlined),
+                  title: const Text('スタート画面をスキップする'),
+                  description: Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
+                  initialValue: false,
+                  onToggle: (value) {},
+                ),
+              ],
+            ),
             SettingsSection(
               title: Text(
                 'このアプリについて',

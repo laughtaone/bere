@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'one/take_display.dart';
-
+import 'package:berehearsal/custom/custom.dart';
 
 void main() {
-  runApp(
-    StartPageHome()
-  );
+  runApp(StartPageHome());
 }
 
 class StartPageHome extends StatelessWidget {
@@ -24,7 +22,7 @@ class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: allBackgroundColor(),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +52,7 @@ class StartPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TakePage()),  // 画面遷移
+                    MaterialPageRoute(builder: (context) => TakePage()), // 画面遷移
                   );
                 },
                 child: Text(
