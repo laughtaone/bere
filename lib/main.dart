@@ -60,6 +60,7 @@ class _StartPageState extends State<StartPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 100),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -81,6 +82,7 @@ class _StartPageState extends State<StartPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 230),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -98,6 +100,7 @@ class _StartPageState extends State<StartPage> {
                     ),
                   ),
                 ),
+                SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -122,7 +125,7 @@ class _StartPageState extends State<StartPage> {
                           ),
                         ),
                         Text(
-                          '撮影した画���の保存・スクショは一切できません',
+                          '撮影した画像の保存・スクショは一切できません',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 11,
