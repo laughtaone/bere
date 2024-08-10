@@ -32,7 +32,7 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  @override　
+  @override
   void initState() {
     super.initState();
     final settingsPageModel = Provider.of<SettingsPageModel>(context, listen: false);
@@ -40,7 +40,7 @@ class _StartPageState extends State<StartPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => TakePage()), // 画面遷移
+          MaterialPageRoute(builder: (context) => TakePage()),
         );
       });
     }

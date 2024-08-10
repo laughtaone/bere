@@ -11,7 +11,6 @@ class TakePage extends StatefulWidget {
   _TakePageState createState() => _TakePageState();
 }
 
-
 class _TakePageState extends State<TakePage> {
   CameraController? _controller;
   Future<void>? _initializeControllerFuture;
@@ -24,10 +23,16 @@ class _TakePageState extends State<TakePage> {
 
   Future<void> _initializeCamera() async {
     final cameras = await availableCameras();
-    final firstCamera = cameras.first;
+    final outCamera = cameras[0];
+    final inCamera = cameras[1];
 
     _controller = CameraController(
-      firstCamera,
+      outCamera,
+      ResolutionPreset.medium, // 3:4に近い解像度を選択
+    );
+
+    _controller = CameraController(
+      inCamera,
       ResolutionPreset.medium, // 3:4に近い解像度を選択
     );
 
@@ -46,14 +51,15 @@ class _TakePageState extends State<TakePage> {
   Future<void> _takePicture() async {
     try {
       await _initializeControllerFuture;
-      final image = await _controller!.takePicture();
+      final outCameraImage = await _controller!.takePicture();
+      final inCameraImage = await _controller!.takePicture();
       if (!mounted) return;
 
       // ConfirmPageに遷移し、撮影した画像を渡す
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ConfirmPage(imagePath: image.path),
+          builder: (context) => ConfirmPage(outCameraImagePath: outCameraImage.path, inCameraImagePath: inCameraImage.path),
         ),
       );
     } catch (e) {
@@ -89,9 +95,7 @@ class _TakePageState extends State<TakePage> {
               ),
             ],
           ),
-          actions: <Widget>[
-            Setting()
-          ],
+          actions: <Widget>[Setting()],
           backgroundColor: allBackgroundColor(),
         ),
         body: FutureBuilder<void>(
@@ -153,7 +157,6 @@ class CautionEnableSukusho extends StatelessWidget {
   }
 }
 
-
 // 設定ボタンの内容
 class Setting extends StatelessWidget {
   const Setting({
@@ -178,4 +181,3 @@ class Setting extends StatelessWidget {
     );
   }
 }
-

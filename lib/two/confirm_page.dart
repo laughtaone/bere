@@ -7,97 +7,93 @@ import '../one/take_display.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:berehearsal/custom/custom.dart';
 
-
 // ConfirmPageの定義
 class ConfirmPage extends StatelessWidget {
-  final String imagePath;
-  ConfirmPage({required this.imagePath});
+  final String outCameraImagePath;
+  final String inCameraImagePath;
 
+  ConfirmPage(
+      {required this.outCameraImagePath, required this.inCameraImagePath});
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: allBackgroundColor(),
-        appBar: AppBar(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                'BeRehearsal.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'To supprt enjoying BeReal.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 9,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
           backgroundColor: allBackgroundColor(),
-          automaticallyImplyLeading: false,
-          actions: <Widget>[
-            Setting()
-          ],
-        ),
-
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children:[
-              CautionEnableSukusho(),
-              Stack(
-                alignment: AlignmentDirectional.topEnd,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.file(File(imagePath)),
+          appBar: AppBar(
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  'BeRehearsal.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.black.withOpacity(0.5),
-                        ),
-                        child: Icon(
-                          Icons.close,
-                          color: Colors.white,
-                          size: 30,
+                ),
+                Text(
+                  'To supprt enjoying BeReal.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: allBackgroundColor(),
+            automaticallyImplyLeading: false,
+            actions: <Widget>[Setting()],
+          ),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CautionEnableSukusho(),
+                Stack(
+                  alignment: AlignmentDirectional.topEnd,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.file(File(outCameraImagePath)),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 30,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              TextButton(
-                onPressed: _launchBeReal,
-                child: Text(
-                  'BeReal.を開く>',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ),
-            ],
-          ),
-        )
-      ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                TextButton(
+                    onPressed: _launchBeReal,
+                    child: Text(
+                      'BeReal.を開く>',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+              ],
+            ),
+          )),
     );
   }
 
@@ -105,7 +101,4 @@ class ConfirmPage extends StatelessWidget {
     final url = Uri.parse('bereal://');
     launchUrl(url);
   }
-
 }
-
-
