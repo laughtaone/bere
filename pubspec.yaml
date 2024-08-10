@@ -40,6 +40,9 @@ dependencies:
   url_launcher: ^6.3.0
   settings_ui: ^2.0.2
   device_preview: ^1.1.0
+  flutter_launcher_icons: ^0.13.1
+  font_awesome_flutter: ^10.7.0
+  shared_preferences: ^2.3.1
 
 dev_dependencies:
   flutter_test:
@@ -117,3 +120,7 @@ flutter:
       fonts:
       - asset: fonts/NotoSansJP/NotoSansJP-Thin.ttf
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo/app_icon_square.png"

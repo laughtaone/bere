@@ -4,6 +4,7 @@ import 'dart:io';
 import '../two/confirm_page.dart';
 import '../settings/settings_display.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:berehearsal/custom/custom.dart';
 
 class TakePage extends StatefulWidget {
   @override
@@ -22,14 +23,22 @@ class _TakePageState extends State<TakePage> {
 
   Future<void> _initializeCamera() async {
     final cameras = await availableCameras();
-    final firstCamera = cameras.first;
+    final outCamera = cameras[0];
+    final inCamera = cameras[1];
 
     _controller = CameraController(
-      firstCamera,
+      outCamera,
       ResolutionPreset.medium, // 3:4に近い解像度を選択
     );
 
-    _initializeControllerFuture = _controller!.initialize();
+    await _controller!.initialize(); // 外カメラの初期化を待つ
+
+    _controller = CameraController(
+      inCamera,
+      ResolutionPreset.medium, // 3:4に近い解像度を選択
+    );
+
+    _initializeControllerFuture = _controller!.initialize(); // 内カメラの初期化を待つ
     if (mounted) {
       setState(() {});
     }
@@ -44,14 +53,25 @@ class _TakePageState extends State<TakePage> {
   Future<void> _takePicture() async {
     try {
       await _initializeControllerFuture;
-      final image = await _controller!.takePicture();
+      final outCameraImage = await _controller!.takePicture();
+
+      // 内カメラに切り替え
+      final cameras = await availableCameras();
+      final inCamera = cameras[1];
+      _controller = CameraController(
+        inCamera,
+        ResolutionPreset.medium,
+      );
+      await _controller!.initialize();
+      final inCameraImage = await _controller!.takePicture();
+
       if (!mounted) return;
 
       // ConfirmPageに遷移し、撮影した画像を渡す
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ConfirmPage(imagePath: image.path),
+          builder: (context) => ConfirmPage(outCameraImagePath: outCameraImage.path, inCameraImagePath: inCameraImage.path),
         ),
       );
     } catch (e) {
@@ -64,8 +84,9 @@ class _TakePageState extends State<TakePage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: allBackgroundColor(),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -86,10 +107,8 @@ class _TakePageState extends State<TakePage> {
               ),
             ],
           ),
-          actions: <Widget>[
-            Setting()
-          ],
-          backgroundColor: Colors.black,
+          actions: <Widget>[Setting()],
+          backgroundColor: allBackgroundColor(),
         ),
         body: FutureBuilder<void>(
           future: _initializeControllerFuture,
@@ -150,7 +169,6 @@ class CautionEnableSukusho extends StatelessWidget {
   }
 }
 
-
 // 設定ボタンの内容
 class Setting extends StatelessWidget {
   const Setting({
@@ -175,4 +193,3 @@ class Setting extends StatelessWidget {
     );
   }
 }
-

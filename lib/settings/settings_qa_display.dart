@@ -4,6 +4,7 @@ import '../one/take_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'settings_display.dart';
+import 'package:berehearsal/custom/custom.dart';
 
 
 // void main() {
@@ -27,9 +28,9 @@ class QAPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: allBackgroundColor(),
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: allBackgroundColor(),
         title: const Text(
           'よくある質問',
           style: TextStyle(
