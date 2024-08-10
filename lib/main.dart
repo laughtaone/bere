@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'one/take_display.dart';
 import 'package:berehearsal/custom/custom.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(StartPageHome());
