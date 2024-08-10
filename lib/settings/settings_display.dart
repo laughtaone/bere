@@ -6,12 +6,31 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:berehearsal/custom/custom.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
+class SettingsPage extends StatefulWidget {
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
 
+class SettingsPageModel extends ChangeNotifier {
+  bool _skipStartPage = false;
 
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
+  bool get skipStartPage => _skipStartPage;
 
+  void setStartPageSkipTrue() {
+    _skipStartPage = true;
+    notifyListeners();
+  }
+
+  void setStartPageSkipFalse() {
+    _skipStartPage = false;
+    notifyListeners();
+  }
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +56,7 @@ class SettingsPage extends StatelessWidget {
             },
           ),
         ],
-        automaticallyImplyLeading: false, // 戻るボタン非表示
+        automaticallyImplyLeading: false,
       ),
       body: Theme(
         data: ThemeData.dark(),
@@ -53,9 +72,18 @@ class SettingsPage extends StatelessWidget {
                 SettingsTile.switchTile(
                   leading: Icon(Icons.directions_run_outlined),
                   title: const Text('スタート画面をスキップする'),
-                  description: Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
-                  initialValue: false,
-                  onToggle: (value) {},
+                  description:
+                    Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
+                  initialValue: Provider.of<SettingsPageModel>(context).skipStartPage,
+                  onToggle: (value) {
+                    if (value) {
+                      print('スイッチがオンになりました');
+                      Provider.of<SettingsPageModel>(context, listen: false).setStartPageSkipTrue();
+                    } else {
+                      print('スイッチがオフになりました');
+                      Provider.of<SettingsPageModel>(context, listen: false).setStartPageSkipFalse();
+                    }
+                  },
                 ),
               ],
             ),
@@ -69,8 +97,12 @@ class SettingsPage extends StatelessWidget {
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      pointList(pointListText: '本アプリはBeReal.さまに許可をいただいて作成したアプリではない、非公式のBeReal.リハーサルアプリです。'),
-                      pointList(pointListText: '本アプリで撮影した写真を、保存・スクショすることは一切できません。これは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像の見分けが付かず、BeReal.で撮影する楽しみを奪ってしまうことを防ぐためです。'),
+                      pointList(
+                          pointListText:
+                              '本アプリはBeReal.さまに許可をいただいて作成したアプリではない、非公式のBeReal.リハーサルアプリです。'),
+                      pointList(
+                          pointListText:
+                              '本アプリで撮影した写真を、保存・スクショすることは一切できません。これは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像の見分けが付かず、BeReal.で撮影する楽しみを奪ってしまうことを防ぐためです。'),
                       // pointList(pointListText: '今後、2アプリを見分けることができるようにしながら保存機能を実現するため、内側と外側で2枚の別々の画像で保存する機能の実装を検討しています！'),
                     ],
                   ),
@@ -116,32 +148,41 @@ class SettingsPage extends StatelessWidget {
                   title: const Text('X'),
                   value: const Text('@suupusoup'),
                   onPressed: (BuildContext context) {
-                    _launchDeveloperX('twitter://user?id=suupusoup', secondUrl: 'https://x.com/suupusoup');
+                    _launchDeveloperX('twitter://user?id=suupusoup',
+                        secondUrl: 'https://x.com/suupusoup');
                   },
                 ),
                 SettingsTile.navigation(
                   leading: const FaIcon(FontAwesomeIcons.tiktok),
                   title: const Text('TikTok'),
                   value: const Text('@suupusoup'),
-                  onPressed: (BuildContext context) { _launchTikTok();},
+                  onPressed: (BuildContext context) {
+                    _launchTikTok();
+                  },
                 ),
                 SettingsTile.navigation(
                   leading: const FaIcon(FontAwesomeIcons.youtube),
                   title: const Text('YouTube'),
                   value: const Text('@suupusoup'),
-                  onPressed: (BuildContext context) { _launchYouTube();},
+                  onPressed: (BuildContext context) {
+                    _launchYouTube();
+                  },
                 ),
                 SettingsTile.navigation(
                   leading: const FaIcon(FontAwesomeIcons.instagram),
                   title: const Text('Instagram'),
                   value: const Text('@suupusoup'),
-                  onPressed: (BuildContext context) { _launchInstagram();},
+                  onPressed: (BuildContext context) {
+                    _launchInstagram();
+                  },
                 ),
                 SettingsTile.navigation(
                   leading: const FaIcon(FontAwesomeIcons.github),
                   title: const Text('GitHub'),
                   value: const Text('@suupusoup'),
-                  onPressed: (BuildContext context) { _launchGitHub();},
+                  onPressed: (BuildContext context) {
+                    _launchGitHub();
+                  },
                 ),
               ],
             ),
@@ -150,9 +191,6 @@ class SettingsPage extends StatelessWidget {
       ),
     );
   }
-
-
-
 
   Future<void> _launchDeveloperX(String url, {String? secondUrl}) async {
     try {
@@ -191,7 +229,6 @@ Future _launchInstagram() async {
   launchUrl(url);
 }
 
-
 class SettingTitleTextStyle {
   static final TextStyle myTextStyle = TextStyle(
     fontSize: 17,
@@ -206,8 +243,6 @@ class SettingValueTextStyle {
     fontSize: 17,
   );
 }
-
-
 
 class pointList extends StatelessWidget {
   final String pointListText;

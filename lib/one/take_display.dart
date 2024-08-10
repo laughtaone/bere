@@ -11,6 +11,7 @@ class TakePage extends StatefulWidget {
   _TakePageState createState() => _TakePageState();
 }
 
+
 class _TakePageState extends State<TakePage> {
   CameraController? _controller;
   Future<void>? _initializeControllerFuture;
