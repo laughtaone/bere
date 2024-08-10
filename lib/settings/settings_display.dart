@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'take_display.dart';
+import '../one/take_display.dart';
 import 'settings_qa_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -51,9 +51,9 @@ class SettingsPage extends StatelessWidget {
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      pointList(pointListText: '本アプリはBeReal.さまに許可をとって作成したアプリではない、非公式のBeReal.リハーサルアプリです。'),
-                      pointList(pointListText: '本アプリでは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像の見分けが付かず、BeReal.で撮影する楽しみを奪ってしまうことを防ぐため、撮影した写真を保存・スクショすることができません。'),
-                      pointList(pointListText: '今後、2アプリを見分けることができるようにしながら保存機能を実現するため、内側と外側で2枚の別々の画像で保存する機能の実装を検討しています！'),
+                      pointList(pointListText: '本アプリはBeReal.さまに許可をいただいて作成したアプリではない、非公式のBeReal.リハーサルアプリです。'),
+                      pointList(pointListText: '本アプリで撮影した写真を、保存・スクショすることは一切できません。理由は、BeRehearsal.で撮影した画像とBeReal.で撮影した画像の見分けが付かず、BeReal.で撮影する楽しみを奪ってしまうことを防ぐためです。'),
+                      // pointList(pointListText: '今後、2アプリを見分けることができるようにしながら保存機能を実現するため、内側と外側で2枚の別々の画像で保存する機能の実装を検討しています！'),
                     ],
                   ),
                 ),
@@ -185,7 +185,7 @@ class pointList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 5.0),
+                      padding: EdgeInsets.only(top: 3.0),
                       child: Icon(
                         Icons.check,
                         size: 18,
@@ -198,7 +198,7 @@ class pointList extends StatelessWidget {
                         child: Text(
                           pointListText,
                           textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
                     ),
