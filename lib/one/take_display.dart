@@ -31,12 +31,14 @@ class _TakePageState extends State<TakePage> {
       ResolutionPreset.medium, // 3:4に近い解像度を選択
     );
 
+    await _controller!.initialize(); // 外カメラの初期化を待つ
+
     _controller = CameraController(
       inCamera,
       ResolutionPreset.medium, // 3:4に近い解像度を選択
     );
 
-    _initializeControllerFuture = _controller!.initialize();
+    _initializeControllerFuture = _controller!.initialize(); // 内カメラの初期化を待つ
     if (mounted) {
       setState(() {});
     }
@@ -52,7 +54,17 @@ class _TakePageState extends State<TakePage> {
     try {
       await _initializeControllerFuture;
       final outCameraImage = await _controller!.takePicture();
+
+      // 内カメラに切り替え
+      final cameras = await availableCameras();
+      final inCamera = cameras[1];
+      _controller = CameraController(
+        inCamera,
+        ResolutionPreset.medium,
+      );
+      await _controller!.initialize();
       final inCameraImage = await _controller!.takePicture();
+
       if (!mounted) return;
 
       // ConfirmPageに遷移し、撮影した画像を渡す
