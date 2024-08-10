@@ -43,6 +43,9 @@ class ConfirmPage extends StatelessWidget {
           ),
           backgroundColor: allBackgroundColor(),
           automaticallyImplyLeading: false,
+          actions: <Widget>[
+            Setting()
+          ],
         ),
 
         body: Center(

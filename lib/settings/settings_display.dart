@@ -5,6 +5,7 @@ import 'settings_qa_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:berehearsal/custom/custom.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 
@@ -111,7 +112,7 @@ class SettingsPage extends StatelessWidget {
               ),
               tiles: <SettingsTile>[
                 SettingsTile.navigation(
-                  leading: const Icon(Icons.person),
+                  leading: const FaIcon(FontAwesomeIcons.xTwitter),
                   title: const Text('X'),
                   value: const Text('@suupusoup'),
                   onPressed: (BuildContext context) {
@@ -119,10 +120,28 @@ class SettingsPage extends StatelessWidget {
                   },
                 ),
                 SettingsTile.navigation(
-                  leading: const Icon(Icons.person),
+                  leading: const FaIcon(FontAwesomeIcons.tiktok),
                   title: const Text('TikTok'),
                   value: const Text('@suupusoup'),
                   onPressed: (BuildContext context) { _launchTikTok();},
+                ),
+                SettingsTile.navigation(
+                  leading: const FaIcon(FontAwesomeIcons.youtube),
+                  title: const Text('YouTube'),
+                  value: const Text('@suupusoup'),
+                  onPressed: (BuildContext context) { _launchYouTube();},
+                ),
+                SettingsTile.navigation(
+                  leading: const FaIcon(FontAwesomeIcons.instagram),
+                  title: const Text('Instagram'),
+                  value: const Text('@suupusoup'),
+                  onPressed: (BuildContext context) { _launchInstagram();},
+                ),
+                SettingsTile.navigation(
+                  leading: const FaIcon(FontAwesomeIcons.github),
+                  title: const Text('GitHub'),
+                  value: const Text('@suupusoup'),
+                  onPressed: (BuildContext context) { _launchGitHub();},
                 ),
               ],
             ),
@@ -150,11 +169,26 @@ class SettingsPage extends StatelessWidget {
       print('エラーが発生しました: $e');
     }
   }
+}
 
-  Future _launchTikTok() async {
-    final url = Uri.parse('https://www.tiktok.com/@suupusoup');
-    launchUrl(url);
-  }
+Future _launchTikTok() async {
+  final url = Uri.parse('https://www.tiktok.com/@suupusoup');
+  launchUrl(url);
+}
+
+Future _launchYouTube() async {
+  final url = Uri.parse('https://www.youtube.com/@suupusoup');
+  launchUrl(url);
+}
+
+Future _launchGitHub() async {
+  final url = Uri.parse('https://www.github.com/suupusoup');
+  launchUrl(url);
+}
+
+Future _launchInstagram() async {
+  final url = Uri.parse('https://www.instagram.com/suupusoup');
+  launchUrl(url);
 }
 
 
