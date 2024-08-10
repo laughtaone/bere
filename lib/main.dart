@@ -24,14 +24,33 @@ class StartPageHome extends StatelessWidget {
   }
 }
 
-class StartPage extends StatelessWidget {
+class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
+
+  @override
+  _StartPageState createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
+  @override　
+  void initState() {
+    super.initState();
+    final settingsPageModel = Provider.of<SettingsPageModel>(context, listen: false);
+    if (settingsPageModel.skipStartPage == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => TakePage()), // 画面遷移
+        );
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final settingsPageModel = Provider.of<SettingsPageModel>(context);
-    if (settingsPageModel.skipStartPage) {
-      return TakePage();
+    if (settingsPageModel.skipStartPage == true) {
+      return Container(); // 空のコンテナを返す
     } else {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -67,7 +86,7 @@ class StartPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => TakePage()), // 画面遷移
+                        builder: (context) => TakePage()), // 画面遷移
                     );
                   },
                   child: Text(
@@ -103,7 +122,7 @@ class StartPage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '撮影した画像の保存・スクショは一切できません',
+                          '撮影した画���の保存・スクショは一切できません',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 11,
