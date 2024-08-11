@@ -38,12 +38,24 @@ class _SettingsPageState extends State<SettingsPage> {
       backgroundColor: allBackgroundColor(),
       appBar: AppBar(
         backgroundColor: allBackgroundColor(),
-        title: const Text(
-          '設定',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            SizedBox(width: 5),
+            Text(
+              '設定',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
         actions: <Widget>[
           IconButton(
@@ -142,6 +154,42 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
                 SettingsSection(
+                  title: Text('本家様',style: SettingTitleTextStyle.myTextStyle),
+                  tiles: <SettingsTile>[
+                    SettingsTile.navigation(
+                      leading: const FaIcon(FontAwesomeIcons.appStoreIos),
+                      title: Text('AppStore ページ'),
+                      onPressed: (BuildContext context) {
+                        _launchBeRealAppStore();
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      leading: const Icon(Icons.language_outlined),
+                      title: Text('公式サイト'),
+                      value: const Text('https://bereal.com/jp/'),
+                      onPressed: (BuildContext context) {
+                        _launchBeRealSite();
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      leading: const FaIcon(FontAwesomeIcons.xTwitter),
+                      title: Text('公式X'),
+                      value: const Text('@BeReal_App'),
+                      onPressed: (BuildContext context) {
+                        _launchBeRealX();
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      leading: const FaIcon(FontAwesomeIcons.instagram),
+                      title: Text('公式Instagram'),
+                      value: const Text('@bereal'),
+                      onPressed: (BuildContext context) {
+                        _launchBeRealInstagram();
+                      },
+                    ),
+                  ],
+                ),
+                SettingsSection(
                   title: Text(
                     '開発者について',
                     style: SettingTitleTextStyle.myTextStyle,
@@ -190,6 +238,35 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ],
                 ),
+                SettingsSection(
+                  title: Text(
+                    'アプリについて',
+                    style: SettingTitleTextStyle.myTextStyle,
+                  ),
+                  tiles: <SettingsTile>[
+                    SettingsTile.navigation(
+                      leading: const Icon(Icons.description_outlined),
+                      title: const Text('利用規約'),
+                      onPressed: (BuildContext context) {
+                        _launchTerms();
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      leading: const Icon(Icons.book_outlined),
+                      title: const Text('プライバシーポリシー'),
+                      onPressed: (BuildContext context) {
+                        _launchPrivacyPolcy();
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      leading: const Icon(Icons.book_outlined),
+                      title: const Text('使用ドキュメント'),
+                      onPressed: (BuildContext context) {
+                        _launchPrivacyPolcy();
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
           );
@@ -214,6 +291,27 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 }
 
+
+Future _launchBeRealAppStore() async {
+  final url = Uri.parse('https://apps.apple.com/jp/app/bereal-%E3%83%AA%E3%82%A2%E3%83%AB%E3%81%AA%E6%97%A5%E5%B8%B8%E3%82%92%E5%8F%8B%E9%81%94%E3%81%A8/id1459645446');
+  launchUrl(url);
+}
+
+Future _launchBeRealX() async {
+  final url = Uri.parse('https://x.com/BeReal_App');
+  launchUrl(url);
+}
+
+Future _launchBeRealSite() async {
+  final url = Uri.parse('https://bereal.com/ja/');
+  launchUrl(url);
+}
+
+Future _launchBeRealInstagram() async {
+  final url = Uri.parse('https://www.instagram.com/bereal/');
+  launchUrl(url);
+}
+
 Future _launchTikTok() async {
   final url = Uri.parse('https://www.tiktok.com/@suupusoup');
   launchUrl(url);
@@ -231,6 +329,16 @@ Future _launchGitHub() async {
 
 Future _launchInstagram() async {
   final url = Uri.parse('https://www.instagram.com/suupusoup');
+  launchUrl(url);
+}
+
+Future _launchTerms() async {
+  final url = Uri.parse('https://suupusoup.notion.site/BeRehearsal-765e2ebe610544f78548304326bc8568?pvs=4');
+  launchUrl(url);
+}
+
+Future _launchPrivacyPolcy() async {
+  final url = Uri.parse('https://suupusoup.notion.site/BeRehearsal-00b894722e0448909b3ee9d27d607a79?pvs=4');
   launchUrl(url);
 }
 

@@ -55,6 +55,7 @@ class _TakePageState extends State<TakePage> {
         outCameraImagePath = image.path;
         // カメラを切り替えてもう一度撮影
         _cameraIndex = 1;
+        await Future.delayed(Duration(seconds: 1));
         await _initializeCamera();
         await _takePicture(); // 切り替え後に再度撮影
       } else if (_cameraIndex == 1) {
