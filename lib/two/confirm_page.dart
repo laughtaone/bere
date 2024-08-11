@@ -114,22 +114,23 @@ class ConfirmPage extends StatelessWidget {
                       ),
                     ),
 
-                    // // 左上のサブカメラの写真
-                    // Align(
-                    //   alignment: Alignment.topLeft,
-                    //   child: ClipRRect(
-                    //     borderRadius: BorderRadius.circular(16),
-                    //     child: Image.file(File(inCameraImagePath)),
-                    //   ),
-                    // ),
                     Positioned(
-                      top: 10,
-                      left: 10,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Container(
-                          child: Image.file(File(inCameraImagePath)),
-                          width: 120,
+                      top: 15,
+                      left: 15,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.black,
+                              width: 2.2
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Container(
+                            child: Image.file(File(inCameraImagePath)),
+                            width: 120,
+                          ),
                         ),
                       ),
                     ),
