@@ -6,6 +6,7 @@ import '../settings/settings_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:berehearsal/custom/custom.dart';
 
+
 class TakePage extends StatefulWidget {
   @override
   _TakePageState createState() => _TakePageState();
@@ -14,6 +15,9 @@ class TakePage extends StatefulWidget {
 class _TakePageState extends State<TakePage> {
   CameraController? _controller;
   Future<void>? _initializeControllerFuture;
+  int _cameraIndex = 0;
+  String? outCameraImagePath;
+  String? inCameraImagePath;
 
   @override
   void initState() {
@@ -23,22 +27,12 @@ class _TakePageState extends State<TakePage> {
 
   Future<void> _initializeCamera() async {
     final cameras = await availableCameras();
-    final outCamera = cameras[0];
-    final inCamera = cameras[1];
-
     _controller = CameraController(
-      outCamera,
-      ResolutionPreset.medium, // 3:4に近い解像度を選択
+      cameras[_cameraIndex],
+      ResolutionPreset.medium,
     );
 
-    await _controller!.initialize(); // 外カメラの初期化を待つ
-
-    _controller = CameraController(
-      inCamera,
-      ResolutionPreset.medium, // 3:4に近い解像度を選択
-    );
-
-    _initializeControllerFuture = _controller!.initialize(); // 内カメラの初期化を待つ
+    _initializeControllerFuture = _controller!.initialize();
     if (mounted) {
       setState(() {});
     }
@@ -53,29 +47,33 @@ class _TakePageState extends State<TakePage> {
   Future<void> _takePicture() async {
     try {
       await _initializeControllerFuture;
-      final outCameraImage = await _controller!.takePicture();
-
-      // 内カメラに切り替え
-      final cameras = await availableCameras();
-      final inCamera = cameras[1];
-      _controller = CameraController(
-        inCamera,
-        ResolutionPreset.medium,
-      );
-      await _controller!.initialize();
-      final inCameraImage = await _controller!.takePicture();
+      final image = await _controller!.takePicture();
 
       if (!mounted) return;
 
-      // ConfirmPageに遷移し、撮影した画像を渡す
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ConfirmPage(
-              outCameraImagePath: outCameraImage.path,
-              inCameraImagePath: inCameraImage.path),
-        ),
-      );
+      if (_cameraIndex == 0) {
+        outCameraImagePath = image.path;
+        // カメラを切り替えてもう一度撮影
+        _cameraIndex = 1;
+        await _initializeCamera();
+        await _takePicture(); // 切り替え後に再度撮影
+      } else if (_cameraIndex == 1) {
+        inCameraImagePath = image.path;
+
+        // 両方のカメラで撮影完了後にConfirmPageに遷移
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ConfirmPage(
+                outCameraImagePath: outCameraImagePath ?? '',
+                inCameraImagePath: inCameraImagePath ?? ''),
+          ),
+        );
+
+        // カメラを切り替える (再度片方のカメラから始める)
+        _cameraIndex = 0;
+        await _initializeCamera();
+      }
     } catch (e) {
       print(e);
     }
