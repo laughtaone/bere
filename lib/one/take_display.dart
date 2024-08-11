@@ -118,18 +118,54 @@ class _TakePageState extends State<TakePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   CautionEnableSukusho(),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16.0),
-                      child: AspectRatio(
-                        aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                        child: CameraPreview(_controller!),
+                  // ================================================= カメラ画像部分 始 =================================================
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(16.0),
+                  //   ),
+                  //   child: ClipRRect(
+                  //     borderRadius: BorderRadius.circular(16.0),
+                  //     child: AspectRatio(
+                  //       aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                  //       child: CameraPreview(_controller!),
+                  //     ),
+                  //   ),
+                  // ),
+
+
+                  Stack(
+                    // alignment: AlignmentDirectional.bottomCenter,
+                    children: [
+                      // カメラ画像のContainer
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16.0),
+                          child: AspectRatio(
+                            aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                            child: CameraPreview(_controller!),
+                          ),
+                        ),
                       ),
-                    ),
+                      // アイコン配置
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Icon(Icons.electric_bolt_outlined), // 左端のアイコン
+                            Icon(Icons.circle_outlined), // 中央のアイコン
+                            Icon(Icons.cached_outlined), // 右端のアイコン
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
+                  // ================================================= カメラ画像部分 終 =================================================
                   IconButton(
                     onPressed: _takePicture, // 写真を撮る関数を呼び出し
                     icon: Icon(Icons.radio_button_unchecked),
