@@ -71,7 +71,9 @@ class _TakePageState extends State<TakePage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ConfirmPage(outCameraImagePath: outCameraImage.path, inCameraImagePath: inCameraImage.path),
+          builder: (context) => ConfirmPage(
+              outCameraImagePath: outCameraImage.path,
+              inCameraImagePath: inCameraImage.path),
         ),
       );
     } catch (e) {
@@ -132,7 +134,6 @@ class _TakePageState extends State<TakePage> {
                   //   ),
                   // ),
 
-
                   Stack(
                     // alignment: AlignmentDirectional.bottomCenter,
                     children: [
@@ -151,15 +152,30 @@ class _TakePageState extends State<TakePage> {
                       ),
                       // アイコン配置
                       Positioned(
-                        bottom: 0,
+                        bottom: 1,
                         left: 0,
                         right: 0,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Icon(Icons.electric_bolt_outlined), // 左端のアイコン
-                            Icon(Icons.circle_outlined), // 中央のアイコン
-                            Icon(Icons.cached_outlined), // 右端のアイコン
+                            Padding(
+                              padding: const EdgeInsets.only(left: 7),
+                              child: IconButton(
+                                icon: cameraImageFieldIconButton(Icons.electric_bolt_outlined),
+                                onPressed: null,
+                              ),
+                            ),
+                            IconButton(
+                              icon: cameraImageFieldIconButton(Icons.circle_outlined),
+                              onPressed: null,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 7),
+                              child: IconButton(
+                                icon: cameraImageFieldIconButton(Icons.cached_outlined),
+                                onPressed: null,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -228,4 +244,16 @@ class Setting extends StatelessWidget {
       iconSize: 27,
     );
   }
+}
+
+
+
+
+// カメラ画像部分の上のIconButtonのスタイル
+Icon cameraImageFieldIconButton(IconData receivedIcon) {
+  return Icon(
+    receivedIcon,
+    color: Colors.white.withOpacity(0.85),
+    size: 27,
+  );
 }
