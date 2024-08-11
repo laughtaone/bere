@@ -4,6 +4,7 @@ import 'package:berehearsal/custom/custom.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:berehearsal/settings/settings_display.dart';
 import 'package:provider/provider.dart';
+import 'package:screen_protector/screen_protector.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +45,18 @@ class _StartPageState extends State<StartPage> {
   @override
   void initState() {
     super.initState();
+    // スクショ禁止機能
+    ScreenProtector.preventScreenshotOn();
+    ScreenProtector.protectDataLeakageWithColor(Colors.black);
     _checkSkipStartPage(); //スタート画面をスキップするかどうか判断する関数を呼び出す
+  }
+
+  @override
+  void dispose() {
+    // スクショ禁止機能
+    super.dispose();
+    ScreenProtector.preventScreenshotOff();
+    ScreenProtector.protectDataLeakageWithColorOff();
   }
 
   // スタート画面をスキップするかどうか判断する関数(あくまで関数)
@@ -67,19 +79,6 @@ class _StartPageState extends State<StartPage> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   final settingsPageModel = Provider.of<SettingsPageModel>(context, listen: false);
-  //   if (settingsPageModel.skipStartPage == true) {
-  //     WidgetsBinding.instance.addPostFrameCallback((_) {
-  //       Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => TakePage()),
-  //       );
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

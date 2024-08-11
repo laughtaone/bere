@@ -103,12 +103,12 @@ class ConfirmPage extends StatelessWidget {
                           padding: EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.black.withOpacity(1.0),
+                            color: Colors.black.withOpacity(0.5),
                           ),
                           child: Icon(
                             Icons.close,
-                            color: Colors.white,
-                            size: 30,
+                            color: Colors.white.withOpacity(0.8),
+                            size: 25,
                           ),
                         ),
                       ),
