@@ -51,15 +51,50 @@ class ConfirmPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CautionEnableSukusho(),
+
+                // ================================================= カメラ画像部分 始 =================================================
+                // Stack(
+                //   alignment: AlignmentDirectional.topEnd,
+                //   children: [
+                //     ClipRRect(
+                //       borderRadius: BorderRadius.circular(16),
+                //       child: Image.file(File(outCameraImagePath)),
+                //     ),
+                //     Container(
+                //       margin: EdgeInsets.all(10),
+                //       child: InkWell(
+                //         onTap: () {
+                //           Navigator.pop(context);
+                //         },
+                //         child: Container(
+                //           padding: EdgeInsets.all(4),
+                //           decoration: BoxDecoration(
+                //             shape: BoxShape.circle,
+                //             color: Colors.black.withOpacity(0.5),
+                //           ),
+                //           child: Icon(
+                //             Icons.close,
+                //             color: Colors.white,
+                //             size: 30,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+
                 Stack(
-                  alignment: AlignmentDirectional.topEnd,
                   children: [
+                    // カメラ画像のClipRRect
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
                       child: Image.file(File(outCameraImagePath)),
                     ),
-                    Container(
-                      margin: EdgeInsets.all(10),
+
+                    // 右上の閉じるボタン
+                    Positioned(
+                      top: 10,
+                      right: 10,
                       child: InkWell(
                         onTap: () {
                           Navigator.pop(context);
@@ -68,7 +103,7 @@ class ConfirmPage extends StatelessWidget {
                           padding: EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.black.withOpacity(0.5),
+                            color: Colors.black.withOpacity(1.0),
                           ),
                           child: Icon(
                             Icons.close,
@@ -78,8 +113,29 @@ class ConfirmPage extends StatelessWidget {
                         ),
                       ),
                     ),
+
+                    // // 左上のサブカメラの写真
+                    // Align(
+                    //   alignment: Alignment.topLeft,
+                    //   child: ClipRRect(
+                    //     borderRadius: BorderRadius.circular(16),
+                    //     child: Image.file(File(inCameraImagePath)),
+                    //   ),
+                    // ),
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Container(
+                          child: Image.file(File(inCameraImagePath)),
+                          width: 120,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
+                // ================================================= カメラ画像部分 終 =================================================
                 SizedBox(height: 20),
                 TextButton(
                     onPressed: _launchBeReal,
