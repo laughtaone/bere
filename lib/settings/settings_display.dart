@@ -136,6 +136,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                 '本アプリで撮影した写真を、保存・スクショすることは一切できません。これは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像の見分けが付かず、BeReal.で撮影する楽しみを奪ってしまうことを防ぐためです。'),
                         pointList(
                             pointListText:
+                                'スクショ・画面収録を防ぐため、マルチタスク画面が黒くなっていますが、再度本アプリを開けば元に戻りますので、ご安心ください。'),
+                        pointList(
+                            pointListText:
                                 '本アプリは、あくまで開発者が「n回の再撮影」と表示されずに、BeReal.の撮影の練習をしたいという目的で開発したアプリです。'),
                         // pointList(pointListText: '今後、2アプリを見分けることができるようにしながら保存機能を実現するため、内側と外側で2枚の別々の画像で保存する機能の実装を検討しています！'),
                       ],
@@ -167,6 +170,21 @@ class _SettingsPageState extends State<SettingsPage> {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => QAPage(),
                       ));
+                    },
+                  ),
+                ],
+              ),
+              SettingsSection(
+                title: Text(
+                  'バグ状況',
+                  style: SettingTitleTextStyle.myTextStyle,
+                ),
+                tiles: <SettingsTile>[
+                  SettingsTile.navigation(
+                    leading: const Icon(Icons.bug_report_outlined),
+                    title: const Text('現在確認しているバグ'),
+                    onPressed: (BuildContext context) {
+                      _launchBug();
                     },
                   ),
                 ],
@@ -305,6 +323,12 @@ class _SettingsPageState extends State<SettingsPage> {
       print('エラーが発生しました: $e');
     }
   }
+}
+
+Future _launchBug() async {
+  final url = Uri.parse(
+      'https://suupusoup.notion.site/9ae018acb8624c7c9c3dacaa5c7b21a0?pvs=4');
+  launchUrl(url);
 }
 
 Future _launchBeRealAppStore() async {
