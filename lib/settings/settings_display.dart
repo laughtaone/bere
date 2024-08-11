@@ -8,6 +8,7 @@ import 'package:berehearsal/custom/custom.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
+import 'package:berehearsal/main.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -58,134 +59,141 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
         automaticallyImplyLeading: false,
       ),
-      body: Theme(
-        data: ThemeData.dark(),
-        child: SettingsList(
-          platform: DevicePlatform.iOS,
-          sections: [
-            SettingsSection(
-              title: Text(
-                'スタート画面',
-                style: SettingTitleTextStyle.myTextStyle,
-              ),
-              tiles: [
-                SettingsTile.switchTile(
-                  leading: Icon(Icons.directions_run_outlined),
-                  title: const Text('スタート画面をスキップする'),
-                  description:
-                    Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
-                  initialValue: Provider.of<SettingsPageModel>(context).skipStartPage,
-                  onToggle: (value) {
-                    if (value) {
-                      print('スイッチがオンになりました');
-                      Provider.of<SettingsPageModel>(context, listen: false).setStartPageSkipTrue();
-                    } else {
-                      print('スイッチがオフになりました');
-                      Provider.of<SettingsPageModel>(context, listen: false).setStartPageSkipFalse();
-                    }
-                  },
-                ),
-              ],
-            ),
-            SettingsSection(
-              title: Text(
-                'このアプリについて',
-                style: SettingTitleTextStyle.myTextStyle,
-              ),
-              tiles: <SettingsTile>[
-                SettingsTile(
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      pointList(pointListText: '本アプリはBeReal.さまに許可をいただいて作成したアプリではない、非公式のBeReal.リハーサルアプリです。'),
-                      pointList(pointListText: '本アプリで撮影した写真を、保存・スクショすることは一切できません。これは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像の見分けが付かず、BeReal.で撮影する楽しみを奪ってしまうことを防ぐためです。'),
-                      pointList(pointListText: '本アプリは、あくまで開発者が「n回の再撮影」と表示されずに、BeReal.の撮影の練習をしたいという目的で開発したアプリです。'),
-                      // pointList(pointListText: '今後、2アプリを見分けることができるようにしながら保存機能を実現するため、内側と外側で2枚の別々の画像で保存する機能の実装を検討しています！'),
-                    ],
+      body: Consumer<SettingsPageModel>(builder: (context, model, child) {
+        return Theme(
+            data: ThemeData.dark(),
+            child: SettingsList(
+              platform: DevicePlatform.iOS,
+              sections: [
+                SettingsSection(
+                  title: Text(
+                    'スタート画面',
+                    style: SettingTitleTextStyle.myTextStyle,
                   ),
+                  tiles: [
+                    SettingsTile.switchTile(
+                      leading: Icon(Icons.directions_run_outlined),
+                      title: const Text('スタート画面をスキップする'),
+                      description: Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
+                      initialValue: Provider.of<SettingsPageModel>(context).skipStartPage,
+                      onToggle: (value) {
+                        if (value) {
+                          print('スイッチがオンになりました');
+                          Provider.of<SettingsPageModel>(context, listen: false).setStartPageSkipTrue();
+                          SharedPreferences.getInstance().then((prefs) {
+                            prefs.setBool('skipStartPage', true);
+                          });
+                        } else {
+                          print('スイッチがオフになりました');
+                          Provider.of<SettingsPageModel>(context, listen: false).setStartPageSkipFalse();
+                          SharedPreferences.getInstance().then((prefs) {
+                            prefs.setBool('skipStartPage', false);
+                          });
+                        }
+                      },
+                    ),
+                  ],
                 ),
-                // SettingsTile.navigation(
-                //   leading: const Icon(Icons.contact_support),
-                //   title: const Text('よくある質問'),
-                //   // value: const Text(''),
-                //   onPressed: (context) {
-                //     Navigator.of(context).push(MaterialPageRoute(
-                //       builder: (_) => QAPage(),
-                //     ));
-                //   },
-                // ),
+                SettingsSection(
+                  title: Text(
+                    'このアプリについて',
+                    style: SettingTitleTextStyle.myTextStyle,
+                  ),
+                  tiles: <SettingsTile>[
+                    SettingsTile(
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          pointList(pointListText: '本アプリはBeReal.さまに許可をいただいて作成したアプリではない、非公式のBeReal.リハーサルアプリです。'),
+                          pointList(pointListText: '本アプリで撮影した写真を、保存・スクショすることは一切できません。これは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像の見分けが付かず、BeReal.で撮影する楽しみを奪ってしまうことを防ぐためです。'),
+                          pointList(pointListText: '本アプリは、あくまで開発者が「n回の再撮影」と表示されずに、BeReal.の撮影の練習をしたいという目的で開発したアプリです。'),
+                          // pointList(pointListText: '今後、2アプリを見分けることができるようにしながら保存機能を実現するため、内側と外側で2枚の別々の画像で保存する機能の実装を検討しています！'),
+                        ],
+                      ),
+                    ),
+                    // SettingsTile.navigation(
+                    //   leading: const Icon(Icons.contact_support),
+                    //   title: const Text('よくある質問'),
+                    //   // value: const Text(''),
+                    //   onPressed: (context) {
+                    //     Navigator.of(context).push(MaterialPageRoute(
+                    //       builder: (_) => QAPage(),
+                    //     ));
+                    //   },
+                    // ),
+                  ],
+                ),
+                SettingsSection(
+                  title: Text(
+                    'よくある質問',
+                    style: SettingTitleTextStyle.myTextStyle,
+                  ),
+                  tiles: <SettingsTile>[
+                    SettingsTile.navigation(
+                      leading: const Icon(Icons.contact_support),
+                      title: const Text('よくある質問'),
+                      // value: const Text(''),
+                      onPressed: (context) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => QAPage(),
+                        ));
+                      },
+                    ),
+                  ],
+                ),
+                SettingsSection(
+                  title: Text(
+                    '開発者について',
+                    style: SettingTitleTextStyle.myTextStyle,
+                  ),
+                  tiles: <SettingsTile>[
+                    SettingsTile.navigation(
+                      leading: const FaIcon(FontAwesomeIcons.xTwitter),
+                      title: const Text('X'),
+                      value: const Text('@suupusoup'),
+                      onPressed: (BuildContext context) {
+                        _launchDeveloperX('twitter://user?id=suupusoup',
+                            secondUrl: 'https://x.com/suupusoup');
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      leading: const FaIcon(FontAwesomeIcons.tiktok),
+                      title: const Text('TikTok'),
+                      value: const Text('@suupusoup'),
+                      onPressed: (BuildContext context) {
+                        _launchTikTok();
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      leading: const FaIcon(FontAwesomeIcons.youtube),
+                      title: const Text('YouTube'),
+                      value: const Text('@suupusoup'),
+                      onPressed: (BuildContext context) {
+                        _launchYouTube();
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      leading: const FaIcon(FontAwesomeIcons.instagram),
+                      title: const Text('Instagram'),
+                      value: const Text('@suupusoup'),
+                      onPressed: (BuildContext context) {
+                        _launchInstagram();
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      leading: const FaIcon(FontAwesomeIcons.github),
+                      title: const Text('GitHub'),
+                      value: const Text('@suupusoup'),
+                      onPressed: (BuildContext context) {
+                        _launchGitHub();
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
-            SettingsSection(
-              title: Text(
-                'よくある質問',
-                style: SettingTitleTextStyle.myTextStyle,
-              ),
-              tiles: <SettingsTile>[
-                SettingsTile.navigation(
-                  leading: const Icon(Icons.contact_support),
-                  title: const Text('よくある質問'),
-                  // value: const Text(''),
-                  onPressed: (context) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => QAPage(),
-                    ));
-                  },
-                ),
-              ],
-            ),
-            SettingsSection(
-              title: Text(
-                '開発者について',
-                style: SettingTitleTextStyle.myTextStyle,
-              ),
-              tiles: <SettingsTile>[
-                SettingsTile.navigation(
-                  leading: const FaIcon(FontAwesomeIcons.xTwitter),
-                  title: const Text('X'),
-                  value: const Text('@suupusoup'),
-                  onPressed: (BuildContext context) {
-                    _launchDeveloperX('twitter://user?id=suupusoup',
-                        secondUrl: 'https://x.com/suupusoup');
-                  },
-                ),
-                SettingsTile.navigation(
-                  leading: const FaIcon(FontAwesomeIcons.tiktok),
-                  title: const Text('TikTok'),
-                  value: const Text('@suupusoup'),
-                  onPressed: (BuildContext context) {
-                    _launchTikTok();
-                  },
-                ),
-                SettingsTile.navigation(
-                  leading: const FaIcon(FontAwesomeIcons.youtube),
-                  title: const Text('YouTube'),
-                  value: const Text('@suupusoup'),
-                  onPressed: (BuildContext context) {
-                    _launchYouTube();
-                  },
-                ),
-                SettingsTile.navigation(
-                  leading: const FaIcon(FontAwesomeIcons.instagram),
-                  title: const Text('Instagram'),
-                  value: const Text('@suupusoup'),
-                  onPressed: (BuildContext context) {
-                    _launchInstagram();
-                  },
-                ),
-                SettingsTile.navigation(
-                  leading: const FaIcon(FontAwesomeIcons.github),
-                  title: const Text('GitHub'),
-                  value: const Text('@suupusoup'),
-                  onPressed: (BuildContext context) {
-                    _launchGitHub();
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+          );
+      }),
     );
   }
 
