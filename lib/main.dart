@@ -98,12 +98,18 @@ class _StartPageState extends State<StartPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      'BeRehearsal.',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
+                          TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
+                          TextSpan(text: 'al.', style: TextStyle(color: Colors.white)),
+                        ],
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 45,
+                        )
                       ),
                     ),
                     Text(
@@ -111,6 +117,7 @@ class _StartPageState extends State<StartPage> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
+                        fontFamily: 'Inter',
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -125,13 +132,24 @@ class _StartPageState extends State<StartPage> {
                           builder: (context) => TakePage()), // 画面遷移
                     );
                   },
-                  child: Text(
-                    'はじめる>',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'はじめる',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 43,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Icon(
+                        Icons.chevron_right_outlined,
+                        color: Colors.white,
+                        size: 45,
+                      )
+                    ],
                   ),
                 ),
                 SizedBox(height: 30),
@@ -154,7 +172,7 @@ class _StartPageState extends State<StartPage> {
                           'このアプリはあくまでリハーサル用です',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 11,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -162,7 +180,7 @@ class _StartPageState extends State<StartPage> {
                           '撮影した画像の保存・スクショは一切できません',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 11,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -95,6 +95,7 @@ class _TakePageState extends State<TakePage> {
                 'BeRehearsal.',
                 style: TextStyle(
                   color: Colors.white,
+                  fontFamily: 'Inter',
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -103,6 +104,7 @@ class _TakePageState extends State<TakePage> {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 9,
+                  fontFamily: 'Inter',
                   fontWeight: FontWeight.bold,
                 ),
               ),

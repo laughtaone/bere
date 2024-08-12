@@ -100,25 +100,72 @@ flutter:
     # NotoSansJP
     - family: NotoSansJP-ExtraBold
       fonts:
-      - asset: fonts/NotoSansJP/NotoSansJP-ExtraBold.ttf
+      - asset: assets/fonts/NotoSansJP/NotoSansJP-ExtraBold.ttf
     - family: NotoSansJP-SemiBold
       fonts:
-      - asset: fonts/NotoSansJP/NotoSansJP-SemiBold.ttf
+      - asset: assets/fonts/NotoSansJP/NotoSansJP-SemiBold.ttf
     - family: NotoSansJP-Bold
       fonts:
-      - asset: fonts/NotoSansJP/NotoSansJP-Bold.ttf
+      - asset: assets/fonts/NotoSansJP/NotoSansJP-Bold.ttf
     - family: NotoSansJP-Medium
       fonts:
-      - asset: fonts/NotoSansJP/NotoSansJP-Medium.ttf
+      - asset: assets/fonts/NotoSansJP/NotoSansJP-Medium.ttf
     - family: NotoSansJP-Regular
       fonts:
-      - asset: fonts/NotoSansJP/NotoSansJP-Regular.ttf
+      - asset: assets/fonts/NotoSansJP/NotoSansJP-Regular.ttf
     - family: NotoSansJP-SemiBold
       fonts:
-      - asset: fonts/NotoSansJP/NotoSansJP-SemiBold.ttf
+      - asset: assets/fonts/NotoSansJP/NotoSansJP-SemiBold.ttf
     - family: NotoSansJP-Thin
       fonts:
-      - asset: fonts/NotoSansJP/NotoSansJP-Thin.ttf
+      - asset: assets/fonts/NotoSansJP/NotoSansJP-Thin.ttf
+
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/Inter_Black.ttf
+          weight: 900
+        - asset: assets/fonts/Inter/Inter_BlackItalic.ttf
+          weight: 900
+          style: italic
+        - asset: assets/fonts/Inter/Inter_Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Inter/Inter_BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/Inter/Inter_ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Inter/Inter_ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+        - asset: assets/fonts/Inter/Inter_ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Inter/Inter_ExtraLightItalic.ttf
+          weight: 200
+          style: italic
+        - asset: assets/fonts/Inter/Inter_Italic.ttf
+          style: italic
+        - asset: assets/fonts/Inter/Inter_Light.ttf
+          weight: 300
+        - asset: assets/fonts/Inter/Inter_LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/Inter/Inter_Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter/Inter_MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/Inter/Inter_Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter/Inter_SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter/Inter_SemiBoldItalic.ttf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/Inter/Inter_Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Inter/Inter_ThinItalic.ttf
+          weight: 100
+          style: italic
 
 flutter_icons:
   android: true
