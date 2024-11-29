@@ -5,6 +5,8 @@ import '../two/confirm_page.dart';
 import '../settings/settings_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:berehearsal/custom/custom.dart';
+import 'package:berehearsal/comps/comps.dart';
+
 
 
 class TakePage extends StatefulWidget {
@@ -15,9 +17,9 @@ class TakePage extends StatefulWidget {
 class _TakePageState extends State<TakePage> {
   CameraController? _controller;
   Future<void>? _initializeControllerFuture;
-  int _cameraIndex = 0;
-  String? outCameraImagePath;
-  String? inCameraImagePath;
+  int _cameraIndex = 0;     // 0:外カメラ・1:内カメラ
+  String? mainImagePath;
+  String? subImagePath;
 
   @override
   void initState() {
@@ -47,36 +49,52 @@ class _TakePageState extends State<TakePage> {
   Future<void> _takePicture() async {
     try {
       await _initializeControllerFuture;
-      final image = await _controller!.takePicture();
 
+      // ------------------- メイン画像を撮影 -------------------
+      final mainImage = await _controller!.takePicture();
+      mainImagePath = mainImage.path;
       if (!mounted) return;
+      // -----------------------------------------------------
 
+      // -------------------- カメラ切り替え --------------------
       if (_cameraIndex == 0) {
-        outCameraImagePath = image.path;
-        // カメラを切り替えてもう一度撮影
         _cameraIndex = 1;
-        await Future.delayed(Duration(seconds: 1));
-        await _initializeCamera();
-        await _takePicture(); // 切り替え後に再度撮影
-      } else if (_cameraIndex == 1) {
-        inCameraImagePath = image.path;
+      } else {
+        _cameraIndex = 0;
+      }
+      await Future.delayed(const Duration(seconds: 1));
+      // -----------------------------------------------------
 
-        // 両方のカメラで撮影完了後にConfirmPageに遷移
+      // -------------------- サブ画像を撮影 --------------------
+      await _initializeCamera();
+      await _initializeControllerFuture; // 初期化が完了するまで待機
+      final subImage = await _controller!.takePicture();
+      subImagePath = subImage.path;
+
+      // 両方のカメラで撮影完了後にConfirmPageに遷移
+      if (mounted) {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ConfirmPage(
-                outCameraImagePath: outCameraImagePath ?? '',
-                inCameraImagePath: inCameraImagePath ?? ''),
+              mainImagePath: mainImagePath ?? '',
+              subImagePath: subImagePath ?? ''
+            ),
           ),
         );
-
-        // カメラを切り替える (再度片方のカメラから始める)
-        _cameraIndex = 0;
-        await _initializeCamera();
       }
+      // -----------------------------------------------------
+
+      // ---------------- カメラの内/外を元に戻す ----------------
+      if (_cameraIndex == 0) {
+        _cameraIndex = 1;
+      } else {
+        _cameraIndex = 0;
+      }
+      await _initializeCamera();
+      // -----------------------------------------------------
     } catch (e) {
-      print(e);
+      debugPrint('$e');
     }
   }
 
@@ -88,28 +106,7 @@ class _TakePageState extends State<TakePage> {
         backgroundColor: allBackgroundColor(),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                'BeRehearsal.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'To supprt enjoying BeReal.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 9,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
+          title: CompTitleAppBar(),
           actions: <Widget>[Setting()],
           backgroundColor: allBackgroundColor(),
         ),

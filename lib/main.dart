@@ -6,6 +6,7 @@ import 'package:berehearsal/settings/settings_display.dart';
 import 'package:provider/provider.dart';
 import 'package:screen_protector/screen_protector.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -96,7 +97,7 @@ class _StartPageState extends State<StartPage> {
               children: [
                 SizedBox(height: 100),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     RichText(
                       text: TextSpan(
@@ -152,7 +153,7 @@ class _StartPageState extends State<StartPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -187,7 +188,19 @@ class _StartPageState extends State<StartPage> {
                       ],
                     ),
                   ],
-                )
+                ),
+                SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1.5,
+                      color: Color(0xffbbbbbb)
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 11, color: Color(0xffbbbbbb), fontWeight: FontWeight.bold)),
+                ),
               ],
             ),
           ),

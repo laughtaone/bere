@@ -6,14 +6,16 @@ import '../main.dart';
 import '../one/take_display.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:berehearsal/custom/custom.dart';
+import 'package:berehearsal/comps/comps.dart';
+
 
 // ConfirmPageの定義
 class ConfirmPage extends StatelessWidget {
-  final String outCameraImagePath;
-  final String inCameraImagePath;
+  final String mainImagePath;
+  final String subImagePath;
 
   ConfirmPage(
-      {required this.outCameraImagePath, required this.inCameraImagePath});
+      {required this.mainImagePath, required this.subImagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -22,26 +24,7 @@ class ConfirmPage extends StatelessWidget {
       child: Scaffold(
           backgroundColor: allBackgroundColor(),
           appBar: AppBar(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  'BeRehearsal.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  'To supprt enjoying BeReal.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
+            title: CompTitleAppBar(),
             backgroundColor: allBackgroundColor(),
             automaticallyImplyLeading: false,
             actions: <Widget>[Setting()],
@@ -58,7 +41,7 @@ class ConfirmPage extends StatelessWidget {
                 //   children: [
                 //     ClipRRect(
                 //       borderRadius: BorderRadius.circular(16),
-                //       child: Image.file(File(outCameraImagePath)),
+                //       child: Image.file(File(mainImagePath)),
                 //     ),
                 //     Container(
                 //       margin: EdgeInsets.all(10),
@@ -88,7 +71,7 @@ class ConfirmPage extends StatelessWidget {
                     // カメラ画像のClipRRect
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Image.file(File(outCameraImagePath)),
+                      child: Image.file(File(mainImagePath)),
                     ),
 
                     // 右上の閉じるボタン
@@ -128,7 +111,7 @@ class ConfirmPage extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: Container(
-                            child: Image.file(File(inCameraImagePath)),
+                            child: Image.file(File(subImagePath)),
                             width: 120,
                           ),
                         ),
