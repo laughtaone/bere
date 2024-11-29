@@ -171,7 +171,14 @@ class _TakePageState extends State<TakePage> {
                               padding: const EdgeInsets.only(right: 7),
                               child: IconButton(
                                 icon: cameraImageFieldIconButton(Icons.cached_outlined),
-                                onPressed: null,
+                                onPressed: () {
+                                  if (_cameraIndex == 0) {
+                                    _cameraIndex = 1;
+                                  } else {
+                                    _cameraIndex = 0;
+                                  }
+                                  _initializeCamera();
+                                },
                               ),
                             ),
                           ],
