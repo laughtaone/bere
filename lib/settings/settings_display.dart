@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import '../one/take_display.dart';
 import 'settings_qa_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:berehearsal/custom/custom.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:provider/provider.dart';
-import 'package:berehearsal/main.dart';
 
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -61,7 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
         backgroundColor: allBackgroundColor(),
         appBar: AppBar(
           backgroundColor: allBackgroundColor(),
-          title: Row(
+          title: const Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -82,7 +81,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.close,
                 size: 30,
                 color: Colors.white,
@@ -100,16 +99,16 @@ class _SettingsPageState extends State<SettingsPage> {
             platform: DevicePlatform.iOS,
             sections: [
               SettingsSection(
-                title: Text(
+                title: const Text(
                   'スタート画面',
                   style: SettingTitleTextStyle.myTextStyle,
                 ),
                 tiles: [
                   SettingsTile.switchTile(
-                    leading: Icon(Icons.directions_run_outlined),
+                    leading: const Icon(Icons.directions_run_outlined),
                     title: const Text('スタート画面をスキップする'),
                     description:
-                        Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
+                        const Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
                     initialValue: _skipStartPage,
                     onToggle: (value) {
                       print(value ? 'スイッチがオンになりました' : 'スイッチがオフになりました');
@@ -119,13 +118,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
               SettingsSection(
-                title: Text(
+                title: const Text(
                   'このアプリについて',
                   style: SettingTitleTextStyle.myTextStyle,
                 ),
                 tiles: <SettingsTile>[
                   SettingsTile(
-                    title: Column(
+                    title: const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         pointList(
@@ -157,7 +156,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
               SettingsSection(
-                title: Text(
+                title: const Text(
                   'よくある質問',
                   style: SettingTitleTextStyle.myTextStyle,
                 ),
@@ -168,14 +167,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     // value: const Text(''),
                     onPressed: (context) {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => QAPage(),
+                        builder: (_) => const QAPage(),
                       ));
                     },
                   ),
                 ],
               ),
               SettingsSection(
-                title: Text(
+                title: const Text(
                   'バグ状況',
                   style: SettingTitleTextStyle.myTextStyle,
                 ),
@@ -190,18 +189,18 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
               SettingsSection(
-                title: Text('本家様', style: SettingTitleTextStyle.myTextStyle),
+                title: const Text('本家様', style: SettingTitleTextStyle.myTextStyle),
                 tiles: <SettingsTile>[
                   SettingsTile.navigation(
                     leading: const FaIcon(FontAwesomeIcons.appStoreIos),
-                    title: Text('AppStore ページ'),
+                    title: const Text('AppStore ページ'),
                     onPressed: (BuildContext context) {
                       _launchBeRealAppStore();
                     },
                   ),
                   SettingsTile.navigation(
                     leading: const Icon(Icons.language_outlined),
-                    title: Text('公式サイト'),
+                    title: const Text('公式サイト'),
                     value: const Text('https://bereal.com/jp/'),
                     onPressed: (BuildContext context) {
                       _launchBeRealSite();
@@ -209,7 +208,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   SettingsTile.navigation(
                     leading: const FaIcon(FontAwesomeIcons.xTwitter),
-                    title: Text('公式X'),
+                    title: const Text('公式X'),
                     value: const Text('@BeReal_App'),
                     onPressed: (BuildContext context) {
                       _launchBeRealX();
@@ -217,7 +216,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   SettingsTile.navigation(
                     leading: const FaIcon(FontAwesomeIcons.instagram),
-                    title: Text('公式Instagram'),
+                    title: const Text('公式Instagram'),
                     value: const Text('@bereal'),
                     onPressed: (BuildContext context) {
                       _launchBeRealInstagram();
@@ -226,7 +225,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
               SettingsSection(
-                title: Text(
+                title: const Text(
                   '開発者について',
                   style: SettingTitleTextStyle.myTextStyle,
                 ),
@@ -275,7 +274,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
               SettingsSection(
-                title: Text(
+                title: const Text(
                   'アプリについて',
                   style: SettingTitleTextStyle.myTextStyle,
                 ),
@@ -385,7 +384,7 @@ Future _launchPrivacyPolcy() async {
 }
 
 class SettingTitleTextStyle {
-  static final TextStyle myTextStyle = TextStyle(
+  static const TextStyle myTextStyle = TextStyle(
     fontSize: 17,
     color: Colors.white,
     fontWeight: FontWeight.bold,
@@ -393,7 +392,7 @@ class SettingTitleTextStyle {
 }
 
 class SettingValueTextStyle {
-  static final TextStyle myTextStyle = TextStyle(
+  static const TextStyle myTextStyle = TextStyle(
     color: Colors.white,
     fontSize: 17,
   );
@@ -403,9 +402,9 @@ class pointList extends StatelessWidget {
   final String pointListText;
 
   const pointList({
-    Key? key,
+    super.key,
     required this.pointListText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -415,11 +414,11 @@ class pointList extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(top: 3.0),
                       child: Icon(
                         Icons.check,
@@ -429,11 +428,11 @@ class pointList extends StatelessWidget {
                     ),
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(left: 8.0),
+                        padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
                           pointListText,
                           textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     ),

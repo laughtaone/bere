@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import 'dart:io';
-import '../main.dart';
 import '../one/take_display.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:berehearsal/custom/custom.dart';
@@ -14,8 +11,8 @@ class ConfirmPage extends StatelessWidget {
   final String mainImagePath;
   final String subImagePath;
 
-  ConfirmPage(
-      {required this.mainImagePath, required this.subImagePath});
+  const ConfirmPage(
+      {super.key, required this.mainImagePath, required this.subImagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +21,16 @@ class ConfirmPage extends StatelessWidget {
       child: Scaffold(
           backgroundColor: allBackgroundColor(),
           appBar: AppBar(
-            title: CompTitleAppBar(),
+            title: const CompTitleAppBar(),
             backgroundColor: allBackgroundColor(),
             automaticallyImplyLeading: false,
-            actions: <Widget>[Setting()],
+            actions: const <Widget>[Setting()],
           ),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CautionEnableSukusho(),
+                const CautionEnableSukusho(),
 
                 // ================================================= カメラ画像部分 始 =================================================
                 // Stack(
@@ -83,7 +80,7 @@ class ConfirmPage extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          padding: EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.black.withOpacity(0.5),
@@ -110,9 +107,9 @@ class ConfirmPage extends StatelessWidget {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
-                          child: Container(
-                            child: Image.file(File(subImagePath)),
+                          child: SizedBox(
                             width: 120,
+                            child: Image.file(File(subImagePath)),
                           ),
                         ),
                       ),
@@ -120,10 +117,10 @@ class ConfirmPage extends StatelessWidget {
                   ],
                 ),
                 // ================================================= カメラ画像部分 終 =================================================
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextButton(
                     onPressed: _launchBeReal,
-                    child: Text(
+                    child: const Text(
                       'BeReal.を開く>',
                       style: TextStyle(
                         color: Colors.white,

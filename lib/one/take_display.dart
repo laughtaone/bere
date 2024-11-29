@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'dart:io';
 import '../two/confirm_page.dart';
 import '../settings/settings_display.dart';
-import 'package:settings_ui/settings_ui.dart';
 import 'package:berehearsal/custom/custom.dart';
 import 'package:berehearsal/comps/comps.dart';
 
 
 
 class TakePage extends StatefulWidget {
+  const TakePage({super.key});
+
   @override
   _TakePageState createState() => _TakePageState();
 }
@@ -106,8 +106,8 @@ class _TakePageState extends State<TakePage> {
         backgroundColor: allBackgroundColor(),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: CompTitleAppBar(),
-          actions: <Widget>[Setting()],
+          title: const CompTitleAppBar(),
+          actions: const <Widget>[Setting()],
           backgroundColor: allBackgroundColor(),
         ),
         body: FutureBuilder<void>(
@@ -117,7 +117,7 @@ class _TakePageState extends State<TakePage> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  CautionEnableSukusho(),
+                  const CautionEnableSukusho(),
                   // ================================================= カメラ画像部分 始 =================================================
                   // Container(
                   //   decoration: BoxDecoration(
@@ -182,14 +182,14 @@ class _TakePageState extends State<TakePage> {
                   // ================================================= カメラ画像部分 終 =================================================
                   IconButton(
                     onPressed: _takePicture, // 写真を撮る関数を呼び出し
-                    icon: Icon(Icons.radio_button_unchecked),
+                    icon: const Icon(Icons.radio_button_unchecked),
                     color: Colors.white,
                     iconSize: 100,
                   ),
                 ],
               );
             } else {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ),
@@ -206,8 +206,8 @@ class CautionEnableSukusho extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 5, bottom: 15), // 余白を設定
-      child: Text(
+      margin: const EdgeInsets.only(top: 5, bottom: 15), // 余白を設定
+      child: const Text(
         '撮影した画像の保存・スクショは一切できません',
         style: TextStyle(
           fontSize: 12,
@@ -232,12 +232,12 @@ class Setting extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SettingsPage(),
+            builder: (context) => const SettingsPage(),
             fullscreenDialog: true,
           ),
         );
       },
-      icon: Icon(Icons.settings),
+      icon: const Icon(Icons.settings),
       color: Colors.white,
       iconSize: 27,
     );

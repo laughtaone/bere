@@ -1,29 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-import '../one/take_display.dart';
-import 'package:settings_ui/settings_ui.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'settings_display.dart';
 import 'package:berehearsal/custom/custom.dart';
 
 
-// void main() {
-//   runApp(
-//     QAPageHome()
-//   );
-// }
-
-// class QAPageHome extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: QAPage(),
-//     );
-//   }
-// }
-
 class QAPage extends StatelessWidget {
-  // const SettingsPage({super.key});
+  const QAPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +19,7 @@ class QAPage extends StatelessWidget {
           ),
         ),
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
               Icons.arrow_back_ios,
               size: 20,
               color: Colors.white,
@@ -51,7 +31,7 @@ class QAPage extends StatelessWidget {
       ),
       body: Theme(
         data: ThemeData.dark(),
-        child: SingleChildScrollView(
+        child: const SingleChildScrollView(
           child: Column(
             children: [
               // Text(
@@ -108,11 +88,11 @@ class qaWidget extends StatelessWidget {
   final String titleText;
 
   const qaWidget({
-    Key? key,
+    super.key,
     required this.qText,
     required this.aText,
     required this.titleText
-  }) : super(key: key);
+  });
 
 
   @override
@@ -120,8 +100,8 @@ class qaWidget extends StatelessWidget {
     return Wrap(
       children: [
         Container(
-          padding: EdgeInsets.only(left: 5, right: 5, bottom: 3),
-          margin: EdgeInsets.only(left: 20, right: 20, bottom: 25),
+          padding: const EdgeInsets.only(left: 5, right: 5, bottom: 3),
+          margin: const EdgeInsets.only(left: 20, right: 20, bottom: 25),
           child: Column(
             children: [
               necessityQATitle(titleText),
@@ -138,7 +118,7 @@ class qaWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 1.5),
+                            padding: const EdgeInsets.only(top: 1.5),
                             child: Icon(
                               Icons.help_outline,
                               color: qaContentsColor(),
@@ -147,7 +127,7 @@ class qaWidget extends StatelessWidget {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.only(left: 8.0),
+                              padding: const EdgeInsets.only(left: 8.0),
                               child: Text(
                                 qText,
                                 textAlign: TextAlign.start,
@@ -172,7 +152,7 @@ class qaWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 3.0),
+                            padding: const EdgeInsets.only(top: 3.0),
                             child: Icon(
                               Icons.chat_bubble_outline,
                               color: qaContentsColor(),
@@ -181,7 +161,7 @@ class qaWidget extends StatelessWidget {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.only(left: 8.0),
+                              padding: const EdgeInsets.only(left: 8.0),
                               child: Text(
                                 aText,
                                 textAlign: TextAlign.start,
@@ -211,54 +191,54 @@ class qaWidget extends StatelessWidget {
 
   // QA部分の余白を一括指定
   EdgeInsets qaWidgetContainerPadding() {
-    return EdgeInsets.all(15);
+    return const EdgeInsets.all(15);
   }
 
   // QA部分のタイトルサイズを一括指定
   double qaTitleSize() {
-    final qaIconSize = 21.0;
+    const qaIconSize = 21.0;
     return qaIconSize;
   }
 
   // QA部分のアイコンサイズを一括指定
   double qaIconSize() {
-    final qaIconSize = 24.0;
+    const qaIconSize = 24.0;
     return qaIconSize;
   }
 
   // QA部分の文字サイズを一括指定
   double qaTextSize() {
-    final qaTextSize = 15.5;
+    const qaTextSize = 15.5;
     return qaTextSize;
   }
 
   // QA部分の文字フォントを一括指定
   String qaTextFont() {
-    final qaTextFont = 'NotoSansJP-Regular';
+    const qaTextFont = 'NotoSansJP-Regular';
     return qaTextFont;
   }
 
   // QA部分のタイトルの文字フォントを一括指定
   String qaTitleTextFont() {
-    final qaTitleTextFont = 'NotoSansJP-SemiBold';
+    const qaTitleTextFont = 'NotoSansJP-SemiBold';
     return qaTitleTextFont;
   }
 
   // アイコン・文字の色を指定
   Color qaContentsColor() {
-    final qaContentsColor = Colors.white;
+    const qaContentsColor = Colors.white;
     return qaContentsColor;
   }
 
   // アイコン・文字・仕切り線の背景色を指定
   Color qaBackgroundColor() {
-    final qaBackgroundColor = Color(0xFF2e2e2e);
+    const qaBackgroundColor = Color(0xFF2e2e2e);
     return qaBackgroundColor;
   }
 
   // 仕切り線の色を指定
   Color qaLineColor() {
-    final qaLineColor = Color(0xFFbbbbbb);
+    const qaLineColor = Color(0xFFbbbbbb);
     return qaLineColor;
   }
 
@@ -266,7 +246,7 @@ class qaWidget extends StatelessWidget {
   Widget necessityQATitle(String valutitleText) {
     if (titleText != '') {
       return Container(
-        padding: EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.only(bottom: 10),
         alignment: Alignment.centerLeft,
         child: Text(
           titleText,
@@ -278,7 +258,7 @@ class qaWidget extends StatelessWidget {
         ),
       );
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 }

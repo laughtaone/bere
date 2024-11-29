@@ -19,22 +19,24 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => SettingsPageModel(),
-      child: StartPageHome(),
+      child: const StartPageHome(),
     ),
   );
 }
 
 class StartPageHome extends StatelessWidget {
+  const StartPageHome({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: StartPage(),
     );
   }
 }
 
 class StartPage extends StatefulWidget {
-  const StartPage({Key? key}) : super(key: key);
+  const StartPage({super.key});
 
   @override
   _StartPageState createState() => _StartPageState();
@@ -70,7 +72,7 @@ class _StartPageState extends State<StartPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => TakePage()),
+          MaterialPageRoute(builder: (context) => const TakePage()),
         );
       });
     } else {
@@ -95,12 +97,12 @@ class _StartPageState extends State<StartPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 100),
+                const SizedBox(height: 100),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     RichText(
-                      text: TextSpan(
+                      text: const TextSpan(
                         children: [
                           TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
                           TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
@@ -113,7 +115,7 @@ class _StartPageState extends State<StartPage> {
                         )
                       ),
                     ),
-                    Text(
+                    const Text(
                       'To support enjoying BeReal.',
                       style: TextStyle(
                         color: Colors.white,
@@ -124,16 +126,16 @@ class _StartPageState extends State<StartPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 230),
+                const SizedBox(height: 230),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => TakePage()), // 画面遷移
+                          builder: (context) => const TakePage()), // 画面遷移
                     );
                   },
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -153,8 +155,8 @@ class _StartPageState extends State<StartPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 40),
-                Row(
+                const SizedBox(height: 40),
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
@@ -189,17 +191,17 @@ class _StartPageState extends State<StartPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
                   decoration: BoxDecoration(
                     border: Border.all(
                       width: 1.5,
-                      color: Color(0xffbbbbbb)
+                      color: const Color(0xffbbbbbb)
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 11, color: Color(0xffbbbbbb), fontWeight: FontWeight.bold)),
+                  child: const Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 11, color: Color(0xffbbbbbb), fontWeight: FontWeight.bold)),
                 ),
               ],
             ),

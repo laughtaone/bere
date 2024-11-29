@@ -20,7 +20,7 @@ class CompTitleAppBar extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Inter', fontSize: 19),
             children: [
               TextSpan(text: "BeRe", style: TextStyle(color: Colors.white)),
-              TextSpan(text: "hears", style: TextStyle(color: const Color(0xffB6E6AF))),
+              TextSpan(text: "hears", style: TextStyle(color: Color(0xffB6E6AF))),
               TextSpan(text: "al.", style: TextStyle(color: Colors.white)),
             ],
           ),
