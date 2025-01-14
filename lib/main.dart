@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'one/take_display.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:berehearsal/settings/settings_display.dart';
@@ -141,7 +142,7 @@ class _StartPageState extends State<StartPage> {
                       const SizedBox(height: 230),
                       TextButton(
                         onPressed: () {
-                          debugPrint('backgroundColor: Theme.of(context).scaffoldBackgroundColor(画面遷移前)は、${Theme.of(context).scaffoldBackgroundColor}');
+                          HapticFeedback.lightImpact();     // 触覚フィードバック
                           Navigator.push(
                             context,
                             MaterialPageRoute(

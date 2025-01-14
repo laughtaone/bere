@@ -1,16 +1,24 @@
+import 'package:berehearsal/components/comp_image_animation.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:flutter/services.dart';
 import '../one/take_display.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:berehearsal/components/components.dart';
 
 
 // ConfirmPageの定義
-class ConfirmPage extends StatelessWidget {
+class ConfirmPage extends StatefulWidget {
   final String mainImagePath;
   final String subImagePath;
 
   const ConfirmPage({super.key, required this.mainImagePath, required this.subImagePath});
+
+  @override
+  _ConfirmPageState createState() => _ConfirmPageState();
+}
+
+class _ConfirmPageState extends State<ConfirmPage> {
+  bool isImageSwap = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +40,19 @@ class ConfirmPage extends StatelessWidget {
               // ================================================= カメラ画像部分 始 =================================================
               Stack(
                 children: [
-                  // カメラ画像のClipRRect
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.file(File(mainImagePath)),
+                  // ------------------------------- メイン画像 ------------------------------
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: AnimatedImageSwitcher(
+                        imagePath: (isImageSwap)
+                          ? widget.subImagePath
+                          : widget.mainImagePath,
+                      ),
+                    ),
                   ),
-
-                  // 右上の閉じるボタン
+                  // -----------------------------------------------------------------------
+                  // --------------------------- 右上の閉じるボタン ---------------------------
                   Positioned(
                     top: 10,
                     right: 10,
@@ -60,49 +74,63 @@ class ConfirmPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  // -----------------------------------------------------------------------
 
+                  // ------------------------------- サブ画像 -------------------------------
                   Positioned(
                     top: 15,
                     left: 15,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.black,
-                            width: 2.2
-                        ),
-                        borderRadius: BorderRadius.circular(16),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(0),
+                        side: const BorderSide(color: Colors.black, width: 1.8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        )
                       ),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();     // 触覚フィードバック
+                        setState(() {
+                          isImageSwap = !isImageSwap;
+                        });
+                      },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: SizedBox(
                           width: 120,
-                          child: Image.file(File(subImagePath)),
+                          child: AnimatedImageSwitcher(
+                            imagePath: (isImageSwap)
+                              ? widget.mainImagePath
+                              : widget.subImagePath,
+                          ),
                         ),
                       ),
                     ),
                   ),
+                  // -----------------------------------------------------------------------
                 ],
               ),
               // ================================================= カメラ画像部分 終 =================================================
               const SizedBox(height: 20),
               TextButton(
-                  onPressed: _launchBeReal,
-                  child: const Text(
-                    'BeReal.を開く>',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )),
+                // onPressed: _launchBeReal,
+                onPressed: () async {
+                  HapticFeedback.lightImpact();     // 触覚フィードバック
+                  final url = Uri.parse('bereal://');
+                  launchUrl(url);
+                },
+                child: const Text(
+                  'BeReal.を開く>',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ),
             ],
           ),
         )),
     );
-  }
-
-  Future _launchBeReal() async {
-    final url = Uri.parse('bereal://');
-    launchUrl(url);
   }
 }

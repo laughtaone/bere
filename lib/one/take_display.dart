@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
 import '../two/confirm_page.dart';
 import '../settings/settings_display.dart';
@@ -170,6 +171,7 @@ class _TakePageState extends State<TakePage> {
                               child: IconButton(
                                 icon: cameraImageFieldIconButton(Icons.cached_outlined),
                                 onPressed: () {
+                                  HapticFeedback.lightImpact();     // 触覚フィードバック
                                   if (_cameraIndex == 0) {
                                     _cameraIndex = 1;
                                   } else {
