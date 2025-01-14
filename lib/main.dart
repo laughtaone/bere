@@ -81,131 +81,140 @@ class _StartPageState extends State<StartPage> {
     }
   }
 
+  Color commonBackColor = const Color(0xff1E1E1E);
 
   @override
   Widget build(BuildContext context) {
     final settingsPageModel = Provider.of<SettingsPageModel>(context);
-    if (settingsPageModel.skipStartPage == true) {
-      return Container(); // 空のコンテナを返す
-    } else {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          scaffoldBackgroundColor: const Color(0xff313131), // 背景色
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xff313131),
-          ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.light,
+      theme: ThemeData(
+        scaffoldBackgroundColor: commonBackColor, // 背景色
+        appBarTheme: AppBarTheme(
+          backgroundColor: commonBackColor,
         ),
-        home: Scaffold(
-          body: Center(
-            child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 100),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      RichText(
-                        text: const TextSpan(
-                          children: [
-                            TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
-                            TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
-                            TextSpan(text: 'al.', style: TextStyle(color: Colors.white)),
-                          ],
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 45,
-                          )
-                        ),
-                      ),
-                      const Text(
-                        'To support enjoying BeReal.',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 230),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TakePage()
-                        ),
-                      );
-                    },
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'はじめる',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 43,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Icon(
-                          Icons.chevron_right_outlined,
-                          color: Colors.white,
-                          size: 45,
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 45),
-                  const Row(
+        iconTheme: const IconThemeData(
+          color: Colors.white, // デフォルトのアイコン色
+        ),
+      ),
+      home: (settingsPageModel.skipStartPage == true)
+        ? Container()
+        : Builder(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 6),
-                        child: Icon(
-                          Icons.info_outline,
-                          color: Colors.white,
-                          size: 22,
-                        ),
-                      ),
-                      SizedBox(),
+                      const SizedBox(height: 100),
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            'このアプリはあくまでリハーサル用です',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                          RichText(
+                            text: const TextSpan(
+                              children: [
+                                TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
+                                TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
+                                TextSpan(text: 'al.', style: TextStyle(color: Colors.white)),
+                              ],
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 45,
+                              )
                             ),
                           ),
-                          Text(
-                            '撮影した画像の保存・スクショは一切できません',
+                          const Text(
+                            'To support enjoying BeReal.',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 12,
+                              fontSize: 14,
+                              fontFamily: 'Inter',
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
+                      const SizedBox(height: 230),
+                      TextButton(
+                        onPressed: () {
+                          debugPrint('backgroundColor: Theme.of(context).scaffoldBackgroundColor(画面遷移前)は、${Theme.of(context).scaffoldBackgroundColor}');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const TakePage(),
+                              fullscreenDialog: true
+                            ),
+                          );
+                        },
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'はじめる',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 43,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Icon(
+                              Icons.chevron_right_outlined,
+                              color: Colors.white,
+                              size: 45,
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 45),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 6),
+                            child: Icon(
+                              Icons.info_outline,
+                              color: Colors.white,
+                              size: 22,
+                            ),
+                          ),
+                          SizedBox(),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'このアプリはあくまでリハーサル用です',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '撮影した画像の保存・スクショは一切できません',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      const Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 11, color: Color(0xffa0a0a0), fontWeight: FontWeight.bold)),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  const Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 11, color: Color(0xffa0a0a0), fontWeight: FontWeight.bold)),
-                ],
+                ),
               ),
-            ),
-          ),
+                  );
+          }
         ),
-      );
-    }
+    );
   }
 }

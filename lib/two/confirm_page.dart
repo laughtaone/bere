@@ -10,13 +10,12 @@ class ConfirmPage extends StatelessWidget {
   final String mainImagePath;
   final String subImagePath;
 
-  const ConfirmPage(
-      {super.key, required this.mainImagePath, required this.subImagePath});
+  const ConfirmPage({super.key, required this.mainImagePath, required this.subImagePath});
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
@@ -31,36 +30,6 @@ class ConfirmPage extends StatelessWidget {
               const CautionEnableSukusho(),
 
               // ================================================= カメラ画像部分 始 =================================================
-              // Stack(
-              //   alignment: AlignmentDirectional.topEnd,
-              //   children: [
-              //     ClipRRect(
-              //       borderRadius: BorderRadius.circular(16),
-              //       child: Image.file(File(mainImagePath)),
-              //     ),
-              //     Container(
-              //       margin: EdgeInsets.all(10),
-              //       child: InkWell(
-              //         onTap: () {
-              //           Navigator.pop(context);
-              //         },
-              //         child: Container(
-              //           padding: EdgeInsets.all(4),
-              //           decoration: BoxDecoration(
-              //             shape: BoxShape.circle,
-              //             color: Colors.black.withOpacity(0.5),
-              //           ),
-              //           child: Icon(
-              //             Icons.close,
-              //             color: Colors.white,
-              //             size: 30,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-
               Stack(
                 children: [
                   // カメラ画像のClipRRect

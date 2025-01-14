@@ -61,7 +61,6 @@ class _TakePageState extends State<TakePage> {
       } else {
         _cameraIndex = 0;
       }
-      await Future.delayed(const Duration(seconds: 1));
       // -----------------------------------------------------
 
       // -------------------- サブ画像を撮影 --------------------
@@ -101,39 +100,31 @@ class _TakePageState extends State<TakePage> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const CompTitleAppBar(),
-          actions: const <Widget>[Setting()],
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        ),
-        body: FutureBuilder<void>(
-          future: _initializeControllerFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
+      child: Center(
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: const CompTitleAppBar(),
+            actions: const <Widget>[Setting()],
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.expand_more_outlined, color: Colors.white, size: 25)
+            ),
+          ),
+          body: FutureBuilder<void>(
+            future: _initializeControllerFuture,
+            builder: (context, snapshot) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const CautionEnableSukusho(),
                   // ================================================= カメラ画像部分 始 =================================================
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(16.0),
-                  //   ),
-                  //   child: ClipRRect(
-                  //     borderRadius: BorderRadius.circular(16.0),
-                  //     child: AspectRatio(
-                  //       aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                  //       child: CameraPreview(_controller!),
-                  //     ),
-                  //   ),
-                  // ),
-
-                  Stack(
-                    // alignment: AlignmentDirectional.bottomCenter,
+                  (snapshot.connectionState == ConnectionState.done)
+                  ? Stack(
                     children: [
-                      // カメラ画像のContainer
+                      // ------------------------- カメラ画像のContainer -------------------------
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16.0),
@@ -146,7 +137,8 @@ class _TakePageState extends State<TakePage> {
                           ),
                         ),
                       ),
-                      // アイコン配置
+                      // -----------------------------------------------------------------------
+                      // ----------------------------- アイコン配置 ------------------------------
                       Positioned(
                         bottom: 1,
                         left: 0,
@@ -154,17 +146,25 @@ class _TakePageState extends State<TakePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
+                            // - - - - - フラッシュボタン - - - - -
                             Padding(
                               padding: const EdgeInsets.only(left: 7),
                               child: IconButton(
-                                icon: cameraImageFieldIconButton(Icons.electric_bolt_outlined),
+                                icon: cameraImageFieldIconButton(
+                                  Icons.electric_bolt_outlined,
+                                  isActive: false
+                                ),
                                 onPressed: null,
                               ),
                             ),
+                            // - - - - - - - - - - - - - - - - -
+                            // - - - - - - 倍率ボタン - - - - - -
                             IconButton(
                               icon: cameraImageFieldIconButton(Icons.circle_outlined),
                               onPressed: null,
                             ),
+                            // - - - - - - - - - - - - - - - - -
+                            // - - イン/アウトカメラ切替ボタン - - -
                             Padding(
                               padding: const EdgeInsets.only(right: 7),
                               child: IconButton(
@@ -178,11 +178,26 @@ class _TakePageState extends State<TakePage> {
                                   _initializeCamera();
                                 },
                               ),
+                              // - - - - - - - - - - - - - - - - -
                             ),
                           ],
                         ),
                       ),
+                      // -----------------------------------------------------------------------
                     ],
+                  )
+                  : const AspectRatio(
+                    aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                    child: Center(
+                      child: SizedBox(
+                        width: 70,
+                        height: 70,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 3,
+                        ),
+                      )
+                    ),
                   ),
                   // ================================================= カメラ画像部分 終 =================================================
                   IconButton(
@@ -193,10 +208,8 @@ class _TakePageState extends State<TakePage> {
                   ),
                 ],
               );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
+            },
+          ),
         ),
       ),
     );
@@ -253,10 +266,10 @@ class Setting extends StatelessWidget {
 
 
 // カメラ画像部分の上のIconButtonのスタイル
-Icon cameraImageFieldIconButton(IconData receivedIcon) {
+Icon cameraImageFieldIconButton(IconData receivedIcon, {bool isActive = true}) {
   return Icon(
     receivedIcon,
-    color: Colors.white.withOpacity(0.85),
+    color: Colors.white.withOpacity(isActive ? 0.85 : 0),
     size: 27,
   );
 }

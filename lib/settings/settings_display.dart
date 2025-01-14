@@ -108,7 +108,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         const Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
                     initialValue: _skipStartPage,
                     onToggle: (value) {
-                      print(value ? 'スイッチがオンになりました' : 'スイッチがオフになりました');
+                      debugPrint(value ? 'スイッチがオンになりました' : 'スイッチがオフになりました');
                       _setSkipStartPagePreference(value);
                     },
                   ),
@@ -398,38 +398,35 @@ class pointList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       children: [
-        Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(4),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(top: 3.0),
-                      child: Icon(
-                        Icons.check,
-                        size: 18,
-                        color: Colors.white,
+        Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 3.0),
+                    child: Icon(
+                      Icons.check,
+                      size: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        pointListText,
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          pointListText,
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
