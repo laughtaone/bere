@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:berehearsal/custom/custom.dart';
 
 
 class QAPage extends StatelessWidget {
@@ -8,9 +7,8 @@ class QAPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: allBackgroundColor(),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: allBackgroundColor(),
         title: const Text(
           'よくある質問',
           style: TextStyle(
@@ -51,17 +49,19 @@ class QAPage extends StatelessWidget {
               qaWidget(
                 titleText: '',
                 qText: 'このアプリでバグを見つけました！',
-                aText: 'お手数ですが、至急開発者(スウプ)のXのDMより教えていただければ幸いです!'
+                aText: 'お手数ですが、至急開発者のXのDMより教えていただければ幸いです!'
+                // aText: 'お手数ですが、至急開発者(スウプ)のXのDMより教えていただければ幸いです!'
               ),
               qaWidget(
                 titleText: '開発者について',
                 qText: 'このアプリを通して、アプリ開発者にお金は入っていますか？',
-                aText: '本アプリには、広告を掲載していない上、通信機能を実装していません。ゆえに、データや使用状況の収集もプログラム的に不可能であるため、本アプリを通して、アプリ開発者であるスウプには1円たりとも、お金・使用データは入っていませんのでご安心ください。\n\nあくまで開発者が「n回の再撮影」と表示されずにBeReal.の撮影の練習をしたいという目的で開発したアプリです。'
+                aText: '本アプリには、広告を掲載していない上、通信機能を実装していません。ゆえに、データや使用状況の収集もプログラム的に不可能であるため、本アプリを通して、アプリ開発者には1円たりとも、お金・使用データは入っていませんのでご安心ください。\n\nあくまで開発者が「n回の再撮影」と表示されずにBeReal.の撮影の練習をしたいという目的で開発したアプリです。'
               ),
               qaWidget(
                 titleText: '',
                 qText: '機能の追加など、このアプリへの要望・感想を開発者に伝えたいです。',
-                aText: '開発者(スウプ)のXのDMより教えていただければ幸いです。'
+                aText: '開発者のXのDMより教えていただければ幸いです。'
+                // aText: '開発者(スウプ)のXのDMより教えていただければ幸いです。'
               ),
               qaWidget(
                 titleText: 'BeReal.運営者さまへ\n (For BeReal. developers)',

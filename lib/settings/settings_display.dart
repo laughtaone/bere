@@ -3,7 +3,6 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'settings_qa_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:berehearsal/custom/custom.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -57,9 +56,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: allBackgroundColor(),
         appBar: AppBar(
-          backgroundColor: allBackgroundColor(),
           title: const Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -139,20 +136,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         pointList(
                             pointListText:
                                 '本アプリは、あくまで開発者が「n回の再撮影」と表示されずに、BeReal.の撮影の練習をしたいという目的で開発したアプリです。'),
-                        // pointList(pointListText: '今後、2アプリを見分けることができるようにしながら保存機能を実現するため、内側と外側で2枚の別々の画像で保存する機能の実装を検討しています！'),
                       ],
                     ),
                   ),
-                  // SettingsTile.navigation(
-                  //   leading: const Icon(Icons.contact_support),
-                  //   title: const Text('よくある質問'),
-                  //   // value: const Text(''),
-                  //   onPressed: (context) {
-                  //     Navigator.of(context).push(MaterialPageRoute(
-                  //       builder: (_) => QAPage(),
-                  //     ));
-                  //   },
-                  // ),
                 ],
               ),
               SettingsSection(
@@ -224,6 +210,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ],
               ),
+              /*
               SettingsSection(
                 title: const Text(
                   '開発者について',
@@ -273,6 +260,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ],
               ),
+              */
               SettingsSection(
                 title: const Text(
                   'アプリについて',
@@ -411,6 +399,7 @@ class pointList extends StatelessWidget {
     return Wrap(
       children: [
         Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
           child: Column(
             children: [
               Container(

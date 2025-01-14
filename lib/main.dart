@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'one/take_display.dart';
-import 'package:berehearsal/custom/custom.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:berehearsal/settings/settings_display.dart';
 import 'package:provider/provider.dart';
@@ -91,120 +90,118 @@ class _StartPageState extends State<StartPage> {
     } else {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: const Color(0xff313131), // 背景色
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xff313131),
+          ),
+        ),
         home: Scaffold(
-          backgroundColor: allBackgroundColor(),
           body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 100),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: const TextSpan(
-                        children: [
-                          TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
-                          TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
-                          TextSpan(text: 'al.', style: TextStyle(color: Colors.white)),
-                        ],
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 45,
-                        )
-                      ),
-                    ),
-                    const Text(
-                      'To support enjoying BeReal.',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 230),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const TakePage()), // 画面遷移
-                    );
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
+            child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 100),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'はじめる',
+                      RichText(
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
+                            TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
+                            TextSpan(text: 'al.', style: TextStyle(color: Colors.white)),
+                          ],
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 45,
+                          )
+                        ),
+                      ),
+                      const Text(
+                        'To support enjoying BeReal.',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 43,
+                          fontSize: 14,
+                          fontFamily: 'Inter',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Icon(
-                        Icons.chevron_right_outlined,
-                        color: Colors.white,
-                        size: 45,
-                      )
                     ],
                   ),
-                ),
-                const SizedBox(height: 45),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 6),
-                      child: Icon(
-                        Icons.info_outline,
-                        color: Colors.white,
-                        size: 22,
-                      ),
-                    ),
-                    SizedBox(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  const SizedBox(height: 230),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TakePage()
+                        ),
+                      );
+                    },
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'このアプリはあくまでリハーサル用です',
+                          'はじめる',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 12,
+                            fontSize: 43,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
-                          '撮影した画像の保存・スクショは一切できません',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        Icon(
+                          Icons.chevron_right_outlined,
+                          color: Colors.white,
+                          size: 45,
+                        )
                       ],
                     ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                // Container(
-                //   padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-                //   decoration: BoxDecoration(
-                //     border: Border.all(
-                //       width: 1.5,
-                //       color: const Color(0xffbbbbbb)
-                //     ),
-                //     borderRadius: BorderRadius.circular(5),
-                //   ),
-                //   child: const Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 11, color: Color(0xffbbbbbb), fontWeight: FontWeight.bold)),
-                // ),
-                Text('-- BeReal.非公式アプリです --', style: TextStyle(fontSize: 11, color: Color(0xffbbbbbb), fontWeight: FontWeight.bold)),
-              ],
+                  ),
+                  const SizedBox(height: 45),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 6),
+                        child: Icon(
+                          Icons.info_outline,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                      ),
+                      SizedBox(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'このアプリはあくまでリハーサル用です',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            '撮影した画像の保存・スクショは一切できません',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 11, color: Color(0xffa0a0a0), fontWeight: FontWeight.bold)),
+                ],
+              ),
             ),
           ),
         ),

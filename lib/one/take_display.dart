@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import '../two/confirm_page.dart';
 import '../settings/settings_display.dart';
-import 'package:berehearsal/custom/custom.dart';
-import 'package:berehearsal/comps/comps.dart';
+import 'package:berehearsal/components/components.dart';
 
 
 
@@ -103,12 +102,11 @@ class _TakePageState extends State<TakePage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: allBackgroundColor(),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: const CompTitleAppBar(),
           actions: const <Widget>[Setting()],
-          backgroundColor: allBackgroundColor(),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         ),
         body: FutureBuilder<void>(
           future: _initializeControllerFuture,

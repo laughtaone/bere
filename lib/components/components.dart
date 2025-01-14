@@ -2,13 +2,6 @@ import 'package:flutter/material.dart';
 
 class CompTitleAppBar extends StatelessWidget {
   const CompTitleAppBar({super.key});
-  // TextStyle commonTextStyle({required Color color}) {
-  //   return TextStyle(
-  //     fontFamily: 'Inter',
-  //     fontWeight: FontWeight.bold,
-  //     color: color,
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
