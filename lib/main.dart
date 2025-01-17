@@ -47,6 +47,18 @@ class StartPageHome extends StatelessWidget {
         textTheme: const TextTheme(
           bodyMedium: TextStyle(color: Colors.white),   // デフォルトの文字色
         ),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return Colors.white.withOpacity(0.2); // 押した時の色
+                }
+                return null; // デフォルトの色を使用
+              },
+            ),
+          ),
+        ),
       ),
       home: const StartPage(),
     );

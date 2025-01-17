@@ -51,128 +51,140 @@ class StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;     // 画面の高さを取得
+    double screenWidth = MediaQuery.of(context).size.width;     // 画面の幅を取得
+    // double maxWidth = (screenWidth < 800) ? 600 : 700;      // スマホの幅を800px未満・デスクトップはそれ以上と定義
+
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 100),
-              // ------------------------- タイトル -------------------------
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  RichText(
-                    text: const TextSpan(
-                      children: [
-                        TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
-                        TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
-                        TextSpan(text: 'al.', style: TextStyle(color: Colors.white)),
-                      ],
+          child: SizedBox(
+            height: screenHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // ------------------------- タイトル -------------------------
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 3),
+                    // - - - - メインタイトル - - - -
+                    RichText(
+                      text: const TextSpan(
+                        children: [
+                          TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
+                          TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
+                          TextSpan(text: 'al.', style: TextStyle(color: Colors.white)),
+                        ],
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 45,
+                        )
+                      ),
+                    ),
+                    // - - - - - - - - - - - - -
+                    // - - - - サブタイトル - - - -
+                    const Text(
+                      'To support enjoying BeReal.',
                       style: TextStyle(
+                        fontSize: 14,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.bold,
-                        fontSize: 45,
-                      )
-                    ),
-                  ),
-                  const Text(
-                    'To support enjoying BeReal.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              // -----------------------------------------------------------
-
-              const SizedBox(height: 230),
-
-              // --------------------- 「はじめる」ボタン ---------------------
-              TextButton(
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(13)
-                  )
-                ),
-                onPressed: () {
-                  HapticFeedback.lightImpact();     // 触覚フィードバック
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const TakePage(),
-                      fullscreenDialog: true
-                    ),
-                  );
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'はじめる',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 43,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Icon(
-                      Icons.chevron_right_outlined,
-                      color: Colors.white,
-                      size: 45,
-                    )
+                    // - - - - - - - - - - - - -
+                    const SizedBox(height: 5),
+                    // - - - - 非公式案内 - - - -
+                    const Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 13, color: Color(0xffC0C0C0), fontWeight: FontWeight.bold)),
+                    // - - - - - - - - - - - - -
                   ],
                 ),
-              ),
-              // -----------------------------------------------------------
-
-              const SizedBox(height: 45),
-
-              // ------------------------- 注意書き -------------------------
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 6),
-                    child: Icon(
-                      Icons.info_outline,
-                      size: 22,
+                // -----------------------------------------------------------
+            
+                // --------------------- 「はじめる」ボタン ---------------------
+                Column(
+                  children: [
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0)
+                        ),
+                        fixedSize: Size(screenWidth, 130)
+                      ),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();     // 触覚フィードバック
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TakePage(),
+                            fullscreenDialog: true
+                          ),
+                        );
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'はじめる',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 43,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Icon(
+                            Icons.chevron_right_outlined,
+                            color: Colors.white,
+                            size: 45,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'このアプリはあくまでリハーサル用です',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                    // -----------------------------------------------------------
+            
+                    const SizedBox(height: 40),
+            
+                    // ------------------------- 注意書き -------------------------
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 6),
+                          child: Icon(
+                            Icons.info_outline,
+                            size: 22,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '撮影した画像の保存・スクショは一切できません',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'このアプリはあくまでリハーサル用です',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '撮影した画像の保存・スクショは一切できません',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              // -----------------------------------------------------------
-
-              const SizedBox(height: 10),
-
-              // ------------------------ 非公式案内 ------------------------
-              const Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 11, color: Color(0xffa0a0a0), fontWeight: FontWeight.bold)),
-              // -----------------------------------------------------------
-            ],
+                      ],
+                    ),
+                    // -----------------------------------------------------------
+                  ]
+                ),
+              ],
+            ),
           ),
         ),
       ),
