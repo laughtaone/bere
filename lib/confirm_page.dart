@@ -1,9 +1,9 @@
 import 'package:berehearsal/components/comp_image_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../one/take_display.dart';
+import 'take_display.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:berehearsal/components/components.dart';
+import 'package:berehearsal/components/comp_title_appbar.dart';
 
 
 // ConfirmPageの定義
@@ -14,10 +14,10 @@ class ConfirmPage extends StatefulWidget {
   const ConfirmPage({super.key, required this.mainImagePath, required this.subImagePath});
 
   @override
-  _ConfirmPageState createState() => _ConfirmPageState();
+  ConfirmPageState createState() => ConfirmPageState();
 }
 
-class _ConfirmPageState extends State<ConfirmPage> {
+class ConfirmPageState extends State<ConfirmPage> {
   bool isImageSwap = false;
 
   @override
@@ -45,9 +45,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
                       child: AnimatedImageSwitcher(
-                        imagePath: (isImageSwap)
-                          ? widget.subImagePath
-                          : widget.mainImagePath,
+                        imagePath: (isImageSwap) ? widget.subImagePath : widget.mainImagePath,
                       ),
                     ),
                   ),
@@ -110,7 +108,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                   // -----------------------------------------------------------------------
                 ],
               ),
-              // ================================================= カメラ画像部分 終 =================================================
+              // ==================================================================================================================
               const SizedBox(height: 20),
               TextButton(
                 // onPressed: _launchBeReal,
