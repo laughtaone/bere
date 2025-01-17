@@ -1,4 +1,6 @@
+import 'package:berehearsal/components/comp_caution_enable_sukusho.dart';
 import 'package:berehearsal/components/comp_image_animation.dart';
+import 'package:berehearsal/components/comp_setting_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'take_display.dart';
@@ -29,7 +31,7 @@ class ConfirmPageState extends State<ConfirmPage> {
         appBar: AppBar(
           title: const CompTitleAppBar(),
           automaticallyImplyLeading: false,
-          actions: const <Widget>[Setting()],
+          actions: const <Widget>[CompSettingButton()],
         ),
         body: Center(
           child: Column(

@@ -1,9 +1,11 @@
+import 'package:berehearsal/components/comp_caution_enable_sukusho.dart';
+import 'package:berehearsal/components/comp_setting_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
 import 'confirm_page.dart';
-import 'settings/settings_display.dart';
 import 'package:berehearsal/components/comp_title_appbar.dart';
+import 'dart:math' as math;
 
 
 
@@ -99,14 +101,22 @@ class TakePageState extends State<TakePage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;     // 画面の高さを取得
+    double screenWidth = MediaQuery.of(context).size.width;     // 画面の幅を取得
+    double bodyHeight = screenHeight - AppBar().preferredSize.height;
+
+    bool isCompactDisplay = screenHeight < 743;       // 画面の高さが 743px未満 だったらコンパクト表示
+
+
+
     return PopScope(
       canPop: false,
       child: Center(
         child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            title: const CompTitleAppBar(),
-            actions: const <Widget>[Setting()],
+            title: (isCompactDisplay) ? const CautionEnableSukusho() : const CompTitleAppBar(),
+            actions: const <Widget>[CompSettingButton()],
             leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -117,16 +127,20 @@ class TakePageState extends State<TakePage> {
           body: FutureBuilder<void>(
             future: _initializeControllerFuture,
             builder: (context, snapshot) {
+              bool isPrepaired = snapshot.connectionState == ConnectionState.done;
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const CautionEnableSukusho(),
+                  // =================================== 注意書き(isCompactDisplayがtrueの場合のみ表示) ====================================
+                  (isCompactDisplay) ? const SizedBox.shrink() : const CautionEnableSukusho(),
+                  // ===================================================================================================================
+
                   Flexible(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        // ================================================= カメラ画像部分 始 =================================================
-                        (snapshot.connectionState == ConnectionState.done)
+                        // ================================================== カメラ画像部分 ===================================================
+                        (isPrepaired)      // 準備が終えたかどうか
                         ? Stack(
                           children: [
                             // ------------------------- カメラ画像のContainer -------------------------
@@ -194,31 +208,45 @@ class TakePageState extends State<TakePage> {
                           ],
                         )
                         // ------------------------- カメラ切り替え中の表示 -------------------------
-                        : Container(
-                          color: Colors.red,
-                          child: AspectRatio(
-                            aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                            child: Center(
-                              child: SizedBox(
-                                width: 70,
-                                height: 70,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 3,
+                        : const AspectRatio(
+                          aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 55,
+                                  height: 55,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 5,
+                                  ),
                                 ),
-                              )
-                            ),
+                                SizedBox(height: 22),
+                                Text('準備中...', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17))
+                              ],
+                            )
                           ),
                         ),
                         // -----------------------------------------------------------------------
                         // ===================================================================================================================
-                    
+
                         // ==================================================== 撮影ボタン ====================================================
-                        IconButton(
-                          onPressed: _takePicture, // 写真を撮る関数を呼び出し
-                          icon: const Icon(Icons.radio_button_unchecked),
-                          color: Colors.white,
-                          iconSize: 100,
+                        Expanded(
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              double size = math.min(constraints.maxWidth, constraints.maxHeight);    // 利用可能な幅と高さの小さい方を採用
+                              return IconButton(
+                                style: IconButton.styleFrom(
+                                  disabledForegroundColor: const Color(0xff505050)
+                                ),
+                                padding: EdgeInsets.zero,
+                                iconSize: size,       // アイコンサイズを利用可能なスペースに合わせる
+                                icon: const Icon(Icons.radio_button_unchecked),
+                                onPressed: (isPrepaired) ? _takePicture : null, // 準備中でなければ写真を撮る関数を呼び出し,
+                              );
+                            },
+                          ),
                         ),
                         // ===================================================================================================================
                       ]
@@ -234,48 +262,6 @@ class TakePageState extends State<TakePage> {
   }
 }
 
-class CautionEnableSukusho extends StatelessWidget {
-  const CautionEnableSukusho({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 5, bottom: 15), // 余白を設定
-      child: const Text(
-        '撮影した画像の保存・スクショは一切できません',
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-}
-
-// 設定ボタンの内容
-class Setting extends StatelessWidget {
-  const Setting({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const SettingsPage(),
-            fullscreenDialog: true,
-          ),
-        );
-      },
-      icon: const Icon(Icons.settings),
-    );
-  }
-}
 
 
 

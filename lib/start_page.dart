@@ -53,7 +53,6 @@ class StartPageState extends State<StartPage> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;     // 画面の高さを取得
     double screenWidth = MediaQuery.of(context).size.width;     // 画面の幅を取得
-    // double maxWidth = (screenWidth < 800) ? 600 : 700;      // スマホの幅を800px未満・デスクトップはそれ以上と定義
 
     return Scaffold(
       body: Center(
