@@ -1,16 +1,17 @@
+import 'package:berehearsal/functions/function_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'settings_qa_display.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  SettingsPageState createState() => SettingsPageState();
 }
 
 class SettingsPageModel extends ChangeNotifier {
@@ -29,29 +30,28 @@ class SettingsPageModel extends ChangeNotifier {
   }
 }
 
-class _SettingsPageState extends State<SettingsPage> {
-  bool _skipStartPage = false;
+class SettingsPageState extends State<SettingsPage> {
+  bool skipStartPage = false;
+  bool leftHandedMode = false;
 
   @override
   void initState() {
     super.initState();
-    _loadSkipStartPagePreference();
+    loadSettings();
   }
 
-  Future<void> _loadSkipStartPagePreference() async {
-    final prefs = await SharedPreferences.getInstance();
+  // ----------------------------- 設定項目読み込み -----------------------------
+  void loadSettings() async {
+    bool keepSkipStartPage = await loadSkipStartPagePreference() ?? false;
+    bool keepLeftHandedMode = await loadLeftHandedModePreference() ?? false;
     setState(() {
-      _skipStartPage = prefs.getBool('skipStartPage') ?? false;
+      skipStartPage = keepSkipStartPage;
+      leftHandedMode = keepLeftHandedMode;
     });
   }
+  // --------------------------------------------------------------------------
 
-  Future<void> _setSkipStartPagePreference(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('skipStartPage', value);
-    setState(() {
-      _skipStartPage = value;
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -99,12 +99,38 @@ class _SettingsPageState extends State<SettingsPage> {
                 SettingsTile.switchTile(
                   leading: const Icon(Icons.directions_run_outlined),
                   title: const Text('スタート画面をスキップする'),
-                  description:
-                      const Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
-                  initialValue: _skipStartPage,
-                  onToggle: (value) {
+                  description: const Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
+                  initialValue: skipStartPage,
+                  onToggle: (value) async {
                     debugPrint(value ? 'スイッチがオンになりました' : 'スイッチがオフになりました');
-                    _setSkipStartPagePreference(value);
+                    setSkipStartPagePreference(value);
+                    bool keepSkipStartPage = await loadSkipStartPagePreference() ?? false;
+                    setState(() {
+                      skipStartPage = keepSkipStartPage;
+                    });
+                  },
+                ),
+              ],
+            ),
+            SettingsSection(
+              title: const Text(
+                '左利きモード',
+                style: SettingTitleTextStyle.myTextStyle,
+              ),
+              tiles: [
+                SettingsTile.switchTile(
+                  leading: const Icon(Icons.pan_tool_alt),
+                  title: const Text('左利きモードをオンにする'),
+                  description:
+                      const Text('このスイッチをオンにすると、左利きの方にも使いやすいように、ほとんどのボタンの配置がデフォルトとは逆になります。'),
+                  initialValue: leftHandedMode,
+                  onToggle: (value) async {
+                    debugPrint(value ? 'スイッチがオンになりました' : 'スイッチがオフになりました');
+                    setLeftHandedModePreference(value);
+                    bool keepLeftHandedMode = await loadLeftHandedModePreference() ?? false;
+                    setState(() {
+                      leftHandedMode = keepLeftHandedMode;
+                    });
                   },
                 ),
               ],

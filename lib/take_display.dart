@@ -131,13 +131,13 @@ class TakePageState extends State<TakePage> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // =================================== 注意書き(isCompactDisplayがtrueの場合のみ表示) ====================================
+                  // =================================== 注意書き(isCompactDisplayがfalseの場合のみ表示) ====================================
                   (isCompactDisplay) ? const SizedBox.shrink() : const CautionEnableSukusho(),
                   // ===================================================================================================================
 
                   Flexible(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         // ================================================== カメラ画像部分 ===================================================
                         (isPrepaired)      // 準備が終えたかどうか
@@ -232,16 +232,15 @@ class TakePageState extends State<TakePage> {
                         // ===================================================================================================================
 
                         // ==================================================== 撮影ボタン ====================================================
-                        Expanded(
+                        Flexible(
                           child: LayoutBuilder(
                             builder: (context, constraints) {
-                              double size = math.min(constraints.maxWidth, constraints.maxHeight);    // 利用可能な幅と高さの小さい方を採用
                               return IconButton(
                                 style: IconButton.styleFrom(
-                                  disabledForegroundColor: const Color(0xff505050)
+                                  disabledForegroundColor: Colors.white.withOpacity(0.15)
                                 ),
                                 padding: EdgeInsets.zero,
-                                iconSize: size,       // アイコンサイズを利用可能なスペースに合わせる
+                                iconSize: (constraints.maxHeight >= 100) ? 100 : constraints.maxHeight,       // アイコンサイズを利用可能なスペースに合わせる
                                 icon: const Icon(Icons.radio_button_unchecked),
                                 onPressed: (isPrepaired) ? _takePicture : null, // 準備中でなければ写真を撮る関数を呼び出し,
                               );

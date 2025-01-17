@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final prefs = await SharedPreferences.getInstance();
-  // 初回起動時に 'skipStartPage' が設定されていない場合、false に設定(設定するだけで、スタート画面のスキップの判断はここではしてない)
+  // 初回起動時に 'skipStartPage' が設定されていない場合、false に設定
   if (!prefs.containsKey('skipStartPage')) {
     await prefs.setBool('skipStartPage', false);
   }
