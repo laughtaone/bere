@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 class CautionEnableSukusho extends StatelessWidget {
   const CautionEnableSukusho({
     super.key,
-    this.customTBPadding = 0
+    this.customBottomPadding = 0
   });
 
-  final double customTBPadding;
+  final double customBottomPadding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: customTBPadding),
+      padding: EdgeInsets.only(bottom: customBottomPadding),
       child: const Text(
         '画像の保存・スクショは一切できません',
         style: TextStyle(

@@ -1,4 +1,6 @@
 import 'package:berehearsal/components/comp_caution_enable_sukusho.dart';
+import 'package:berehearsal/components/comp_common_appbar.dart';
+import 'package:berehearsal/components/comp_common_body_column.dart';
 import 'package:berehearsal/components/comp_setting_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -69,6 +71,7 @@ class TakePageState extends State<TakePage> {
       // -------------------- サブ画像を撮影 --------------------
       await _initializeCamera();
       await _initializeControllerFuture; // 初期化が完了するまで待機
+      await Future.delayed(const Duration(milliseconds: 400));  // 0.4秒待機
       final subImage = await _controller!.takePicture();
       subImagePath = subImage.path;
 
@@ -108,153 +111,122 @@ class TakePageState extends State<TakePage> {
     bool isCompactDisplay = screenHeight < 743;       // 画面の高さが 743px未満 だったらコンパクト表示
 
 
-
     return PopScope(
       canPop: false,
-      child: Center(
-        child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: (isCompactDisplay) ? const CautionEnableSukusho() : const CompTitleAppBar(),
-            actions: const <Widget>[CompSettingButton()],
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.expand_more_outlined)
-            ),
-          ),
-          body: FutureBuilder<void>(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              bool isPrepaired = snapshot.connectionState == ConnectionState.done;
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // =================================== 注意書き(isCompactDisplayがfalseの場合のみ表示) ====================================
-                  (isCompactDisplay) ? const SizedBox.shrink() : const CautionEnableSukusho(),
-                  // ===================================================================================================================
+      child: Scaffold(
+        appBar: CompCommonAppbar(
+          isCompactDisplay: isCompactDisplay
+        ),
+        body: FutureBuilder<void>(
+          future: _initializeControllerFuture,
+          builder: (context, snapshot) {
+            bool isPrepaired = snapshot.connectionState == ConnectionState.done;
 
-                  Flexible(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        // ================================================== カメラ画像部分 ===================================================
-                        (isPrepaired)      // 準備が終えたかどうか
-                        ? Stack(
-                          children: [
-                            // ------------------------- カメラ画像のContainer -------------------------
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16.0),
-                                child: AspectRatio(
-                                  aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                                  child: CameraPreview(_controller!),
-                                ),
-                              ),
-                            ),
-                            // -----------------------------------------------------------------------
-                            // ----------------------------- アイコン配置 ------------------------------
-                            Positioned(
-                              bottom: 1,
-                              left: 0,
-                              right: 0,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  // - - - - - フラッシュボタン - - - - -
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 7),
-                                    child: IconButton(
-                                      icon: cameraImageFieldIconButton(
-                                        Icons.electric_bolt_outlined,
-                                        isActive: false
-                                      ),
-                                      onPressed: null,
-                                    ),
-                                  ),
-                                  // - - - - - - - - - - - - - - - - -
-                                  // - - - - - - 倍率ボタン - - - - - -
-                                  IconButton(
-                                    icon: cameraImageFieldIconButton(Icons.circle_outlined),
-                                    onPressed: null,
-                                  ),
-                                  // - - - - - - - - - - - - - - - - -
-                                  // - - イン/アウトカメラ切替ボタン - - -
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 7),
-                                    child: IconButton(
-                                      icon: cameraImageFieldIconButton(Icons.cached_outlined),
-                                      onPressed: () {
-                                        HapticFeedback.lightImpact();     // 触覚フィードバック
-                                        if (_cameraIndex == 0) {
-                                          _cameraIndex = 1;
-                                        } else {
-                                          _cameraIndex = 0;
-                                        }
-                                        _initializeCamera();
-                                      },
-                                    ),
-                                    // - - - - - - - - - - - - - - - - -
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // -----------------------------------------------------------------------
-                          ],
-                        )
-                        // ------------------------- カメラ切り替え中の表示 -------------------------
-                        : const AspectRatio(
+            return CompCommonBodyColumn(
+              isCompactDisplay: isCompactDisplay,
+              needBottomPadding: false,
+              // ================================================== カメラ画像部分 ===================================================
+              centerElement: (isPrepaired)      // 準備が終えたかどうか
+                ? Stack(
+                  children: [
+                    // ------------------------- カメラ画像のContainer -------------------------
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(16.0),
+                        child: AspectRatio(
                           aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 55,
-                                  height: 55,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 5,
-                                  ),
-                                ),
-                                SizedBox(height: 22),
-                                Text('準備中...', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17))
-                              ],
-                            )
-                          ),
+                          child: CameraPreview(_controller!),
                         ),
-                        // -----------------------------------------------------------------------
-                        // ===================================================================================================================
-
-                        // ==================================================== 撮影ボタン ====================================================
-                        Flexible(
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              return IconButton(
-                                style: IconButton.styleFrom(
-                                  disabledForegroundColor: Colors.white.withOpacity(0.15)
-                                ),
-                                padding: EdgeInsets.zero,
-                                iconSize: (constraints.maxHeight >= 100) ? 100 : constraints.maxHeight,       // アイコンサイズを利用可能なスペースに合わせる
-                                icon: const Icon(Icons.radio_button_unchecked),
-                                onPressed: (isPrepaired) ? _takePicture : null, // 準備中でなければ写真を撮る関数を呼び出し,
-                              );
-                            },
+                      ),
+                    // -----------------------------------------------------------------------
+                    // ----------------------------- アイコン配置 ------------------------------
+                    Positioned(
+                      bottom: 1,
+                      left: 0,
+                      right: 0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          // - - - - - フラッシュボタン - - - - -
+                          Padding(
+                            padding: const EdgeInsets.only(left: 7),
+                            child: IconButton(
+                              icon: cameraImageFieldIconButton(
+                                Icons.electric_bolt_outlined,
+                                isActive: false
+                              ),
+                              onPressed: null,
+                            ),
                           ),
-                        ),
-                        // ===================================================================================================================
-                      ]
+                          // - - - - - - - - - - - - - - - - -
+                          // - - - - - - 倍率ボタン - - - - - -
+                          IconButton(
+                            icon: cameraImageFieldIconButton(Icons.circle_outlined),
+                            onPressed: null,
+                          ),
+                          // - - - - - - - - - - - - - - - - -
+                          // - - イン/アウトカメラ切替ボタン - - -
+                          Padding(
+                            padding: const EdgeInsets.only(right: 7),
+                            child: IconButton(
+                              icon: cameraImageFieldIconButton(Icons.cached_outlined),
+                              onPressed: () {
+                                HapticFeedback.lightImpact();     // 触覚フィードバック
+                                if (_cameraIndex == 0) {
+                                  _cameraIndex = 1;
+                                } else {
+                                  _cameraIndex = 0;
+                                }
+                                _initializeCamera();
+                              },
+                            ),
+                            // - - - - - - - - - - - - - - - - -
+                          ),
+                        ],
+                      ),
                     ),
+                    // -----------------------------------------------------------------------
+                  ],
+                )
+                // ------------------------- カメラ切り替え中の表示 -------------------------
+                : const AspectRatio(
+                  aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 55,
+                          height: 55,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 5,
+                          ),
+                        ),
+                        SizedBox(height: 22),
+                        Text('準備中...', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17))
+                      ],
+                    )
                   ),
-                ],
-              );
-            },
-          ),
+                ),
+                // -----------------------------------------------------------------------
+              // ===================================================================================================================
+              // ==================================================== 撮影ボタン ====================================================
+              bottomElement: LayoutBuilder(
+                builder: (context, constraints) {
+                  return IconButton(
+                    style: IconButton.styleFrom(
+                      disabledForegroundColor: Colors.white.withOpacity(0.15)
+                    ),
+                    padding: EdgeInsets.zero,
+                    iconSize: (constraints.maxHeight >= 100) ? 100 : constraints.maxHeight,       // アイコンサイズを利用可能なスペースに合わせる
+                    icon: const Icon(Icons.radio_button_unchecked),
+                    onPressed: (isPrepaired) ? _takePicture : null, // 準備中でなければ写真を撮る関数を呼び出し,
+                  );
+                },
+              )
+              // ===================================================================================================================
+            );
+          },
         ),
       ),
     );
