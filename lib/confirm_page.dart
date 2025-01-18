@@ -116,7 +116,7 @@ class ConfirmPageState extends State<ConfirmPage> {
             ],
           ),
           // ==================================================================================================================
-          // ==================================================== 撮影ボタン ====================================================
+          // ================================================= BeReal.開くボタン ================================================
           bottomElement: LayoutBuilder(
             builder: (context, constraints) {
               return SizedBox(
@@ -128,11 +128,10 @@ class ConfirmPageState extends State<ConfirmPage> {
                     ),
                     backgroundColor: Colors.transparent,
                     overlayColor: Colors.transparent,
+                    padding: const EdgeInsets.only(bottom: 15)
                   ),
                   onPressed: () async {
                     HapticFeedback.lightImpact();     // 触覚フィードバック
-                    // launchUrl(url);
-
                     try {
                       final url = Uri.parse('bereal://');
                       if (!await launchUrl(url)) {

@@ -111,7 +111,9 @@ class StartPageState extends State<StartPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(0)
                         ),
-                        fixedSize: Size(screenWidth, 130)
+                        fixedSize: Size(screenWidth, 130),
+                        backgroundColor: Colors.transparent,
+                        overlayColor: Colors.transparent,
                       ),
                       onPressed: () {
                         HapticFeedback.lightImpact();     // 触覚フィードバック

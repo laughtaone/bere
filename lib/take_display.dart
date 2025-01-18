@@ -1,6 +1,7 @@
 import 'package:berehearsal/components/comp_caution_enable_sukusho.dart';
 import 'package:berehearsal/components/comp_common_appbar.dart';
 import 'package:berehearsal/components/comp_common_body_column.dart';
+import 'package:berehearsal/components/comp_loading.dart';
 import 'package:berehearsal/components/comp_setting_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,7 @@ class TakePageState extends State<TakePage> {
   int _cameraIndex = 0;     // 0:外カメラ・1:内カメラ
   String? mainImagePath;
   String? subImagePath;
+  bool isTaking = false;
 
   @override
   void initState() {
@@ -39,6 +41,11 @@ class TakePageState extends State<TakePage> {
     );
 
     _initializeControllerFuture = _controller!.initialize();
+
+    // フラッシュをオフに設定
+    await _initializeControllerFuture;
+    await _controller!.setFlashMode(FlashMode.off);
+
     if (mounted) {
       setState(() {});
     }
@@ -52,6 +59,10 @@ class TakePageState extends State<TakePage> {
 
   Future<void> _takePicture() async {
     try {
+      await Future.delayed(const Duration(milliseconds: 200));  // 0.2秒待機
+      setState(() {
+        isTaking = true;
+      });
       await _initializeControllerFuture;
 
       // ------------------- メイン画像を撮影 -------------------
@@ -99,6 +110,10 @@ class TakePageState extends State<TakePage> {
       // -----------------------------------------------------
     } catch (e) {
       debugPrint('$e');
+    } finally {
+      setState(() {
+        isTaking = false;
+      });
     }
   }
 
@@ -127,85 +142,78 @@ class TakePageState extends State<TakePage> {
               needBottomPadding: false,
               // ================================================== カメラ画像部分 ===================================================
               centerElement: (isPrepaired)      // 準備が終えたかどうか
-                ? Stack(
-                  children: [
-                    // ------------------------- カメラ画像のContainer -------------------------
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(16.0),
-                        child: AspectRatio(
-                          aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                          child: CameraPreview(_controller!),
+                ? (isTaking)
+                  ? const AspectRatio(
+                    aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                    child: CompLoading(
+                      message: '撮影中...',
+                    ),
+                  )
+                  : Stack(
+                    children: [
+                      // ------------------------- カメラ画像のContainer -------------------------
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(16.0),
+                          child: AspectRatio(
+                            aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                            child: CameraPreview(_controller!),
+                          ),
                         ),
-                      ),
-                    // -----------------------------------------------------------------------
-                    // ----------------------------- アイコン配置 ------------------------------
-                    Positioned(
-                      bottom: 1,
-                      left: 0,
-                      right: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          // - - - - - フラッシュボタン - - - - -
-                          Padding(
-                            padding: const EdgeInsets.only(left: 7),
-                            child: IconButton(
-                              icon: cameraImageFieldIconButton(
-                                Icons.electric_bolt_outlined,
-                                isActive: false
+                      // -----------------------------------------------------------------------
+                      // ----------------------------- アイコン配置 ------------------------------
+                      Positioned(
+                        bottom: 1,
+                        left: 0,
+                        right: 0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            // - - - - - フラッシュボタン - - - - -
+                            Padding(
+                              padding: const EdgeInsets.only(left: 7),
+                              child: IconButton(
+                                icon: cameraImageFieldIconButton(
+                                  Icons.electric_bolt_outlined,
+                                  isActive: false
+                                ),
+                                onPressed: null,
                               ),
-                              onPressed: null,
-                            ),
-                          ),
-                          // - - - - - - - - - - - - - - - - -
-                          // - - - - - - 倍率ボタン - - - - - -
-                          IconButton(
-                            icon: cameraImageFieldIconButton(Icons.circle_outlined),
-                            onPressed: null,
-                          ),
-                          // - - - - - - - - - - - - - - - - -
-                          // - - イン/アウトカメラ切替ボタン - - -
-                          Padding(
-                            padding: const EdgeInsets.only(right: 7),
-                            child: IconButton(
-                              icon: cameraImageFieldIconButton(Icons.cached_outlined),
-                              onPressed: () {
-                                HapticFeedback.lightImpact();     // 触覚フィードバック
-                                if (_cameraIndex == 0) {
-                                  _cameraIndex = 1;
-                                } else {
-                                  _cameraIndex = 0;
-                                }
-                                _initializeCamera();
-                              },
                             ),
                             // - - - - - - - - - - - - - - - - -
-                          ),
-                        ],
+                            // - - - - - - 倍率ボタン - - - - - -
+                            IconButton(
+                              icon: cameraImageFieldIconButton(Icons.circle_outlined),
+                              onPressed: null,
+                            ),
+                            // - - - - - - - - - - - - - - - - -
+                            // - - イン/アウトカメラ切替ボタン - - -
+                            Padding(
+                              padding: const EdgeInsets.only(right: 7),
+                              child: IconButton(
+                                icon: cameraImageFieldIconButton(Icons.cached_outlined),
+                                onPressed: () {
+                                  HapticFeedback.lightImpact();     // 触覚フィードバック
+                                  if (_cameraIndex == 0) {
+                                    _cameraIndex = 1;
+                                  } else {
+                                    _cameraIndex = 0;
+                                  }
+                                  _initializeCamera();
+                                },
+                              ),
+                              // - - - - - - - - - - - - - - - - -
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    // -----------------------------------------------------------------------
-                  ],
-                )
+                      // -----------------------------------------------------------------------
+                    ],
+                  )
                 // ------------------------- カメラ切り替え中の表示 -------------------------
                 : const AspectRatio(
                   aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 55,
-                          height: 55,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 5,
-                          ),
-                        ),
-                        SizedBox(height: 22),
-                        Text('準備中...', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17))
-                      ],
-                    )
+                  child: CompLoading(
+                    message: '準備中...',
                   ),
                 ),
                 // -----------------------------------------------------------------------
