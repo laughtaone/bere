@@ -3,6 +3,7 @@ import 'package:berehearsal/components/comp_common_appbar.dart';
 import 'package:berehearsal/components/comp_common_body_column.dart';
 import 'package:berehearsal/components/comp_image_animation.dart';
 import 'package:berehearsal/components/comp_setting_button.dart';
+import 'package:berehearsal/functions/function_setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,21 @@ class ConfirmPage extends StatefulWidget {
 
 class ConfirmPageState extends State<ConfirmPage> {
   bool isImageSwap = false;
+  bool leftHandedMode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    firstSettingLoad();
+  }
+
+  // 設定値読み込み
+  Future<void> firstSettingLoad() async {
+    setState(() async {
+      leftHandedMode = await loadLeftHandedModePreference() ?? false;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +55,15 @@ class ConfirmPageState extends State<ConfirmPage> {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: CompCommonAppbar(
-          isCompactDisplay: isCompactDisplay
+          isCompactDisplay: isCompactDisplay,
+          callbackOpenSettingPage: (bool recvBool) async {
+            if (recvBool) {
+              bool keepleftHandedMode = await loadLeftHandedModePreference() ?? false;
+              setState(() {
+                leftHandedMode = keepleftHandedMode;
+              });
+            }
+          }
         ),
         body: CompCommonBodyColumn(
           isCompactDisplay: isCompactDisplay,

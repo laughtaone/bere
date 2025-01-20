@@ -5,22 +5,30 @@ import 'package:flutter/material.dart';
 
 
 // 設定ボタンの内容
-class CompSettingButton extends StatelessWidget {
-  const CompSettingButton({
-    super.key,
+class CompSettingButton extends StatefulWidget {
+  const CompSettingButton({super.key,
+    required this.callbackOpenSettingPage
   });
 
+  final void Function(bool) callbackOpenSettingPage;
+
+  @override
+  CompSettingButtonState createState() => CompSettingButtonState();
+}
+
+class CompSettingButtonState extends State<CompSettingButton> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {
-        Navigator.push(
+      onPressed: () async {
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => const SettingsPage(),
             fullscreenDialog: true,
           ),
         );
+        widget.callbackOpenSettingPage(true);
       },
       icon: const Icon(Icons.settings),
     );

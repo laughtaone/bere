@@ -4,9 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 
-
-
-
 // -------------------------- スタート画面スキップ設定 --------------------------
 // 読み込み
 Future<bool?> loadSkipStartPagePreference() async {

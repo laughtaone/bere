@@ -3,11 +3,13 @@ import 'package:berehearsal/components/comp_common_appbar.dart';
 import 'package:berehearsal/components/comp_common_body_column.dart';
 import 'package:berehearsal/components/comp_loading.dart';
 import 'package:berehearsal/components/comp_setting_button.dart';
+import 'package:berehearsal/components/comp_take_display_icon.dart';
+import 'package:berehearsal/components/comp_title_appbar.dart';
+import 'package:berehearsal/functions/function_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
 import 'confirm_page.dart';
-import 'package:berehearsal/components/comp_title_appbar.dart';
 import 'dart:math' as math;
 
 
@@ -26,11 +28,13 @@ class TakePageState extends State<TakePage> {
   String? mainImagePath;
   String? subImagePath;
   bool isTaking = false;
+  bool leftHandedMode = false;
 
   @override
   void initState() {
     super.initState();
     _initializeCamera();
+    firstSettingLoad();
   }
 
   Future<void> _initializeCamera() async {
@@ -51,6 +55,13 @@ class TakePageState extends State<TakePage> {
     }
   }
 
+  // 設定値読み込み
+  Future<void> firstSettingLoad() async {
+    setState(() async {
+      leftHandedMode = await loadLeftHandedModePreference() ?? false;
+    });
+  }
+
   @override
   void dispose() {
     _controller?.dispose();
@@ -59,7 +70,7 @@ class TakePageState extends State<TakePage> {
 
   Future<void> _takePicture() async {
     try {
-      await Future.delayed(const Duration(milliseconds: 200));  // 0.2秒待機
+      await Future.delayed(const Duration(milliseconds: 100));  // 0.1秒待機
       setState(() {
         isTaking = true;
       });
@@ -130,7 +141,15 @@ class TakePageState extends State<TakePage> {
       canPop: false,
       child: Scaffold(
         appBar: CompCommonAppbar(
-          isCompactDisplay: isCompactDisplay
+          isCompactDisplay: isCompactDisplay,
+          callbackOpenSettingPage: (bool recvBool) async {
+            if (recvBool) {
+              bool keepleftHandedMode = await loadLeftHandedModePreference() ?? false;
+              setState(() {
+                leftHandedMode = keepleftHandedMode;
+              });
+            }
+          }
         ),
         body: FutureBuilder<void>(
           future: _initializeControllerFuture,
@@ -167,30 +186,24 @@ class TakePageState extends State<TakePage> {
                         right: 0,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            // - - - - - フラッシュボタン - - - - -
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7),
-                              child: IconButton(
-                                icon: cameraImageFieldIconButton(
-                                  Icons.electric_bolt_outlined,
-                                  isActive: false
-                                ),
+                          children: (leftHandedMode)
+                            ? [
+                              // - - - - - フラッシュボタン - - - - -
+                              const CompTakeDisplayIcon(
+                                icon: Icons.electric_bolt_outlined,
+                                onPressed: null,
+                                customPadding: EdgeInsets.only(left: 7),
+                              ),
+                              // - - - - - - - - - - - - - - - - -
+                              // - - - - - - 倍率ボタン - - - - - -
+                              const CompTakeDisplayIcon(
+                                icon: Icons.circle_outlined,
                                 onPressed: null,
                               ),
-                            ),
-                            // - - - - - - - - - - - - - - - - -
-                            // - - - - - - 倍率ボタン - - - - - -
-                            IconButton(
-                              icon: cameraImageFieldIconButton(Icons.circle_outlined),
-                              onPressed: null,
-                            ),
-                            // - - - - - - - - - - - - - - - - -
-                            // - - イン/アウトカメラ切替ボタン - - -
-                            Padding(
-                              padding: const EdgeInsets.only(right: 7),
-                              child: IconButton(
-                                icon: cameraImageFieldIconButton(Icons.cached_outlined),
+                              // - - - - - - - - - - - - - - - - -
+                              // - - イン/アウトカメラ切替ボタン - - -
+                              CompTakeDisplayIcon(
+                                icon: Icons.cached_outlined,
                                 onPressed: () {
                                   HapticFeedback.lightImpact();     // 触覚フィードバック
                                   if (_cameraIndex == 0) {
@@ -200,10 +213,40 @@ class TakePageState extends State<TakePage> {
                                   }
                                   _initializeCamera();
                                 },
+                                customPadding: const EdgeInsets.only(right: 7),
                               ),
                               // - - - - - - - - - - - - - - - - -
-                            ),
-                          ],
+                            ].reversed.toList()
+                            : [
+                              // - - - - - フラッシュボタン - - - - -
+                              const CompTakeDisplayIcon(
+                                icon: Icons.electric_bolt_outlined,
+                                onPressed: null,
+                                customPadding: EdgeInsets.only(left: 7),
+                              ),
+                              // - - - - - - - - - - - - - - - - -
+                              // - - - - - - 倍率ボタン - - - - - -
+                              const CompTakeDisplayIcon(
+                                icon: Icons.circle_outlined,
+                                onPressed: null,
+                              ),
+                              // - - - - - - - - - - - - - - - - -
+                              // - - イン/アウトカメラ切替ボタン - - -
+                              CompTakeDisplayIcon(
+                                icon: Icons.cached_outlined,
+                                onPressed: () {
+                                  HapticFeedback.lightImpact();     // 触覚フィードバック
+                                  if (_cameraIndex == 0) {
+                                    _cameraIndex = 1;
+                                  } else {
+                                    _cameraIndex = 0;
+                                  }
+                                  _initializeCamera();
+                                },
+                                customPadding: const EdgeInsets.only(right: 7),
+                              ),
+                              // - - - - - - - - - - - - - - - - -
+                            ],
                         ),
                       ),
                       // -----------------------------------------------------------------------
@@ -241,15 +284,3 @@ class TakePageState extends State<TakePage> {
   }
 }
 
-
-
-
-
-// カメラ画像部分の上のIconButtonのスタイル
-Icon cameraImageFieldIconButton(IconData receivedIcon, {bool isActive = true}) {
-  return Icon(
-    receivedIcon,
-    color: Colors.white.withOpacity(isActive ? 0.85 : 0),
-    size: 27,
-  );
-}
