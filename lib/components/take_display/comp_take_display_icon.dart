@@ -87,9 +87,13 @@ class CompCameraIconState extends State<CompCameraIcon> {
 // カメラ倍率調整ボタン
 class CompCameraMagnificationIcon extends StatefulWidget {
   const CompCameraMagnificationIcon({super.key,
+    required this.isChangingCamera,
+    required this.isNormalCamera,
     required this.onPressed
   });
 
+  final bool isChangingCamera;
+  final bool isNormalCamera;
   final void Function(bool) onPressed;
 
   @override
@@ -112,14 +116,21 @@ class CompCameraMagnificationIconState extends State<CompCameraMagnificationIcon
           color: Colors.black.withAlpha((0.6 * 255).round()),
           borderRadius: BorderRadius.circular(10000),
         ),
-        child: const Center(
-          child: Text(
-            '1x',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 15,
+        child: Center(
+          child: (widget.isChangingCamera)
+          ? const Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              strokeWidth: 2,
             ),
-          ),
+          )
+          : Text(
+            (widget.isNormalCamera) ? '1x' : '0.5x',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            ),
+          )
         )
       ),
     );

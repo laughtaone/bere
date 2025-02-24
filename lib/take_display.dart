@@ -28,17 +28,16 @@ class TakePageState extends State<TakePage> {
   String? mainImagePath;
   String? subImagePath;
   bool isTaking = false;
+  bool isChangingCamera = false;
   bool leftHandedMode = false;
   bool isCameraAllowed = false;
   bool isMicAllowed = false;
   bool isFlashOn = false;
   bool isSwitchFlash = false;
   bool isSwitchCamera = false;
+  bool isSwitchCameraRate = false;
   bool isCameraMagnification = false;
 
-  // CameraDescription? ultraWideOutCamera;
-  // CameraDescription? normalOutCamera;
-  // CameraDescription? inCamera;
   int? wideOutCameraIndex;
   int? normalOutCameraIndex;
   int? inCameraIndex;
@@ -99,16 +98,18 @@ class TakePageState extends State<TakePage> {
       if (cameras[i].lensDirection == CameraLensDirection.back) {
         if (cameras[i].name.contains('built-in_video:5')) {
           wideOutCameraIndex = i;
-          debugPrint('🔵 超広角カメラは、$i');
         } else if (cameras[i].name.contains('built-in_video:0')) {
           normalOutCameraIndex = i;
-          debugPrint('🔵 通常カメラは、$i');
         }
       } else if (cameras[i].lensDirection == CameraLensDirection.front) {
         inCameraIndex = i;
-        debugPrint('🔵 インカメラは、$i');
       }
     }
+
+    debugPrint('🔵 超広角カメラは、$wideOutCameraIndex');
+    debugPrint('🔵 通常カメラは、$normalOutCameraIndex');
+    debugPrint('🔵 インカメラは、$inCameraIndex');
+
 
     _controller = CameraController(
       cameras[useCameraIndex ?? 0],
@@ -165,7 +166,10 @@ class TakePageState extends State<TakePage> {
       // -----------------------------------------------------
 
       // -------------------- サブ画像を撮影 --------------------
-      await _initializeCamera();
+      await initializeCamera2(
+        useCameraIndex: _cameraIndex,
+        isFlashOn: isFlashOn
+      );
       await _initializeControllerFuture; // 初期化が完了するまで待機
       await Future.delayed(const Duration(milliseconds: 400));  // 0.4秒待機
       final subImage = await _controller!.takePicture();
@@ -187,7 +191,10 @@ class TakePageState extends State<TakePage> {
 
       // ---------------- カメラの内/外を元に戻す ----------------
       _cameraIndex = nowCameraIndex;
-      await _initializeCamera();
+      await initializeCamera2(
+        useCameraIndex: _cameraIndex,
+        isFlashOn: isFlashOn
+      );
       // -----------------------------------------------------
     } catch (e) {
       debugPrint('$e');
@@ -225,6 +232,7 @@ class TakePageState extends State<TakePage> {
   // カメラ切り替え用関数
   Future switchCamera({required int? nowCameraIndex, required bool isFlashOn}) async {
     HapticFeedback.lightImpact();     // 触覚フィードバック
+
     if (nowCameraIndex == normalOutCameraIndex || nowCameraIndex == wideOutCameraIndex) {
       setState(() {
         _cameraIndex = inCameraIndex ?? 1;
@@ -250,14 +258,45 @@ class TakePageState extends State<TakePage> {
   }
 
   // 倍率ボタン反映関数
-  Future switchCameraMagnification() async {
+  Future switchCameraMagnification({
+    required int? nowCameraIndex,
+    required bool isFlashOn
+  }) async {
     HapticFeedback.lightImpact();     // 触覚フィードバック
 
+    await Future.delayed(const Duration(milliseconds: 50));
+    setState(() {isSwitchCameraRate = true;});
+
     if (wideOutCameraIndex != null) {
-      _cameraIndex = 2;
-    } else {
-      _cameraIndex = 0;
+      setState(() {isChangingCamera = true;});
     }
+
+    if (nowCameraIndex != inCameraIndex) {
+      if (wideOutCameraIndex != null && normalOutCameraIndex != null) {
+        if (nowCameraIndex == wideOutCameraIndex) {
+          setState(() {
+            _cameraIndex = normalOutCameraIndex!;
+          });
+        } else if (nowCameraIndex == normalOutCameraIndex) {
+          setState(() {
+            _cameraIndex = wideOutCameraIndex!;
+          });
+        }
+      }
+    }
+
+    if (wideOutCameraIndex != null) {
+      await initializeCamera2(
+        useCameraIndex: _cameraIndex,
+        isFlashOn: isFlashOn
+      );
+    }
+
+    await Future.delayed(const Duration(milliseconds: 200));
+    setState(() {isChangingCamera = false;});
+
+    await Future.delayed(const Duration(milliseconds: 400));
+    setState(() {isSwitchCameraRate = false;});
   }
   // =======================================================================
 
@@ -340,8 +379,18 @@ class TakePageState extends State<TakePage> {
                                 ? CompDisplaySwitch(targetVeriable: _cameraIndex==0 , targetText: 'カメラ', customOnText: '外カメラ', customOffText: '内カメラ')
                                 : const SizedBox.shrink(),
                               // 倍率
-                              (isCameraMagnification)
-                                ? const CompDisplaySwitch(targetVeriable: false, targetText: '', customFullText: '現在開発中の機能のため、倍率は変更できません')
+                              (isSwitchCameraRate)
+                                ? CompDisplaySwitch(
+                                  targetVeriable: false,
+                                  targetText: '',
+                                  customFullText: (wideOutCameraIndex != null)
+                                    ? 'カメラの倍率を変更しました'
+                                    : 'シングルカメラの機種のため変更できません'
+                                )
+                                : const SizedBox.shrink(),
+
+                              (isSwitchFlash || isSwitchCamera || isSwitchCameraRate)
+                                ? const SizedBox(height: 20)
                                 : const SizedBox.shrink(),
                               // ------------------------------------
                               Row(
@@ -357,11 +406,18 @@ class TakePageState extends State<TakePage> {
                                     ),
                                     // - - - - - - - - - - - - - - - - -
                                     // - - - - - - 倍率ボタン - - - - - -
-                                    CompCameraMagnificationIcon(
-                                      onPressed: (bool recvBool) {
-                                        switchCameraMagnification();
-                                      },
-                                    ),
+                                    (_cameraIndex != inCameraIndex)
+                                      ? CompCameraMagnificationIcon(
+                                        isChangingCamera: isChangingCamera,
+                                        isNormalCamera: _cameraIndex==normalOutCameraIndex,
+                                        onPressed: (bool recvBool) {
+                                          switchCameraMagnification(
+                                            nowCameraIndex: _cameraIndex,
+                                            isFlashOn: isFlashOn
+                                          );
+                                        },
+                                      )
+                                      : const SizedBox.shrink(),
                                     // - - - - - - - - - - - - - - - - -
                                     // - - イン/アウトカメラ切替ボタン - - -
                                     CompCameraIcon(
@@ -385,11 +441,18 @@ class TakePageState extends State<TakePage> {
                                     ),
                                     // - - - - - - - - - - - - - - - - -
                                     // - - - - - - 倍率ボタン - - - - - -
-                                    CompCameraMagnificationIcon(
-                                      onPressed: (bool recvBool) {
-                                        switchCameraMagnification();
-                                      },
-                                    ),
+                                    (_cameraIndex != inCameraIndex)
+                                      ? CompCameraMagnificationIcon(
+                                        isChangingCamera: isChangingCamera,
+                                        isNormalCamera: _cameraIndex==normalOutCameraIndex,
+                                        onPressed: (bool recvBool) {
+                                          switchCameraMagnification(
+                                            nowCameraIndex: _cameraIndex,
+                                            isFlashOn: isFlashOn
+                                          );
+                                        },
+                                      )
+                                      : const SizedBox.shrink(),
                                     // - - - - - - - - - - - - - - - - -
                                     // - - イン/アウトカメラ切替ボタン - - -
                                     CompCameraIcon(
