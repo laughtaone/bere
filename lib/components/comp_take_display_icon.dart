@@ -21,7 +21,7 @@ class CompTakeDisplayIcon extends StatelessWidget {
       child: IconButton(
         icon: Icon(
           icon,
-          color: Colors.white.withOpacity(0.85),
+          color: Colors.white.withAlpha((0.85 * 255).round()),
           size: 27,
         ),
         onPressed: onPressed,
