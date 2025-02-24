@@ -42,8 +42,11 @@ class TakePageState extends State<TakePage> {
   int? normalOutCameraIndex;
   int? inCameraIndex;
 
+  double _currentZoomLevel = 1.0; // 現在のズームレベル
+  double _minZoomLevel = 1.0; // 最小ズームレベル
+  double _maxZoomLevel = 5.0; // 最大ズームレベル
+  double _baseZoom = 1.0;
 
-  // ================================== 関数 ==================================
   @override
   void initState() {
     super.initState();
@@ -82,10 +85,15 @@ class TakePageState extends State<TakePage> {
     await _initializeControllerFuture;
     await _controller!.setFlashMode(FlashMode.off);
 
+    // ズームレベルの範囲を取得
+    _minZoomLevel = await _controller!.getMinZoomLevel();
+    _maxZoomLevel = await _controller!.getMaxZoomLevel();
+
     if (mounted) {
       setState(() {});
     }
   }
+
   // カメラの初期化 (2回目以降)
   Future<void> initializeCamera2({
     required int? useCameraIndex,
@@ -121,6 +129,10 @@ class TakePageState extends State<TakePage> {
     // フラッシュをオフに設定
     await _initializeControllerFuture;
     await _controller!.setFlashMode((isFlashOn) ? FlashMode.off : FlashMode.off);
+
+    // ズームレベルの範囲を取得
+    _minZoomLevel = await _controller!.getMinZoomLevel();
+    _maxZoomLevel = await _controller!.getMaxZoomLevel();
 
     if (mounted) {
       setState(() {});
@@ -298,10 +310,19 @@ class TakePageState extends State<TakePage> {
     await Future.delayed(const Duration(milliseconds: 400));
     setState(() {isSwitchCameraRate = false;});
   }
-  // =======================================================================
 
-
-
+  // ズームレベルを変更する関数
+  Future<void> _setZoomLevel(double zoomLevel) async {
+    if (zoomLevel < _minZoomLevel) {
+      zoomLevel = _minZoomLevel;
+    } else if (zoomLevel > _maxZoomLevel) {
+      zoomLevel = _maxZoomLevel;
+    }
+    await _controller!.setZoomLevel(zoomLevel);
+    setState(() {
+      _currentZoomLevel = zoomLevel;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -354,13 +375,33 @@ class TakePageState extends State<TakePage> {
                     : Stack(
                       children: [
                         // ------------------------- カメラ画像のContainer -------------------------
-                        ClipRRect(
+                        // ClipRRect(
+                        //   borderRadius: BorderRadius.circular(16.0),
+                        //   child: AspectRatio(
+                        //     aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                        //     child: CameraPreview(_controller!),
+                        //   ),
+                        // ),
+                        GestureDetector(
+                          /*
+                          value: _currentZoomLevel,
+                            min: _minZoomLevel,
+                            max: _maxZoomLevel,
+                          */
+                          onScaleStart: (details) {
+                            _baseZoom = _currentZoomLevel;
+                          },
+                          onScaleUpdate: (details) {
+                            _setZoomLevel(_baseZoom * details.scale);
+                          },
+                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(16.0),
                             child: AspectRatio(
-                              aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                              aspectRatio: 3 / 4,
                               child: CameraPreview(_controller!),
                             ),
                           ),
+                        ),
                         // -----------------------------------------------------------------------
                         // ----------------------------- アイコン配置 ------------------------------
                         Positioned(
