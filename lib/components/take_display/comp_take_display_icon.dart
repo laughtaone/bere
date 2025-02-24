@@ -89,18 +89,19 @@ class CompCameraMagnificationIcon extends StatefulWidget {
   const CompCameraMagnificationIcon({super.key,
     required this.isChangingCamera,
     required this.isNormalCamera,
-    required this.onPressed
+    required this.onPressed,
+    required this.cameraRate
   });
 
   final bool isChangingCamera;
   final bool isNormalCamera;
   final void Function(bool) onPressed;
+  final double cameraRate;
 
   @override
   CompCameraMagnificationIconState createState() => CompCameraMagnificationIconState();
 }
 class CompCameraMagnificationIconState extends State<CompCameraMagnificationIcon> {
-
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -110,10 +111,10 @@ class CompCameraMagnificationIconState extends State<CompCameraMagnificationIcon
       ),
       onPressed: () => widget.onPressed(true),
       icon: Container(
-        width: 38,
-        height: 38,
+        width: 39,
+        height: 39,
         decoration: BoxDecoration(
-          color: Colors.black.withAlpha((0.6 * 255).round()),
+          color: Colors.black.withAlpha((0.5 * 255).round()),
           borderRadius: BorderRadius.circular(10000),
         ),
         child: Center(
@@ -125,7 +126,21 @@ class CompCameraMagnificationIconState extends State<CompCameraMagnificationIcon
             ),
           )
           : Text(
-            (widget.isNormalCamera) ? '1x' : '0.5x',
+            (widget.isNormalCamera)
+              ? (widget.cameraRate >= 100)
+                ? '${widget.cameraRate.toInt().toString()}x'
+                  : (widget.cameraRate == widget.cameraRate.toInt())
+                    ? '${widget.cameraRate.toInt().toString()}x'
+                    : (double.parse(widget.cameraRate.toStringAsFixed(1)) == 1.0)
+                      ? '1x'
+                      : '${widget.cameraRate.toStringAsFixed(1)}x'
+              : (((widget.cameraRate - 1) / 1.4508 + 0.5) < 0.51)
+                ? '0.5x'
+                : (((widget.cameraRate - 1) / 1.4508 + 0.5) >= 0.51 && double.parse(((widget.cameraRate - 1) / 1.4508 + 0.5).toStringAsFixed(1)) < 1)
+                  ? '${((widget.cameraRate - 1) / 1.4508 + 0.5).toStringAsFixed(1)}x'
+                  : (double.parse(((widget.cameraRate - 1) / 1.4508 + 0.5).toStringAsFixed(1)) > 1.0)
+                    ? '0.99x'
+                    : '0.99x',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 14,

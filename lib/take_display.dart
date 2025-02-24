@@ -288,10 +288,12 @@ class TakePageState extends State<TakePage> {
         if (nowCameraIndex == wideOutCameraIndex) {
           setState(() {
             _cameraIndex = normalOutCameraIndex!;
+            setState(() {_currentZoomLevel = 1.0;});
           });
         } else if (nowCameraIndex == normalOutCameraIndex) {
           setState(() {
             _cameraIndex = wideOutCameraIndex!;
+            setState(() {_currentZoomLevel = 0.5;});
           });
         }
       }
@@ -312,6 +314,32 @@ class TakePageState extends State<TakePage> {
   }
 
   // ズームレベルを変更する関数
+  Future<void> _setZoomLevel(double zoomLevel, {required int? nowCameraIndex}) async {
+    if (_cameraIndex == normalOutCameraIndex) {
+      if (zoomLevel < _minZoomLevel) {
+        zoomLevel = _minZoomLevel;
+      } else if (zoomLevel > _maxZoomLevel) {
+        zoomLevel = _maxZoomLevel;
+      } else {
+        await _controller!.setZoomLevel(zoomLevel);
+        setState(() {
+          _currentZoomLevel = zoomLevel;
+        });
+      }
+    } else if (_cameraIndex == wideOutCameraIndex) {
+      if (zoomLevel < _minZoomLevel) {
+        zoomLevel = _minZoomLevel;
+      } else if (zoomLevel > 1.7254) {
+        zoomLevel = 1.7254;
+      } else {
+        await _controller!.setZoomLevel(zoomLevel);
+        setState(() {
+          _currentZoomLevel = zoomLevel;
+        });
+      }
+    }
+  }
+  /*
   Future<void> _setZoomLevel(double zoomLevel) async {
     if (zoomLevel < _minZoomLevel) {
       zoomLevel = _minZoomLevel;
@@ -323,6 +351,11 @@ class TakePageState extends State<TakePage> {
       _currentZoomLevel = zoomLevel;
     });
   }
+  */
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -375,24 +408,15 @@ class TakePageState extends State<TakePage> {
                     : Stack(
                       children: [
                         // ------------------------- カメラ画像のContainer -------------------------
-                        // ClipRRect(
-                        //   borderRadius: BorderRadius.circular(16.0),
-                        //   child: AspectRatio(
-                        //     aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                        //     child: CameraPreview(_controller!),
-                        //   ),
-                        // ),
                         GestureDetector(
-                          /*
-                          value: _currentZoomLevel,
-                            min: _minZoomLevel,
-                            max: _maxZoomLevel,
-                          */
                           onScaleStart: (details) {
                             _baseZoom = _currentZoomLevel;
                           },
                           onScaleUpdate: (details) {
-                            _setZoomLevel(_baseZoom * details.scale);
+                            _setZoomLevel(
+                              _baseZoom * details.scale,
+                              nowCameraIndex: _cameraIndex
+                            );
                           },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16.0),
@@ -451,6 +475,7 @@ class TakePageState extends State<TakePage> {
                                       ? CompCameraMagnificationIcon(
                                         isChangingCamera: isChangingCamera,
                                         isNormalCamera: _cameraIndex==normalOutCameraIndex,
+                                        cameraRate: _currentZoomLevel,
                                         onPressed: (bool recvBool) {
                                           switchCameraMagnification(
                                             nowCameraIndex: _cameraIndex,
@@ -486,6 +511,7 @@ class TakePageState extends State<TakePage> {
                                       ? CompCameraMagnificationIcon(
                                         isChangingCamera: isChangingCamera,
                                         isNormalCamera: _cameraIndex==normalOutCameraIndex,
+                                        cameraRate: _currentZoomLevel,
                                         onPressed: (bool recvBool) {
                                           switchCameraMagnification(
                                             nowCameraIndex: _cameraIndex,
