@@ -36,6 +36,13 @@ class TakePageState extends State<TakePage> {
   bool isSwitchCamera = false;
   bool isCameraMagnification = false;
 
+  // CameraDescription? ultraWideOutCamera;
+  // CameraDescription? normalOutCamera;
+  // CameraDescription? inCamera;
+  int? wideOutCameraIndex;
+  int? normalOutCameraIndex;
+  int? inCameraIndex;
+
 
   // ================================== 関数 ==================================
   @override
@@ -45,11 +52,28 @@ class TakePageState extends State<TakePage> {
     firstLoad();
   }
 
-  // カメラの初期化
+  // カメラの初期化 (アプリ起動時)
   Future<void> _initializeCamera() async {
     final cameras = await availableCameras();
+
+    // 超広角カメラを探す (built-in_video:5 を指定)
+    for (var i = 0; i < cameras.length; i++) {
+      if (cameras[i].lensDirection == CameraLensDirection.back) {
+        if (cameras[i].name.contains('built-in_video:5')) {
+          wideOutCameraIndex = i;
+          debugPrint('🔵 超広角カメラは、$i');
+        } else if (cameras[i].name.contains('built-in_video:0')) {
+          normalOutCameraIndex = i;
+          debugPrint('🔵 通常カメラは、$i');
+        }
+      } else if (cameras[i].lensDirection == CameraLensDirection.front) {
+        inCameraIndex = i;
+        debugPrint('🔵 インカメラは、$i');
+      }
+    }
+
     _controller = CameraController(
-      cameras[_cameraIndex],
+      cameras[normalOutCameraIndex ?? 0],
       ResolutionPreset.medium,
     );
 
@@ -58,6 +82,44 @@ class TakePageState extends State<TakePage> {
     // フラッシュをオフに設定
     await _initializeControllerFuture;
     await _controller!.setFlashMode(FlashMode.off);
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+  // カメラの初期化 (2回目以降)
+  Future<void> initializeCamera2({
+    required int? useCameraIndex,
+    required bool isFlashOn,
+  }) async {
+    final cameras = await availableCameras();
+
+    // 超広角カメラを探す (built-in_video:5 を指定)
+    for (var i = 0; i < cameras.length; i++) {
+      if (cameras[i].lensDirection == CameraLensDirection.back) {
+        if (cameras[i].name.contains('built-in_video:5')) {
+          wideOutCameraIndex = i;
+          debugPrint('🔵 超広角カメラは、$i');
+        } else if (cameras[i].name.contains('built-in_video:0')) {
+          normalOutCameraIndex = i;
+          debugPrint('🔵 通常カメラは、$i');
+        }
+      } else if (cameras[i].lensDirection == CameraLensDirection.front) {
+        inCameraIndex = i;
+        debugPrint('🔵 インカメラは、$i');
+      }
+    }
+
+    _controller = CameraController(
+      cameras[useCameraIndex ?? 0],
+      ResolutionPreset.medium,
+    );
+
+    _initializeControllerFuture = _controller!.initialize();
+
+    // フラッシュをオフに設定
+    await _initializeControllerFuture;
+    await _controller!.setFlashMode((isFlashOn) ? FlashMode.off : FlashMode.off);
 
     if (mounted) {
       setState(() {});
@@ -80,13 +142,13 @@ class TakePageState extends State<TakePage> {
   }
 
   // 撮影用関数
-  Future<void> _takePicture() async {
+  Future<void> _takePicture({required int nowCameraIndex}) async {
     try {
       await Future.delayed(const Duration(milliseconds: 100));  // 0.1秒待機
       setState(() {
         isTaking = true;
       });
-      await _initializeControllerFuture;
+      // await _initializeControllerFuture;
 
       // ------------------- メイン画像を撮影 -------------------
       final mainImage = await _controller!.takePicture();
@@ -95,10 +157,10 @@ class TakePageState extends State<TakePage> {
       // -----------------------------------------------------
 
       // -------------------- カメラ切り替え --------------------
-      if (_cameraIndex == 0) {
-        _cameraIndex = 1;
+      if (nowCameraIndex == normalOutCameraIndex || nowCameraIndex == wideOutCameraIndex) {
+        _cameraIndex = inCameraIndex ?? 1;
       } else {
-        _cameraIndex = 0;
+        _cameraIndex = normalOutCameraIndex ?? 0;
       }
       // -----------------------------------------------------
 
@@ -124,11 +186,7 @@ class TakePageState extends State<TakePage> {
       // -----------------------------------------------------
 
       // ---------------- カメラの内/外を元に戻す ----------------
-      if (_cameraIndex == 0) {
-        _cameraIndex = 1;
-      } else {
-        _cameraIndex = 0;
-      }
+      _cameraIndex = nowCameraIndex;
       await _initializeCamera();
       // -----------------------------------------------------
     } catch (e) {
@@ -165,14 +223,21 @@ class TakePageState extends State<TakePage> {
   }
 
   // カメラ切り替え用関数
-  Future switchCamera(nowCameraIndex) async {
+  Future switchCamera({required int? nowCameraIndex, required bool isFlashOn}) async {
     HapticFeedback.lightImpact();     // 触覚フィードバック
-    if (nowCameraIndex == 0) {
-      _cameraIndex = 1;
+    if (nowCameraIndex == normalOutCameraIndex || nowCameraIndex == wideOutCameraIndex) {
+      setState(() {
+        _cameraIndex = inCameraIndex ?? 1;
+      });
     } else {
-      _cameraIndex = 0;
+      setState(() {
+        _cameraIndex = normalOutCameraIndex ?? 0;
+      });
     }
-    _initializeCamera();
+    initializeCamera2(
+      useCameraIndex: _cameraIndex,
+      isFlashOn: isFlashOn
+    );
 
     await Future.delayed(const Duration(milliseconds: 200));
     setState(() {
@@ -188,13 +253,11 @@ class TakePageState extends State<TakePage> {
   Future switchCameraMagnification() async {
     HapticFeedback.lightImpact();     // 触覚フィードバック
 
-    setState(() {
-      isCameraMagnification = true;
-    });
-    await Future.delayed(const Duration(milliseconds: 950));
-    setState(() {
-      isCameraMagnification = false;
-    });
+    if (wideOutCameraIndex != null) {
+      _cameraIndex = 2;
+    } else {
+      _cameraIndex = 0;
+    }
   }
   // =======================================================================
 
@@ -304,7 +367,10 @@ class TakePageState extends State<TakePage> {
                                     CompCameraIcon(
                                       cameraIndex: _cameraIndex,
                                       onPressed: (int recvInt) {
-                                        switchCamera(recvInt);
+                                        switchCamera(
+                                          nowCameraIndex: _cameraIndex,
+                                          isFlashOn: isFlashOn
+                                        );
                                       },
                                     ),
                                     // - - - - - - - - - - - - - - - - -
@@ -329,7 +395,10 @@ class TakePageState extends State<TakePage> {
                                     CompCameraIcon(
                                       cameraIndex: _cameraIndex,
                                       onPressed: (int recvInt) {
-                                        switchCamera(recvInt);
+                                        switchCamera(
+                                          nowCameraIndex: _cameraIndex,
+                                          isFlashOn: isFlashOn
+                                        );
                                       },
                                     ),
                                     // - - - - - - - - - - - - - - - - -
@@ -361,7 +430,7 @@ class TakePageState extends State<TakePage> {
                     onPressed: (isTaking || !isCameraAllowed || !isMicAllowed)
                       ? null
                       : (isPrepaired)
-                        ? _takePicture     // 準備中かつ撮影中でなければ写真を撮る関数を呼び出せる
+                        ? () => _takePicture(nowCameraIndex: _cameraIndex)     // 準備中かつ撮影中でなければ写真を撮る関数を呼び出せる
                         : null,
                   );
                 },
