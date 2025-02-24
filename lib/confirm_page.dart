@@ -1,15 +1,11 @@
-import 'package:berehearsal/components/comp_caution_enable_sukusho.dart';
 import 'package:berehearsal/components/comp_common_appbar.dart';
 import 'package:berehearsal/components/comp_common_body_column.dart';
 import 'package:berehearsal/components/comp_image_animation.dart';
-import 'package:berehearsal/components/comp_setting_button.dart';
 import 'package:berehearsal/functions/function_setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'take_display.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:berehearsal/components/comp_title_appbar.dart';
 
 
 // ConfirmPageの定義
@@ -93,11 +89,11 @@ class ConfirmPageState extends State<ConfirmPage> {
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.black.withOpacity(0.5),
+                      color: Colors.black.withAlpha((0.5 * 255).round()),
                     ),
                     child: Icon(
                       Icons.close,
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withAlpha((0.8 * 255).round()),
                       size: 25,
                     ),
                   ),

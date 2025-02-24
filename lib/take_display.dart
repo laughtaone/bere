@@ -1,16 +1,14 @@
-import 'package:berehearsal/components/comp_caution_enable_sukusho.dart';
-import 'package:berehearsal/components/comp_common_appbar.dart';
-import 'package:berehearsal/components/comp_common_body_column.dart';
-import 'package:berehearsal/components/comp_loading.dart';
-import 'package:berehearsal/components/comp_setting_button.dart';
-import 'package:berehearsal/components/comp_take_display_icon.dart';
-import 'package:berehearsal/components/comp_title_appbar.dart';
-import 'package:berehearsal/functions/function_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
-import 'confirm_page.dart';
-import 'dart:math' as math;
+import 'package:berehearsal/components/comp_common_appbar.dart';
+import 'package:berehearsal/components/comp_common_body_column.dart';
+import 'package:berehearsal/components/comp_loading.dart';
+import 'package:berehearsal/components/comp_take_display_icon.dart';
+import 'package:berehearsal/functions/function_check_permission.dart';
+import 'package:berehearsal/functions/function_setting.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:berehearsal/confirm_page.dart';
 
 
 
@@ -29,12 +27,16 @@ class TakePageState extends State<TakePage> {
   String? subImagePath;
   bool isTaking = false;
   bool leftHandedMode = false;
+  bool isCameraAllowed = false;
+  bool isMicAllowed = false;
 
   @override
   void initState() {
     super.initState();
     _initializeCamera();
     firstSettingLoad();
+    firstCameraPermissionLoad();
+    firstMicPermissionLoad();
   }
 
   Future<void> _initializeCamera() async {
@@ -59,6 +61,23 @@ class TakePageState extends State<TakePage> {
   Future<void> firstSettingLoad() async {
     setState(() async {
       leftHandedMode = await loadLeftHandedModePreference() ?? false;
+    });
+  }
+
+  // カメラ権限確認
+  Future<void> firstCameraPermissionLoad() async {
+    bool keepPermission = await functionCheckCameraPermission();
+
+    setState(() {
+      isCameraAllowed = keepPermission;
+    });
+  }
+  // マイク権限確認
+  Future<void> firstMicPermissionLoad() async {
+    bool keepPermission = await functionCheckMicPermission();
+
+    setState(() {
+      isMicAllowed = keepPermission;
     });
   }
 
@@ -161,103 +180,140 @@ class TakePageState extends State<TakePage> {
               needBottomPadding: false,
               // ================================================== カメラ画像部分 ===================================================
               centerElement: (isPrepaired)      // 準備が終えたかどうか
-                ? (isTaking)
-                  ? const AspectRatio(
-                    aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                    child: CompLoading(
-                      message: '撮影中...',
-                    ),
+                ? (!isCameraAllowed || !isMicAllowed)     // カメラとマイクの権限が許可されていないかどうか
+                  ? AspectRatio(
+                      aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.error_outline_outlined, color: Colors.white, size: 35),
+                          const SizedBox(height: 10),
+                          Text(
+                            (!isCameraAllowed && isMicAllowed)
+                              ? 'カメラへのアクセスが\n許可されていません'
+                              : (isCameraAllowed && !isMicAllowed)
+                                ? 'マイクへのアクセスが\n許可されていません'
+                                : 'カメラとマイクへのアクセスが\n許可されていません',
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+                            textAlign: TextAlign.center
+                          ),
+                          const SizedBox(height: 30),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(255, 255, 255, 0.2),
+                              padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 10)
+                            ),
+                            onPressed: () async {
+                              await openAppSettings();
+                            },
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.settings_suggest_outlined, color: Colors.white, size: 27),
+                                SizedBox(width: 5),
+                                Text('設定を開く', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20))
+                              ]
+                            )
+                          )
+                        ]
+                      ),
                   )
-                  : Stack(
-                    children: [
-                      // ------------------------- カメラ画像のContainer -------------------------
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(16.0),
-                          child: AspectRatio(
-                            aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                            child: CameraPreview(_controller!),
+                  : (isTaking)
+                    ? const AspectRatio(
+                      aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                      child: CompLoading(
+                        message: '撮影中...',
+                      ),
+                    )
+                    : Stack(
+                      children: [
+                        // ------------------------- カメラ画像のContainer -------------------------
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(16.0),
+                            child: AspectRatio(
+                              aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                              child: CameraPreview(_controller!),
+                            ),
+                          ),
+                        // -----------------------------------------------------------------------
+                        // ----------------------------- アイコン配置 ------------------------------
+                        Positioned(
+                          bottom: 1,
+                          left: 0,
+                          right: 0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: (leftHandedMode)
+                              ? [
+                                // - - - - - フラッシュボタン - - - - -
+                                const CompTakeDisplayIcon(
+                                  icon: Icons.electric_bolt_outlined,
+                                  onPressed: null,
+                                  customPadding: EdgeInsets.only(left: 7),
+                                ),
+                                // - - - - - - - - - - - - - - - - -
+                                // - - - - - - 倍率ボタン - - - - - -
+                                const CompTakeDisplayIcon(
+                                  icon: Icons.circle_outlined,
+                                  onPressed: null,
+                                ),
+                                // - - - - - - - - - - - - - - - - -
+                                // - - イン/アウトカメラ切替ボタン - - -
+                                CompTakeDisplayIcon(
+                                  icon: Icons.cached_outlined,
+                                  onPressed: () {
+                                    HapticFeedback.lightImpact();     // 触覚フィードバック
+                                    if (_cameraIndex == 0) {
+                                      _cameraIndex = 1;
+                                    } else {
+                                      _cameraIndex = 0;
+                                    }
+                                    _initializeCamera();
+                                  },
+                                  customPadding: const EdgeInsets.only(right: 7),
+                                ),
+                                // - - - - - - - - - - - - - - - - -
+                              ].reversed.toList()
+                              : [
+                                // - - - - - フラッシュボタン - - - - -
+                                const CompTakeDisplayIcon(
+                                  icon: Icons.electric_bolt_outlined,
+                                  onPressed: null,
+                                  customPadding: EdgeInsets.only(left: 7),
+                                ),
+                                // - - - - - - - - - - - - - - - - -
+                                // - - - - - - 倍率ボタン - - - - - -
+                                const CompTakeDisplayIcon(
+                                  icon: Icons.circle_outlined,
+                                  onPressed: null,
+                                ),
+                                // - - - - - - - - - - - - - - - - -
+                                // - - イン/アウトカメラ切替ボタン - - -
+                                CompTakeDisplayIcon(
+                                  icon: Icons.cached_outlined,
+                                  onPressed: () {
+                                    HapticFeedback.lightImpact();     // 触覚フィードバック
+                                    if (_cameraIndex == 0) {
+                                      _cameraIndex = 1;
+                                    } else {
+                                      _cameraIndex = 0;
+                                    }
+                                    _initializeCamera();
+                                  },
+                                  customPadding: const EdgeInsets.only(right: 7),
+                                ),
+                                // - - - - - - - - - - - - - - - - -
+                              ],
                           ),
                         ),
-                      // -----------------------------------------------------------------------
-                      // ----------------------------- アイコン配置 ------------------------------
-                      Positioned(
-                        bottom: 1,
-                        left: 0,
-                        right: 0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: (leftHandedMode)
-                            ? [
-                              // - - - - - フラッシュボタン - - - - -
-                              const CompTakeDisplayIcon(
-                                icon: Icons.electric_bolt_outlined,
-                                onPressed: null,
-                                customPadding: EdgeInsets.only(left: 7),
-                              ),
-                              // - - - - - - - - - - - - - - - - -
-                              // - - - - - - 倍率ボタン - - - - - -
-                              const CompTakeDisplayIcon(
-                                icon: Icons.circle_outlined,
-                                onPressed: null,
-                              ),
-                              // - - - - - - - - - - - - - - - - -
-                              // - - イン/アウトカメラ切替ボタン - - -
-                              CompTakeDisplayIcon(
-                                icon: Icons.cached_outlined,
-                                onPressed: () {
-                                  HapticFeedback.lightImpact();     // 触覚フィードバック
-                                  if (_cameraIndex == 0) {
-                                    _cameraIndex = 1;
-                                  } else {
-                                    _cameraIndex = 0;
-                                  }
-                                  _initializeCamera();
-                                },
-                                customPadding: const EdgeInsets.only(right: 7),
-                              ),
-                              // - - - - - - - - - - - - - - - - -
-                            ].reversed.toList()
-                            : [
-                              // - - - - - フラッシュボタン - - - - -
-                              const CompTakeDisplayIcon(
-                                icon: Icons.electric_bolt_outlined,
-                                onPressed: null,
-                                customPadding: EdgeInsets.only(left: 7),
-                              ),
-                              // - - - - - - - - - - - - - - - - -
-                              // - - - - - - 倍率ボタン - - - - - -
-                              const CompTakeDisplayIcon(
-                                icon: Icons.circle_outlined,
-                                onPressed: null,
-                              ),
-                              // - - - - - - - - - - - - - - - - -
-                              // - - イン/アウトカメラ切替ボタン - - -
-                              CompTakeDisplayIcon(
-                                icon: Icons.cached_outlined,
-                                onPressed: () {
-                                  HapticFeedback.lightImpact();     // 触覚フィードバック
-                                  if (_cameraIndex == 0) {
-                                    _cameraIndex = 1;
-                                  } else {
-                                    _cameraIndex = 0;
-                                  }
-                                  _initializeCamera();
-                                },
-                                customPadding: const EdgeInsets.only(right: 7),
-                              ),
-                              // - - - - - - - - - - - - - - - - -
-                            ],
-                        ),
-                      ),
-                      // -----------------------------------------------------------------------
-                    ],
-                  )
+                        // -----------------------------------------------------------------------
+                      ],
+                    )
                 // ------------------------- カメラ切り替え中の表示 -------------------------
                 : const AspectRatio(
                   aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                  child: CompLoading(
-                    message: '準備中...',
-                  ),
+                  child: CompLoading(message: '準備中...')
                 ),
                 // -----------------------------------------------------------------------
               // ===================================================================================================================
@@ -266,12 +322,16 @@ class TakePageState extends State<TakePage> {
                 builder: (context, constraints) {
                   return IconButton(
                     style: IconButton.styleFrom(
-                      disabledForegroundColor: Colors.white.withOpacity(0.15)
+                      disabledForegroundColor: Colors.white.withAlpha((0.05 * 255).round())
                     ),
                     padding: EdgeInsets.zero,
                     iconSize: (constraints.maxHeight >= 100) ? 100 : constraints.maxHeight,       // アイコンサイズを利用可能なスペースに合わせる
                     icon: const Icon(Icons.radio_button_unchecked),
-                    onPressed: (isPrepaired) ? _takePicture : null, // 準備中でなければ写真を撮る関数を呼び出し,
+                    onPressed: (isTaking || !isCameraAllowed || !isMicAllowed)
+                      ? null
+                      : (isPrepaired)
+                        ? _takePicture     // 準備中かつ撮影中でなければ写真を撮る関数を呼び出せる
+                        : null,
                   );
                 },
               )
