@@ -8,12 +8,14 @@ class CompDisplaySwitch extends StatelessWidget {
     required this.targetText,
     this.customOnText = 'オン',
     this.customOffText = 'オフ',
+    this.customFullText = ''
   });
 
   final bool targetVeriable;
   final String targetText;
   final String customOnText;
   final String customOffText;
+  final String customFullText;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,9 @@ class CompDisplaySwitch extends StatelessWidget {
         borderRadius: BorderRadius.circular(7),
       ),
       child: Text(
-        '$targetTextが ${targetVeriable ? customOnText : customOffText} になりました',
+        (customFullText.isNotEmpty)
+          ? customFullText :
+          '$targetTextが ${targetVeriable ? customOnText : customOffText} になりました',
         style: const TextStyle(fontSize: 15),
       )
     );

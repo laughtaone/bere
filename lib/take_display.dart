@@ -6,7 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:berehearsal/components/comp_common_appbar.dart';
 import 'package:berehearsal/components/comp_common_body_column.dart';
 import 'package:berehearsal/components/comp_loading.dart';
-import 'package:berehearsal/components/comp_take_display_icon.dart';
+import 'package:berehearsal/components/take_display/comp_take_display_icon.dart';
 import 'package:berehearsal/functions/function_check_permission.dart';
 import 'package:berehearsal/functions/function_setting.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -34,6 +34,7 @@ class TakePageState extends State<TakePage> {
   bool isFlashOn = false;
   bool isSwitchFlash = false;
   bool isSwitchCamera = false;
+  bool isCameraMagnification = false;
 
 
   // ================================== 関数 ==================================
@@ -162,6 +163,7 @@ class TakePageState extends State<TakePage> {
       isSwitchFlash = false;
     });
   }
+
   // カメラ切り替え用関数
   Future switchCamera(nowCameraIndex) async {
     HapticFeedback.lightImpact();     // 触覚フィードバック
@@ -179,6 +181,19 @@ class TakePageState extends State<TakePage> {
     await Future.delayed(const Duration(milliseconds: 950));
     setState(() {
       isSwitchCamera = false;
+    });
+  }
+
+  // 倍率ボタン反映関数
+  Future switchCameraMagnification() async {
+    HapticFeedback.lightImpact();     // 触覚フィードバック
+
+    setState(() {
+      isCameraMagnification = true;
+    });
+    await Future.delayed(const Duration(milliseconds: 950));
+    setState(() {
+      isCameraMagnification = false;
     });
   }
   // =======================================================================
@@ -261,59 +276,61 @@ class TakePageState extends State<TakePage> {
                               (isSwitchCamera)
                                 ? CompDisplaySwitch(targetVeriable: _cameraIndex==0 , targetText: 'カメラ', customOnText: '外カメラ', customOffText: '内カメラ')
                                 : const SizedBox.shrink(),
+                              // 倍率
+                              (isCameraMagnification)
+                                ? const CompDisplaySwitch(targetVeriable: false, targetText: '', customFullText: '現在開発中の機能のため、倍率は変更できません')
+                                : const SizedBox.shrink(),
                               // ------------------------------------
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: (leftHandedMode)
                                   ? [
                                     // - - - - - フラッシュボタン - - - - -
-                                    CompTakeDisplayIcon(
-                                      icon: (isFlashOn) ? Icons.flash_on_rounded : Icons.flash_off_rounded,
-                                      customPadding: const EdgeInsets.only(left: 7),
-                                      onPressed: () async {
+                                    CompFlashIcon(
+                                      isFlashOn: isFlashOn,
+                                      onPressed: (bool recvBool) {
                                         switchFlash(isFlashOn);
                                       },
                                     ),
                                     // - - - - - - - - - - - - - - - - -
                                     // - - - - - - 倍率ボタン - - - - - -
-                                    const CompTakeDisplayIcon(
-                                      icon: Icons.circle_outlined,
-                                      onPressed: null,
+                                    CompCameraMagnificationIcon(
+                                      onPressed: (bool recvBool) {
+                                        switchCameraMagnification();
+                                      },
                                     ),
                                     // - - - - - - - - - - - - - - - - -
                                     // - - イン/アウトカメラ切替ボタン - - -
-                                    CompTakeDisplayIcon(
-                                      icon: Icons.cached_outlined,
-                                      onPressed: () async {
-                                        switchCamera(_cameraIndex);
+                                    CompCameraIcon(
+                                      cameraIndex: _cameraIndex,
+                                      onPressed: (int recvInt) {
+                                        switchCamera(recvInt);
                                       },
-                                      customPadding: const EdgeInsets.only(right: 7),
                                     ),
                                     // - - - - - - - - - - - - - - - - -
                                   ].reversed.toList()
                                   : [
                                     // - - - - - フラッシュボタン - - - - -
-                                    CompTakeDisplayIcon(
-                                      icon: (isFlashOn) ? Icons.flash_on_rounded : Icons.flash_off_rounded,
-                                      customPadding: const EdgeInsets.only(left: 7),
-                                      onPressed: () async {
+                                    CompFlashIcon(
+                                      isFlashOn: isFlashOn,
+                                      onPressed: (bool recvBool) {
                                         switchFlash(isFlashOn);
                                       },
                                     ),
                                     // - - - - - - - - - - - - - - - - -
                                     // - - - - - - 倍率ボタン - - - - - -
-                                    const CompTakeDisplayIcon(
-                                      icon: Icons.circle_outlined,
-                                      onPressed: null,
+                                    CompCameraMagnificationIcon(
+                                      onPressed: (bool recvBool) {
+                                        switchCameraMagnification();
+                                      },
                                     ),
                                     // - - - - - - - - - - - - - - - - -
                                     // - - イン/アウトカメラ切替ボタン - - -
-                                    CompTakeDisplayIcon(
-                                      icon: Icons.cached_outlined,
-                                      onPressed: () async {
-                                        switchCamera(_cameraIndex);
+                                    CompCameraIcon(
+                                      cameraIndex: _cameraIndex,
+                                      onPressed: (int recvInt) {
+                                        switchCamera(recvInt);
                                       },
-                                      customPadding: const EdgeInsets.only(right: 7),
                                     ),
                                     // - - - - - - - - - - - - - - - - -
                                   ],
