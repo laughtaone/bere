@@ -143,10 +143,10 @@ class SettingsPageState extends State<SettingsPage> {
                       builder: (context) {
                         return CupertinoAlertDialog(
                           title: const Text('確認'),
-                          content: const Text('左利きモードの切り替えを反映するには、トップ画面に戻る必要があります。\n次のボタンを押してトップ画面へ遷移してください。'),
+                          content: const Text('左利きモードの切り替えを反映するには、トップ画面に戻る必要があります。\n\n次のボタンを押してトップ画面へ遷移してください。'),
                           actions: <Widget>[
                             TextButton(
-                              child: const Text('トップ画面へ遷移'),
+                              child: const Text('トップ画面へ遷移', style: TextStyle(fontWeight: FontWeight.bold)),
                               onPressed: () {
                                 Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(builder: (context) => const StartPage()),

@@ -36,6 +36,12 @@ class CompNotAllowedState extends State<CompNotAllowed> {
           textAlign: TextAlign.center
         ),
         const SizedBox(height: 30),
+        const Text(
+            '初回起動時は許可していても\nこのように表示される可能性があります。\n再度、アプリを開き直してみてください。',
+            style: TextStyle(color: Color(0xffc5c5c5), fontWeight: FontWeight.bold, fontSize: 12),
+            textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 50),
         TextButton(
           style: TextButton.styleFrom(
             backgroundColor: const Color.fromRGBO(255, 255, 255, 0.2),
@@ -53,7 +59,7 @@ class CompNotAllowedState extends State<CompNotAllowed> {
               Text('設定を開く', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20))
             ]
           )
-        )
+        ),
       ]
     );
   }
