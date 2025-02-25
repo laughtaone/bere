@@ -39,6 +39,7 @@ class TakePageState extends State<TakePage> {
   bool isSwitchCamera = false;
   bool isSwitchCameraRate = false;
   bool isCameraMagnification = false;
+  bool isFirstLoaded = false;
 
   int? wideOutCameraIndex;
   int? normalOutCameraIndex;
@@ -148,6 +149,7 @@ class TakePageState extends State<TakePage> {
       leftHandedMode = widget.leftHandedMode;   // 設定値読み込み
       isCameraAllowed = await functionCheckCameraPermission();          // カメラ権限確認
       isMicAllowed = await functionCheckMicPermission();                // マイク権限確認
+      isFirstLoaded = true;
     });
   }
 
@@ -383,163 +385,171 @@ class TakePageState extends State<TakePage> {
               isCompactDisplay: isCompactDisplay,
               needBottomPadding: false,
               // ================================================== カメラ画像部分 ===================================================
-              centerElement: (isPrepaired)      // 準備が終えたかどうか
-                ? (!isCameraAllowed || !isMicAllowed)     // カメラとマイクの権限が許可されていないかどうか
-                  ? AspectRatio(
+              centerElement:
+                (!isFirstLoaded)
+                  // カメラ準備中の表示
+                  ? const AspectRatio(
                       aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                      child: CompNotAllowed(
-                        isCameraAllowed: isCameraAllowed,
-                        isMicAllowed: isMicAllowed
-                      ),
-                  )
-                  : (isTaking)
-                    ? const AspectRatio(
-                      aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                      child: CompLoading(
-                        message: '撮影中...',
-                      ),
+                      child: CompLoading(message: '準備中...')
                     )
-                    : Stack(
-                      children: [
-                        // ------------------------- カメラ画像のContainer -------------------------
-                        GestureDetector(
-                          onScaleStart: (details) {
-                            _baseZoom = _currentZoomLevel;
-                          },
-                          onScaleUpdate: (details) {
-                            _setZoomLevel(
-                              _baseZoom * details.scale,
-                              nowCameraIndex: _cameraIndex
-                            );
-                          },
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16.0),
-                            child: AspectRatio(
-                              aspectRatio: 3 / 4,
-                              child: CameraPreview(_controller!),
-                            ),
-                          ),
+                  :(!isCameraAllowed || !isMicAllowed)     // カメラとマイクの権限が許可されていないかどうか
+                    // カメラまたはマイクの権限が許可されていない場合の表示
+                    ? AspectRatio(
+                        aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                        child: CompNotAllowed(
+                          isCameraAllowed: isCameraAllowed,
+                          isMicAllowed: isMicAllowed
                         ),
-                        // -----------------------------------------------------------------------
-                        // ----------------------------- アイコン配置 ------------------------------
-                        Positioned(
-                          bottom: 1,
-                          left: 0,
-                          right: 0,
-                          child: Column(
-                            children: [
-                              // ------------ 切り替え表示 ------------
-                              // フラッシュ
-                              (isSwitchFlash)
-                                ? CompDisplaySwitch(targetVeriable: isFlashOn, targetText: 'フラッシュ')
-                                : const SizedBox.shrink(),
-                              // カメラ
-                              (isSwitchCamera)
-                                ? CompDisplaySwitch(targetVeriable: _cameraIndex==0 , targetText: 'カメラ', customOnText: '外カメラ', customOffText: '内カメラ')
-                                : const SizedBox.shrink(),
-                              // 倍率
-                              (isSwitchCameraRate)
-                                ? CompDisplaySwitch(
-                                  targetVeriable: false,
-                                  targetText: '',
-                                  customFullText: (wideOutCameraIndex != null)
-                                    ? 'カメラの倍率を変更しました'
-                                    : 'シングルカメラの機種のため変更できません'
-                                )
-                                : const SizedBox.shrink(),
-
-                              (isSwitchFlash || isSwitchCamera || isSwitchCameraRate)
-                                ? const SizedBox(height: 20)
-                                : const SizedBox.shrink(),
-                              // ------------------------------------
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: (leftHandedMode)
-                                  ? [
-                                    // - - - - - フラッシュボタン - - - - -
-                                    CompFlashIcon(
-                                      isFlashOn: isFlashOn,
-                                      onPressed: (bool recvBool) {
-                                        switchFlash(isFlashOn);
-                                      },
-                                    ),
-                                    // - - - - - - - - - - - - - - - - -
-                                    // - - - - - - 倍率ボタン - - - - - -
-                                    (_cameraIndex != inCameraIndex)
-                                      ? CompCameraMagnificationIcon(
-                                        isChangingCamera: isChangingCamera,
-                                        isNormalCamera: _cameraIndex==normalOutCameraIndex,
-                                        cameraRate: _currentZoomLevel,
-                                        onPressed: (bool recvBool) {
-                                          switchCameraMagnification(
-                                            nowCameraIndex: _cameraIndex,
-                                            isFlashOn: isFlashOn
-                                          );
-                                        },
-                                      )
-                                      : const SizedBox.shrink(),
-                                    // - - - - - - - - - - - - - - - - -
-                                    // - - イン/アウトカメラ切替ボタン - - -
-                                    CompCameraIcon(
-                                      cameraIndex: _cameraIndex,
-                                      onPressed: (int recvInt) {
-                                        switchCamera(
-                                          nowCameraIndex: _cameraIndex,
-                                          isFlashOn: isFlashOn
-                                        );
-                                      },
-                                    ),
-                                    // - - - - - - - - - - - - - - - - -
-                                  ].reversed.toList()
-                                  : [
-                                    // - - - - - フラッシュボタン - - - - -
-                                    CompFlashIcon(
-                                      isFlashOn: isFlashOn,
-                                      onPressed: (bool recvBool) {
-                                        switchFlash(isFlashOn);
-                                      },
-                                    ),
-                                    // - - - - - - - - - - - - - - - - -
-                                    // - - - - - - 倍率ボタン - - - - - -
-                                    (_cameraIndex != inCameraIndex)
-                                      ? CompCameraMagnificationIcon(
-                                        isChangingCamera: isChangingCamera,
-                                        isNormalCamera: _cameraIndex==normalOutCameraIndex,
-                                        cameraRate: _currentZoomLevel,
-                                        onPressed: (bool recvBool) {
-                                          switchCameraMagnification(
-                                            nowCameraIndex: _cameraIndex,
-                                            isFlashOn: isFlashOn
-                                          );
-                                        },
-                                      )
-                                      : const SizedBox.shrink(),
-                                    // - - - - - - - - - - - - - - - - -
-                                    // - - イン/アウトカメラ切替ボタン - - -
-                                    CompCameraIcon(
-                                      cameraIndex: _cameraIndex,
-                                      onPressed: (int recvInt) {
-                                        switchCamera(
-                                          nowCameraIndex: _cameraIndex,
-                                          isFlashOn: isFlashOn
-                                        );
-                                      },
-                                    ),
-                                    // - - - - - - - - - - - - - - - - -
-                                  ],
+                    )
+                    : (!isPrepaired)
+                      // カメラ切り替え中の表示
+                      ? const AspectRatio(
+                        aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                        child: CompLoading(message: '準備中...')
+                      )
+                      // 撮影中の表示
+                      :(isTaking)
+                        ? const AspectRatio(
+                          aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                          child: CompLoading(
+                            message: '撮影中...',
+                          ),
+                        )
+                        : Stack(
+                          children: [
+                            // ------------------------- カメラ画像のContainer -------------------------
+                            GestureDetector(
+                              onScaleStart: (details) {
+                                _baseZoom = _currentZoomLevel;
+                              },
+                              onScaleUpdate: (details) {
+                                _setZoomLevel(
+                                  _baseZoom * details.scale,
+                                  nowCameraIndex: _cameraIndex
+                                );
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16.0),
+                                child: AspectRatio(
+                                  aspectRatio: 3 / 4,
+                                  child: CameraPreview(_controller!),
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
+                            ),
+                            // -----------------------------------------------------------------------
+                            // ----------------------------- アイコン配置 ------------------------------
+                            Positioned(
+                              bottom: 1,
+                              left: 0,
+                              right: 0,
+                              child: Column(
+                                children: [
+                                  // ------------ 切り替え表示 ------------
+                                  // フラッシュ
+                                  (isSwitchFlash)
+                                    ? CompDisplaySwitch(targetVeriable: isFlashOn, targetText: 'フラッシュ')
+                                    : const SizedBox.shrink(),
+                                  // カメラ
+                                  (isSwitchCamera)
+                                    ? CompDisplaySwitch(targetVeriable: _cameraIndex==0 , targetText: 'カメラ', customOnText: '外カメラ', customOffText: '内カメラ')
+                                    : const SizedBox.shrink(),
+                                  // 倍率
+                                  (isSwitchCameraRate)
+                                    ? CompDisplaySwitch(
+                                      targetVeriable: false,
+                                      targetText: '',
+                                      customFullText: (wideOutCameraIndex != null)
+                                        ? 'カメラの倍率を変更しました'
+                                        : 'シングルカメラの機種のため変更できません'
+                                    )
+                                    : const SizedBox.shrink(),
+
+                                  (isSwitchFlash || isSwitchCamera || isSwitchCameraRate)
+                                    ? const SizedBox(height: 20)
+                                    : const SizedBox.shrink(),
+                                  // ------------------------------------
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: (leftHandedMode)
+                                      ? [
+                                        // - - - - - フラッシュボタン - - - - -
+                                        CompFlashIcon(
+                                          isFlashOn: isFlashOn,
+                                          onPressed: (bool recvBool) {
+                                            switchFlash(isFlashOn);
+                                          },
+                                        ),
+                                        // - - - - - - - - - - - - - - - - -
+                                        // - - - - - - 倍率ボタン - - - - - -
+                                        (_cameraIndex != inCameraIndex)
+                                          ? CompCameraMagnificationIcon(
+                                            isChangingCamera: isChangingCamera,
+                                            isNormalCamera: _cameraIndex==normalOutCameraIndex,
+                                            cameraRate: _currentZoomLevel,
+                                            onPressed: (bool recvBool) {
+                                              switchCameraMagnification(
+                                                nowCameraIndex: _cameraIndex,
+                                                isFlashOn: isFlashOn
+                                              );
+                                            },
+                                          )
+                                          : const SizedBox.shrink(),
+                                        // - - - - - - - - - - - - - - - - -
+                                        // - - イン/アウトカメラ切替ボタン - - -
+                                        CompCameraIcon(
+                                          cameraIndex: _cameraIndex,
+                                          onPressed: (int recvInt) {
+                                            switchCamera(
+                                              nowCameraIndex: _cameraIndex,
+                                              isFlashOn: isFlashOn
+                                            );
+                                          },
+                                        ),
+                                        // - - - - - - - - - - - - - - - - -
+                                      ].reversed.toList()
+                                      : [
+                                        // - - - - - フラッシュボタン - - - - -
+                                        CompFlashIcon(
+                                          isFlashOn: isFlashOn,
+                                          onPressed: (bool recvBool) {
+                                            switchFlash(isFlashOn);
+                                          },
+                                        ),
+                                        // - - - - - - - - - - - - - - - - -
+                                        // - - - - - - 倍率ボタン - - - - - -
+                                        (_cameraIndex != inCameraIndex)
+                                          ? CompCameraMagnificationIcon(
+                                            isChangingCamera: isChangingCamera,
+                                            isNormalCamera: _cameraIndex==normalOutCameraIndex,
+                                            cameraRate: _currentZoomLevel,
+                                            onPressed: (bool recvBool) {
+                                              switchCameraMagnification(
+                                                nowCameraIndex: _cameraIndex,
+                                                isFlashOn: isFlashOn
+                                              );
+                                            },
+                                          )
+                                          : const SizedBox.shrink(),
+                                        // - - - - - - - - - - - - - - - - -
+                                        // - - イン/アウトカメラ切替ボタン - - -
+                                        CompCameraIcon(
+                                          cameraIndex: _cameraIndex,
+                                          onPressed: (int recvInt) {
+                                            switchCamera(
+                                              nowCameraIndex: _cameraIndex,
+                                              isFlashOn: isFlashOn
+                                            );
+                                          },
+                                        ),
+                                        // - - - - - - - - - - - - - - - - -
+                                      ],
+                                  ),
+                                ],
+                              ),
+                            ),
                         // -----------------------------------------------------------------------
                       ],
-                    )
-                // ------------------------- カメラ切り替え中の表示 -------------------------
-                : const AspectRatio(
-                  aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                  child: CompLoading(message: '準備中...')
-                ),
-                // -----------------------------------------------------------------------
+                    ),
               // ===================================================================================================================
               // ==================================================== 撮影ボタン ====================================================
               bottomElement: LayoutBuilder(
