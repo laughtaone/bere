@@ -1,3 +1,4 @@
+import 'package:berehearsal/functions/function_launch_url.dart';
 import 'package:flutter/material.dart';
 
 // Q＆A用のウィジェット
@@ -5,12 +6,16 @@ class QaWidget extends StatelessWidget {
   final String qText;
   final String aText;
   final String titleText;
+  final String url;
+  final String customUrlOpenText;
 
   const QaWidget({
     super.key,
     required this.qText,
     required this.aText,
-    required this.titleText
+    required this.titleText,
+    this.url = '',
+    this.customUrlOpenText = '',
   });
 
 
@@ -71,24 +76,73 @@ class QaWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 3.0),
+                            padding: const EdgeInsets.only(top: 3),
                             child: Icon(
-                              Icons.chat_bubble_outline,
+                              Icons.textsms_outlined,
                               color: qaContentsColor(),
                               size: qaIconSize(),
-                            ),
+                            )
                           ),
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                aText,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  fontSize: qaTextSize(),
-                                  color: qaContentsColor(),
-                                  fontFamily: qaTextFont(),
-                                ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    aText,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: qaTextSize(),
+                                      color: qaContentsColor(),
+                                      fontFamily: qaTextFont(),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 3),
+                                  if (url != '')
+                                    TextButton(
+                                      onPressed: () async {
+                                        await functionLaunchUrl(url);
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 50,
+                                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30),
+                                          color: const Color(0xff505050),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Flexible(
+                                              child: Text(
+                                                (customUrlOpenText == '') ? '開く' : customUrlOpenText,
+                                                style: TextStyle(
+                                                  fontSize: qaTextSize() + 1,
+                                                  color: Colors.white,
+                                                  fontFamily: qaTextFont(),
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 5),
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 3),
+                                              child: Icon(
+                                                Icons.open_in_new,
+                                                color: Colors.white,
+                                                size: 22,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           ),

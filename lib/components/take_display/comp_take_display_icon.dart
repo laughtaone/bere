@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:berehearsal/components/take_display/comp_take_display_icon.dart';
 
 
 // 大もとのコンポーネントコード

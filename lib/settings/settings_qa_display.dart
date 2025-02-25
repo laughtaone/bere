@@ -17,22 +17,28 @@ const List<Map<String, dynamic>> qaData = [
   {
     'title': '',
     'q': 'このアプリでバグを見つけました！',
-    'a': 'お手数ですが、至急開発者のXのDMより教えていただければ幸いです!'
+    'a': 'お手数ですが、下記のフォームより報告していただけたら幸いです',
+    'url': 'https://forms.gle/kVS6BXarzvrNWxsK6',
+    'customUrlOpenText': 'フォームを開く'
   },
   {
     'title': '開発者について',
     'q': 'このアプリを通して、アプリ開発者にお金は入っていますか？',
-    'a': '本アプリには、広告を掲載していない上、通信機能を実装していません。ゆえに、データや使用状況の収集もプログラム的に不可能であるため、本アプリを通して、アプリ開発者には1円たりとも、お金・使用データは入っていませんのでご安心ください。\n\nあくまで開発者が「n回の再撮影」と表示されずにBeReal.の撮影の練習をしたいという目的で開発したアプリです。'
+    'a': '本アプリでは、アプリ内においてインターネット通信機能や撮影データ保存機能を実装していません。\nそのため、プログラム的にそもそも広告を掲載できない上、データや使用状況の収集も不可能であるため、本アプリを通して、アプリ開発者には1円たりとも、お金・使用分析データは入っていませんのでご安心ください。\n\nあくまで開発者が「n回の再撮影」と表示されずにBeReal.の撮影の練習をしたいという目的で開発したアプリです。\n\nまた、BeReal.様を支えるこのアプリから収益を得るのは、開発者の自分の中のポリシーに反するため、今後も同様に広告を掲載せず、使用データの収集・分析もいたしません。'
   },
   {
     'title': '',
     'q': '機能の追加など、このアプリへの要望・感想を開発者に伝えたいです。',
-    'a': '開発者のXのDMより教えていただければ幸いです。'
+    'a': '開発者のXのDMより教えていただければ幸いです。',
+    'url': 'https://x.com/laughtaone',
+    'customUrlOpenText': 'Xを開く (Open X)'
   },
   {
     'title': 'BeReal.運営者さまへ\n (For BeReal. developers)',
     'q': 'BeReal.の運営者からですが、至急、このアプリの配信の中止をしてください。\n（English translation by Google Translate: This is a message from the BeReal. developers to please stop distributing this rehearsal app as soon as possible.）',
-    'a': 'この度は、勝手にリハーサルアプリの作成・配信を行い、大変申し訳ありません。まずは、BeReal.運営者であることを確認し、必要に応じ、即時、配信の中止を行います。そのため、お手数ですが、当アプリ開発者のX(@suupusoup)のDMまでお願いいたします。\n(English translation by Google Translate: I am very sorry for creating and distributing this rehearsal app without permission. First of all, I will confirm that you are the operator of BeReal., and if necessary, I will immediately stop the distribution. Therefore, I apologize for the inconvenience, but please send a DM to X (@suupusoup), the developer of this rehearsal app.)'
+    'a': 'この度は、勝手にリハーサルアプリの作成・配信を行い、大変申し訳ありません。まずは、BeReal.運営者であることを確認し、必要に応じ、即時、配信の中止を行います。そのため、お手数ですが、当アプリ開発者のX(@laughtaone)のDMまでお願いいたします。\n(English translation by Google Translate: I am very sorry for creating and distributing this rehearsal app without permission. First of all, I will confirm that you are the operator of BeReal., and if necessary, I will immediately stop the distribution. Therefore, I apologize for the inconvenience, but please send a DM to X (@laughtaone), the developer of this rehearsal app.)',
+    'url': 'https://x.com/laughtaone',
+    'customUrlOpenText': 'Xを開く (Open X)'
   },
 ];
 
@@ -73,6 +79,8 @@ class QAPage extends StatelessWidget {
                 titleText: qaData[index]['title'] ?? '',
                 qText: qaData[index]['q'],
                 aText: qaData[index]['a'],
+                url: qaData[index]['url'] ?? '',
+                customUrlOpenText: qaData[index]['customUrlOpenText'] ?? '',
               );
             }),
           ),

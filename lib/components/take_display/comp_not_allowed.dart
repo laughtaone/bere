@@ -37,7 +37,7 @@ class CompNotAllowedState extends State<CompNotAllowed> {
         ),
         const SizedBox(height: 30),
         const Text(
-            '初回起動時は許可していても\nこのように表示される可能性があります。\n再度、アプリを開き直してみてください。',
+            '初回起動時は許可していても\nこのように表示される可能性があります\n再度、アプリを開き直してみてください',
             style: TextStyle(color: Color(0xffc5c5c5), fontWeight: FontWeight.bold, fontSize: 12),
             textAlign: TextAlign.center,
         ),

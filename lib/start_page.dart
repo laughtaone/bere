@@ -103,9 +103,9 @@ class StartPageState extends State<StartPage> {
                       ),
                     ),
                     // - - - - - - - - - - - - -
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 10),
                     // - - - - 非公式案内 - - - -
-                    const Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 13, color: Color(0xffC0C0C0), fontWeight: FontWeight.bold)),
+                    const Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 14, color: Color(0xffd0d0d0), fontWeight: FontWeight.bold)),
                     // - - - - - - - - - - - - -
                   ],
                 ),
@@ -136,6 +136,7 @@ class StartPageState extends State<StartPage> {
                       },
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
@@ -149,7 +150,7 @@ class StartPageState extends State<StartPage> {
                           Icon(
                             Icons.chevron_right_outlined,
                             color: Colors.white,
-                            size: 45,
+                            size: 50,
                           )
                         ],
                       ),

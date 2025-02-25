@@ -8,8 +8,6 @@ import 'package:berehearsal/components/comp_common_body_column.dart';
 import 'package:berehearsal/components/comp_loading.dart';
 import 'package:berehearsal/components/take_display/comp_take_display_icon.dart';
 import 'package:berehearsal/functions/function_check_permission.dart';
-import 'package:berehearsal/functions/function_setting.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:berehearsal/confirm_page.dart';
 
 
@@ -132,7 +130,7 @@ class TakePageState extends State<TakePage> {
 
     // フラッシュをオフに設定
     await _initializeControllerFuture;
-    await _controller!.setFlashMode((isFlashOn) ? FlashMode.off : FlashMode.off);
+    await _controller!.setFlashMode((isFlashOn) ? FlashMode.always : FlashMode.off);
 
     // ズームレベルの範囲を取得
     _minZoomLevel = await _controller!.getMinZoomLevel();
@@ -160,7 +158,7 @@ class TakePageState extends State<TakePage> {
   }
 
   // 撮影用関数
-  Future<void> _takePicture({required int nowCameraIndex}) async {
+  Future<void> _takePicture({required int nowCameraIndex, required bool isFlashOn}) async {
     try {
       await Future.delayed(const Duration(milliseconds: 100));  // 0.1秒待機
       setState(() {
@@ -366,9 +364,6 @@ class TakePageState extends State<TakePage> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;     // 画面の高さを取得
-    double screenWidth = MediaQuery.of(context).size.width;     // 画面の幅を取得
-    double bodyHeight = screenHeight - AppBar().preferredSize.height;
-
     bool isCompactDisplay = screenHeight < 743;       // 画面の高さが 743px未満 だったらコンパクト表示
 
 
@@ -559,7 +554,7 @@ class TakePageState extends State<TakePage> {
                     onPressed: (isTaking || !isCameraAllowed || !isMicAllowed)
                       ? null
                       : (isPrepaired)
-                        ? () => _takePicture(nowCameraIndex: _cameraIndex)     // 準備中かつ撮影中でなければ写真を撮る関数を呼び出せる
+                        ? () => _takePicture(nowCameraIndex: _cameraIndex, isFlashOn: isFlashOn)     // 準備中かつ撮影中でなければ写真を撮る関数を呼び出せる
                         : null,
                   );
                 },

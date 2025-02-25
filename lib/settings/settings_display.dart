@@ -2,13 +2,13 @@ import 'package:berehearsal/functions/function_setting.dart';
 import 'package:berehearsal/start_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import 'settings_qa_display.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:berehearsal/components/comp_check_text.dart';
 import 'package:berehearsal/functions/function_launch_url.dart';
+import 'package:berehearsal/settings/use_packages_page.dart';
+import 'package:berehearsal/components/comp_settings_appbar.dart';
 
 
 
@@ -61,35 +61,10 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.settings),
-            SizedBox(width: 5),
-            Text(
-              '設定',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        actions: (!leftHandedMode)
-          ? [IconButton(
-            icon: const Icon(Icons.close, size: 30),
-            onPressed: () => Navigator.pop(context)
-          )]
-          : null,
-        leading: (leftHandedMode)
-          ? IconButton(
-            icon: const Icon(Icons.close, size: 30),
-            onPressed: () => Navigator.pop(context)
-          )
-          : null,
-        automaticallyImplyLeading: false,
+      appBar: CompSettingsAppbar(
+        leftHandedMode: leftHandedMode,
+        icon: Icons.settings,
+        text: '設定',
       ),
       body: Theme(
         data: ThemeData.dark(),
@@ -143,10 +118,16 @@ class SettingsPageState extends State<SettingsPage> {
                       builder: (context) {
                         return CupertinoAlertDialog(
                           title: const Text('確認'),
-                          content: const Text('左利きモードの切り替えを反映するには、トップ画面に戻る必要があります。\n\n次のボタンを押してトップ画面へ遷移してください。'),
+                          content: const Text(
+                            '左利きモードの切り替えを反映するには、トップ画面に戻る必要があります\n\n次のボタンを押して\nトップ画面へ遷移してください',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                          ),
                           actions: <Widget>[
                             TextButton(
-                              child: const Text('トップ画面へ遷移', style: TextStyle(fontWeight: FontWeight.bold)),
+                              child: const Text('トップ画面へ遷移', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
                               onPressed: () {
                                 Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(builder: (context) => const StartPage()),
@@ -174,9 +155,9 @@ class SettingsPageState extends State<SettingsPage> {
                   title: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CompCheckText(text: '本アプリはBeReal.さまに許可をいただいて作成したアプリではない、非公式のBeReal.リハーサルアプリです。'),
-                      CompCheckText(text: '本アプリで撮影した写真を、保存・スクショすることは一切できません。これは、BeRehearsal.で撮影した画像とBeReal.で撮影した画像の見分けが付かず、BeReal.で撮影する楽しみを奪ってしまうことを防ぐためです。'),
-                      CompCheckText(text: 'スクショ・画面収録を防ぐため、マルチタスク画面が黒くなっていますが、再度本アプリを開けば元に戻りますので、ご安心ください。'),
+                      CompCheckText(text: '本アプリはBeReal.様に許可をいただいて作成したアプリではない、非公式のBeReal.リハーサルアプリです。'),
+                      CompCheckText(text: '本アプリで撮影した写真を、保存・スクショすることは一切できません。\nこれは、BeRehearsal.とBeReal.の画像の見分けが付かず、BeReal.の楽しみを奪ってしまうことを防ぐためです。'),
+                      CompCheckText(text: 'ホームに戻ろうとしたり、スクショや画面収録を行うと、画面は黒くなっていますが、通常通り使用する際には元に戻りますので、ご安心ください。'),
                       CompCheckText(text: '本アプリは、あくまで開発者が「n回の再撮影」と表示されずに、BeReal.の撮影の練習をしたいという目的で開発したアプリです。'),
                     ],
                   ),
@@ -214,7 +195,7 @@ class SettingsPageState extends State<SettingsPage> {
                   leading: const Icon(Icons.bug_report_outlined),
                   title: const Text('現在確認しているバグ'),
                   onPressed: (BuildContext context) async {
-                    await functionLaunchUrl('https://suupusoup.notion.site/9ae018acb8624c7c9c3dacaa5c7b21a0?pvs=4');
+                    await functionLaunchUrl('https://laughtaone.notion.site/1a5b5b93908180eeb25cf2575515832c?pvs=4');
                   },
                 ),
               ],
@@ -274,6 +255,14 @@ class SettingsPageState extends State<SettingsPage> {
                   },
                 ),
                 SettingsTile.navigation(
+                  leading: const FaIcon(FontAwesomeIcons.xTwitter),
+                  title: const Text('X'),
+                  value: const Text('@laughtaone'),
+                  onPressed: (BuildContext context) async {
+                    await functionLaunchUrl('https://x.com/laughtaone/');
+                  },
+                ),
+                SettingsTile.navigation(
                   leading: const FaIcon(FontAwesomeIcons.appStoreIos),
                   title: const Text('開発者 その他アプリ'),
                   onPressed: (BuildContext context) async {
@@ -294,21 +283,24 @@ class SettingsPageState extends State<SettingsPage> {
                   leading: const Icon(Icons.description_outlined),
                   title: const Text('利用規約'),
                   onPressed: (BuildContext context) async {
-                    await functionLaunchUrl('https://suupusoup.notion.site/BeRehearsal-765e2ebe610544f78548304326bc8568?pvs=4');
+                    await functionLaunchUrl('https://laughtaone.notion.site/BeRehearsal-1a5b5b93908180738f1fc4e24974e0a9?pvs=4');
                   },
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.book_outlined),
                   title: const Text('プライバシーポリシー'),
                   onPressed: (BuildContext context) async {
-                    await functionLaunchUrl('https://suupusoup.notion.site/BeRehearsal-765e2ebe610544f78548304326bc8568?pvs=4');
+                    await functionLaunchUrl('https://laughtaone.notion.site/BeRehearsal-1a5b5b9390818009acd9ff8e2ba76998?pvs=4');
                   },
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.book_outlined),
-                  title: const Text('使用ドキュメント'),
-                  onPressed: (BuildContext context) async {
-                    await functionLaunchUrl('https://suupusoup.notion.site/BeRehearsal-765e2ebe610544f78548304326bc8568?pvs=4');
+                  title: const Text('使用パッケージ'),
+                  onPressed: (BuildContext context)  {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => UsePackagesPage(leftHandedMode: leftHandedMode),
+                      fullscreenDialog: true
+                    ));
                   },
                 ),
               ],

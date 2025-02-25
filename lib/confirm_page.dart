@@ -1,7 +1,6 @@
 import 'package:berehearsal/components/comp_common_appbar.dart';
 import 'package:berehearsal/components/comp_common_body_column.dart';
 import 'package:berehearsal/components/comp_image_animation.dart';
-import 'package:berehearsal/functions/function_setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,9 +46,6 @@ class ConfirmPageState extends State<ConfirmPage> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;     // 画面の高さを取得
-    double screenWidth = MediaQuery.of(context).size.width;     // 画面の幅を取得
-    double bodyHeight = screenHeight - AppBar().preferredSize.height;
-
     bool isCompactDisplay = screenHeight < 743;       // 画面の高さが 743px未満 だったらコンパクト表示
 
 
@@ -105,7 +101,8 @@ class ConfirmPageState extends State<ConfirmPage> {
               // ------------------------------- サブ画像 -------------------------------
               Positioned(
                 top: 15,
-                left: 15,
+                right: (!leftHandedMode) ? null : 15,
+                left: (!leftHandedMode) ? 15 : null,
                 child: TextButton(
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.all(0),
