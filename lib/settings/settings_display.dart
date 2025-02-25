@@ -7,7 +7,7 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:berehearsal/components/comp_check_text.dart';
 import 'package:berehearsal/functions/function_launch_url.dart';
-import 'package:berehearsal/settings/use_packages_page.dart';
+import 'package:berehearsal/settings/use_packages_page/use_packages_page.dart';
 import 'package:berehearsal/components/comp_settings_appbar.dart';
 
 
