@@ -201,6 +201,23 @@ class SettingsPageState extends State<SettingsPage> {
               ],
             ),
             // --------------------------------------------------------------------
+            // -------------------------- 動作確認済み端末 ---------------------------
+            SettingsSection(
+              title: const Text(
+                '動作確認済み端末',
+                style: SettingTitleTextStyle.myTextStyle,
+              ),
+              tiles: <SettingsTile>[
+                SettingsTile.navigation(
+                  leading: const Icon(Icons.mobile_friendly_outlined),
+                  title: const Text('現在確認済みの端末'),
+                  onPressed: (BuildContext context) async {
+                    await functionLaunchUrl('https://laughtaone.notion.site/BeRehearsal-1a5b5b9390818055b00ee12902fa819f?pvs=4');
+                  },
+                ),
+              ],
+            ),
+            // --------------------------------------------------------------------
             // ------------------------------ 本家様関連 ----------------------------
             SettingsSection(
               title: const Text('本家様', style: SettingTitleTextStyle.myTextStyle),
@@ -301,6 +318,24 @@ class SettingsPageState extends State<SettingsPage> {
                       builder: (_) => UsePackagesPage(leftHandedMode: leftHandedMode),
                       fullscreenDialog: true
                     ));
+                  },
+                ),
+              ],
+            ),
+            // --------------------------------------------------------------------
+            // -------------------------- アプリバージョン ---------------------------
+            SettingsSection(
+              title: const Text(
+                'アプリバージョン',
+                style: SettingTitleTextStyle.myTextStyle,
+              ),
+              tiles: <SettingsTile>[
+                SettingsTile.navigation(
+                  leading: const Icon(Icons.tag_outlined),
+                  title: const Text('アプリバージョン'),
+                  value: const Text('1.0'),
+                  onPressed: (BuildContext context) async {
+                    await functionLaunchUrl('https://laughtaone.notion.site/BeRehearsal-1a5b5b93908180e1a3add560fbcc066a?pvs=4');
                   },
                 ),
               ],
