@@ -1,4 +1,6 @@
 import 'package:berehearsal/functions/function_setting.dart';
+import 'package:berehearsal/start_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'settings_qa_display.dart';
@@ -75,17 +77,18 @@ class SettingsPageState extends State<SettingsPage> {
             ),
           ],
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.close,
-              size: 30,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
+        actions: (!leftHandedMode)
+          ? [IconButton(
+            icon: const Icon(Icons.close, size: 30),
+            onPressed: () => Navigator.pop(context)
+          )]
+          : null,
+        leading: (leftHandedMode)
+          ? IconButton(
+            icon: const Icon(Icons.close, size: 30),
+            onPressed: () => Navigator.pop(context)
+          )
+          : null,
         automaticallyImplyLeading: false,
       ),
       body: Theme(
@@ -135,6 +138,26 @@ class SettingsPageState extends State<SettingsPage> {
                     setState(() {
                       leftHandedMode = keepLeftHandedMode;
                     });
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (context) {
+                        return CupertinoAlertDialog(
+                          title: const Text('確認'),
+                          content: const Text('左利きモードの切り替えを反映するには、トップ画面に戻る必要があります。\n次のボタンを押してトップ画面へ遷移してください。'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('トップ画面へ遷移'),
+                              onPressed: () {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (context) => const StartPage()),
+                                  (Route<dynamic> route) => false, // すべてのルートを削除
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      }
+                    );
                   },
                 ),
               ],

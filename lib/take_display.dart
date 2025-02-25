@@ -15,7 +15,11 @@ import 'package:berehearsal/confirm_page.dart';
 
 
 class TakePage extends StatefulWidget {
-  const TakePage({super.key});
+  const TakePage({super.key,
+    required this.leftHandedMode
+  });
+
+  final bool leftHandedMode;
 
   @override
   TakePageState createState() => TakePageState();
@@ -142,7 +146,8 @@ class TakePageState extends State<TakePage> {
   // 初期読み込み
   Future<void> firstLoad() async {
     setState(() async {
-      leftHandedMode = await loadLeftHandedModePreference() ?? false;   // 設定値読み込み
+      // leftHandedMode = await loadLeftHandedModePreference() ?? false;   // 設定値読み込み
+      leftHandedMode = widget.leftHandedMode;   // 設定値読み込み
       isCameraAllowed = await functionCheckCameraPermission();          // カメラ権限確認
       isMicAllowed = await functionCheckMicPermission();                // マイク権限確認
     });
@@ -193,6 +198,7 @@ class TakePageState extends State<TakePage> {
           context,
           MaterialPageRoute(
             builder: (context) => ConfirmPage(
+              leftHandedMode: leftHandedMode,
               mainImagePath: mainImagePath ?? '',
               subImagePath: subImagePath ?? ''
             ),
@@ -371,14 +377,7 @@ class TakePageState extends State<TakePage> {
       child: Scaffold(
         appBar: CompCommonAppbar(
           isCompactDisplay: isCompactDisplay,
-          callbackOpenSettingPage: (bool recvBool) async {
-            if (recvBool) {
-              bool keepleftHandedMode = await loadLeftHandedModePreference() ?? false;
-              setState(() {
-                leftHandedMode = keepleftHandedMode;
-              });
-            }
-          }
+          leftHandedMode: leftHandedMode
         ),
         body: FutureBuilder<void>(
           future: _initializeControllerFuture,

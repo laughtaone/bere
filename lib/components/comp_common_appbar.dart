@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 class CompCommonAppbar extends StatefulWidget implements PreferredSizeWidget {
   const CompCommonAppbar({super.key,
     required this.isCompactDisplay,
-    required this.callbackOpenSettingPage
+    required this.leftHandedMode
   });
 
   final bool isCompactDisplay;
-  final void Function(bool) callbackOpenSettingPage;
+  final bool leftHandedMode;
 
   @override
   CompCommonAppbarState createState() => CompCommonAppbarState();
@@ -28,17 +28,18 @@ class CompCommonAppbarState extends State<CompCommonAppbar> {
     return AppBar(
       automaticallyImplyLeading: false,
       title: widget.isCompactDisplay ? const CautionEnableSukusho() : const CompTitleAppBar(),
-      actions: <Widget>[
-        CompSettingButton(callbackOpenSettingPage: (bool recvBool) {
-          widget.callbackOpenSettingPage(recvBool);
-        },
-      )],
-      leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: const Icon(Icons.expand_more_outlined),
-      ),
+      actions: (widget.leftHandedMode)
+        ? [IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.expand_more_outlined),
+        )]
+        : const [CompSettingButton()],
+      leading: (widget.leftHandedMode)
+        ? const CompSettingButton()
+        : IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.expand_more_outlined),
+        )
     );
   }
 }

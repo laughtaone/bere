@@ -1,3 +1,4 @@
+import 'package:berehearsal/functions/function_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'take_display.dart';
@@ -13,10 +14,12 @@ class StartPage extends StatefulWidget {
 }
 
 class StartPageState extends State<StartPage> {
+  bool leftHandedMode = false;
 
   @override
   void initState() {
     super.initState();
+    firstLoad();
     // スクショ禁止機能
     ScreenProtector.preventScreenshotOn();
     ScreenProtector.protectDataLeakageWithColor(Colors.black);
@@ -41,11 +44,17 @@ class StartPageState extends State<StartPage> {
         if (mounted) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const TakePage()),
+            MaterialPageRoute(builder: (context) => TakePage(leftHandedMode: leftHandedMode)),
           );
         }
       });
     }
+  }
+
+  Future<void> firstLoad() async {
+    setState(() async {
+      leftHandedMode = await loadLeftHandedModePreference() ?? false;   // 設定値読み込み
+    });
   }
 
 
@@ -120,7 +129,7 @@ class StartPageState extends State<StartPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const TakePage(),
+                            builder: (context) => TakePage(leftHandedMode: leftHandedMode),
                             fullscreenDialog: true
                           ),
                         );

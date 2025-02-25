@@ -7,10 +7,7 @@ import 'package:flutter/material.dart';
 // 設定ボタンの内容
 class CompSettingButton extends StatefulWidget {
   const CompSettingButton({super.key,
-    required this.callbackOpenSettingPage
   });
-
-  final void Function(bool) callbackOpenSettingPage;
 
   @override
   CompSettingButtonState createState() => CompSettingButtonState();
@@ -28,7 +25,6 @@ class CompSettingButtonState extends State<CompSettingButton> {
             fullscreenDialog: true,
           ),
         );
-        widget.callbackOpenSettingPage(true);
       },
       icon: const Icon(Icons.settings),
     );

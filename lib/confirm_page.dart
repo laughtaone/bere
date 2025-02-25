@@ -10,10 +10,16 @@ import 'package:url_launcher/url_launcher.dart';
 
 // ConfirmPageの定義
 class ConfirmPage extends StatefulWidget {
+  const ConfirmPage({super.key,
+    required this.mainImagePath,
+    required this.subImagePath,
+    required this.leftHandedMode
+  });
+
   final String mainImagePath;
   final String subImagePath;
+  final bool leftHandedMode;
 
-  const ConfirmPage({super.key, required this.mainImagePath, required this.subImagePath});
 
   @override
   ConfirmPageState createState() => ConfirmPageState();
@@ -32,7 +38,8 @@ class ConfirmPageState extends State<ConfirmPage> {
   // 設定値読み込み
   Future<void> firstSettingLoad() async {
     setState(() async {
-      leftHandedMode = await loadLeftHandedModePreference() ?? false;
+      // leftHandedMode = await loadLeftHandedModePreference() ?? false;
+      leftHandedMode = widget.leftHandedMode;   // 設定値読み込み
     });
   }
 
@@ -52,14 +59,7 @@ class ConfirmPageState extends State<ConfirmPage> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: CompCommonAppbar(
           isCompactDisplay: isCompactDisplay,
-          callbackOpenSettingPage: (bool recvBool) async {
-            if (recvBool) {
-              bool keepleftHandedMode = await loadLeftHandedModePreference() ?? false;
-              setState(() {
-                leftHandedMode = keepleftHandedMode;
-              });
-            }
-          }
+          leftHandedMode: leftHandedMode
         ),
         body: CompCommonBodyColumn(
           isCompactDisplay: isCompactDisplay,
@@ -80,7 +80,8 @@ class ConfirmPageState extends State<ConfirmPage> {
               // --------------------------- 右上の閉じるボタン ---------------------------
               Positioned(
                 top: 10,
-                right: 10,
+                right: (!leftHandedMode) ? 10 : null,
+                left: (!leftHandedMode) ? null : 10,
                 child: InkWell(
                   onTap: () {
                     Navigator.pop(context);
