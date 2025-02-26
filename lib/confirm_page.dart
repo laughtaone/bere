@@ -27,6 +27,10 @@ class ConfirmPage extends StatefulWidget {
 class ConfirmPageState extends State<ConfirmPage> {
   bool isImageSwap = false;
   bool leftHandedMode = false;
+  bool isOnlyMainImage = false;
+  double subMaterialOpacity = 1;
+
+  final int secChangeSubMaterialOpacity = 100;    // サブ素材の透過度を変更する時間（ms）
 
   @override
   void initState() {
@@ -65,10 +69,33 @@ class ConfirmPageState extends State<ConfirmPage> {
             children: [
               // ------------------------------- メイン画像 ------------------------------
               Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: AnimatedImageSwitcher(
-                    imagePath: (isImageSwap) ? widget.subImagePath : widget.mainImagePath,
+                child: GestureDetector(
+                  onLongPressStart: (_) {
+                    setState(() {
+                      isOnlyMainImage = true;
+                      subMaterialOpacity = 0;
+                    });
+                  },
+                  onLongPressEnd: (_) {
+                    setState(() {
+                      isOnlyMainImage = false;
+                      subMaterialOpacity = 1;
+                    });
+                  },
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    onPressed: null,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: AnimatedImageSwitcher(
+                        imagePath: (isImageSwap) ? widget.subImagePath : widget.mainImagePath,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -82,16 +109,20 @@ class ConfirmPageState extends State<ConfirmPage> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.black.withAlpha((0.5 * 255).round()),
-                    ),
-                    child: Icon(
-                      Icons.close,
-                      color: Colors.white.withAlpha((0.8 * 255).round()),
-                      size: 25,
+                  child: AnimatedOpacity(
+                    opacity: subMaterialOpacity,
+                    duration: Duration(milliseconds: secChangeSubMaterialOpacity),
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black.withAlpha((0.5 * 255).round()),
+                      ),
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.white.withAlpha((0.8 * 255).round()),
+                        size: 25,
+                      ),
                     ),
                   ),
                 ),
@@ -103,34 +134,38 @@ class ConfirmPageState extends State<ConfirmPage> {
                 top: 15,
                 right: (!leftHandedMode) ? null : 15,
                 left: (!leftHandedMode) ? 15 : null,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.all(0),
-                    side: const BorderSide(color: Colors.black, width: 1.8),
-                    shape: RoundedRectangleBorder(
+                child: AnimatedOpacity(
+                  opacity: subMaterialOpacity,
+                  duration: Duration(milliseconds: secChangeSubMaterialOpacity),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(0),
+                      side: const BorderSide(color: Colors.black, width: 1.8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      )
+                    ),
+                    onPressed: () {
+                      HapticFeedback.lightImpact();     // 触覚フィードバック
+                      setState(() {
+                        isImageSwap = !isImageSwap;
+                      });
+                    },
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                    )
-                  ),
-                  onPressed: () {
-                    HapticFeedback.lightImpact();     // 触覚フィードバック
-                    setState(() {
-                      isImageSwap = !isImageSwap;
-                    });
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: SizedBox(
-                      width: 120,
-                      child: AnimatedImageSwitcher(
-                        imagePath: (isImageSwap)
-                          ? widget.mainImagePath
-                          : widget.subImagePath,
+                      child: SizedBox(
+                        width: 120,
+                        child: AnimatedImageSwitcher(
+                          imagePath: (isImageSwap)
+                            ? widget.mainImagePath
+                            : widget.subImagePath,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              // -----------------------------------------------------------------------
+            // -----------------------------------------------------------------------
             ],
           ),
           // ==================================================================================================================
