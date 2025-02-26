@@ -29,8 +29,15 @@ class ConfirmPageState extends State<ConfirmPage> {
   bool leftHandedMode = false;
   bool isOnlyMainImage = false;
   double subMaterialOpacity = 1;
+  double mainImageScale = 1.0;
+  double mainBaseScale = 1.0;
+  Offset focalPoint = Offset.zero; // 指の初期タッチ位置
+  Offset baseOffset = Offset.zero; // 移動前のオフセット
+  Offset currentOffset = Offset.zero; // 現在のオフセット
+
 
   final int secChangeSubMaterialOpacity = 100;    // サブ素材の透過度を変更する時間（ms）
+  final double imageBorderRadius = 16;
 
   @override
   void initState() {
@@ -70,39 +77,53 @@ class ConfirmPageState extends State<ConfirmPage> {
               // ------------------------------- メイン画像 ------------------------------
               Center(
                 child: GestureDetector(
-                  onLongPressStart: (_) async {
+                  onScaleStart: (details) {
+                    mainBaseScale = mainImageScale;
+                    focalPoint = details.focalPoint; // 指の開始位置を記録
+                    baseOffset = currentOffset;
+                  },
+                  onScaleUpdate: (details) async {
                     setState(() {
-                      subMaterialOpacity = 0;
+                      mainImageScale = (mainBaseScale * details.scale).clamp(1.0, 5.0);
+                      // 拡大時の指の位置に応じてオフセットを調整
+                      final dx = (details.focalPoint.dx - focalPoint.dx) * mainImageScale;
+                      final dy = (details.focalPoint.dy - focalPoint.dy) * mainImageScale;
+                      currentOffset = Offset(baseOffset.dx + dx, baseOffset.dy + dy);
                     });
-                    await Future.delayed(Duration(milliseconds: secChangeSubMaterialOpacity));
                     setState(() {
                       isOnlyMainImage = true;
                     });
                   },
-                  onLongPressEnd: (_) async {
+                  onScaleEnd: (_) async {
                     setState(() {
-                      subMaterialOpacity = 1;
+                      mainImageScale = 1.0; // 指を離したら元のサイズに戻す
+                      currentOffset = Offset.zero; // 位置もリセット
                     });
-                    await Future.delayed(Duration(milliseconds: secChangeSubMaterialOpacity));
                     setState(() {
                       isOnlyMainImage = false;
                     });
                   },
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.all(0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(imageBorderRadius),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Transform.translate(
+                          offset: currentOffset, // 指の位置に合わせたオフセットを適用
+                          child: Transform.scale(
+                            scale: mainImageScale,
+                            child: ClipRRect( // ここで適用する
+                              borderRadius: BorderRadius.circular(imageBorderRadius),
+                              child: Image.asset(
+                                isImageSwap ? widget.subImagePath : widget.mainImagePath,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    onPressed: null,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: AnimatedImageSwitcher(
-                        imagePath: (isImageSwap) ? widget.subImagePath : widget.mainImagePath,
-                      ),
-                    ),
-                  ),
+                  )
                 ),
               ),
               // -----------------------------------------------------------------------
