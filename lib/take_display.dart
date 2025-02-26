@@ -50,15 +50,28 @@ class TakePageState extends State<TakePage> {
   double _maxZoomLevel = 5.0; // 最大ズームレベル
   double _baseZoom = 1.0;
 
-  @override
+
+    @override
   void initState() {
     super.initState();
-    _initializeCamera();
-    firstLoad();
-    setState(() {
-      isFirstLoaded = true;
-    });
+    _init();
   }
+
+  Future<void> _init() async {
+    try {
+      await _initializeCamera();
+    } catch (e) {
+      debugPrint('Error during initialization: $e');
+    }
+
+
+    try {
+      await firstLoad();
+    } catch (e) {
+      debugPrint('Error during firstLoad: $e');
+    }
+  }
+
 
   // カメラの初期化 (アプリ起動時)
   Future<void> _initializeCamera() async {
@@ -69,14 +82,14 @@ class TakePageState extends State<TakePage> {
       if (cameras[i].lensDirection == CameraLensDirection.back) {
         if (cameras[i].name.contains('built-in_video:5')) {
           wideOutCameraIndex = i;
-          debugPrint('🔵 超広角カメラは、$i');
+          // debugPrint('🔵 超広角カメラは、$i');
         } else if (cameras[i].name.contains('built-in_video:0')) {
           normalOutCameraIndex = i;
-          debugPrint('🔵 通常カメラは、$i');
+          // debugPrint('🔵 通常カメラは、$i');
         }
       } else if (cameras[i].lensDirection == CameraLensDirection.front) {
         inCameraIndex = i;
-        debugPrint('🔵 インカメラは、$i');
+        // debugPrint('🔵 インカメラは、$i');
       }
     }
 
@@ -120,9 +133,9 @@ class TakePageState extends State<TakePage> {
       }
     }
 
-    debugPrint('🔵 超広角カメラは、$wideOutCameraIndex');
-    debugPrint('🔵 通常カメラは、$normalOutCameraIndex');
-    debugPrint('🔵 インカメラは、$inCameraIndex');
+    // debugPrint('🔵 超広角カメラは、$wideOutCameraIndex');
+    // debugPrint('🔵 通常カメラは、$normalOutCameraIndex');
+    // debugPrint('🔵 インカメラは、$inCameraIndex');
 
 
     _controller = CameraController(
@@ -147,11 +160,15 @@ class TakePageState extends State<TakePage> {
 
   // 初期読み込み
   Future<void> firstLoad() async {
-    setState(() async {
-      // leftHandedMode = await loadLeftHandedModePreference() ?? false;   // 設定値読み込み
-      leftHandedMode = widget.leftHandedMode;   // 設定値読み込み
-      isCameraAllowed = await functionCheckCameraPermission();          // カメラ権限確認
-      isMicAllowed = await functionCheckMicPermission();                // マイク権限確認
+    final leftHandedModePreference = widget.leftHandedMode;
+    final keepIsCameraAllowed = await functionCheckCameraPermission();
+    final keepIsMicAllowed = await functionCheckMicPermission();
+
+    setState(() {
+      leftHandedMode = leftHandedModePreference;   // 設定値読み込み
+      isCameraAllowed = keepIsCameraAllowed;       // カメラ権限確認
+      isMicAllowed = keepIsMicAllowed;             // マイク権限確認
+      isFirstLoaded = true;
     });
   }
 
@@ -393,10 +410,10 @@ class TakePageState extends State<TakePage> {
               // ================================================== カメラ画像部分 ===================================================
               centerElement:
                 (!isFirstLoaded)
-                  ? AspectRatio(
-                      aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                      child: CompLoading(message: isFirstLoaded.toString())
-                    )
+                  ? const AspectRatio(
+                    aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                    child: CompLoading(message: '準備中...')
+                  )
                   :(!isCameraAllowed || !isMicAllowed)     // カメラとマイクの権限が許可されていないかどうか
                     // カメラまたはマイクの権限が許可されていない場合の表示
                     ? AspectRatio(

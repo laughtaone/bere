@@ -1,12 +1,7 @@
 import 'package:berehearsal/components/comp_settings_appbar.dart';
-import 'package:berehearsal/functions/function_setting.dart';
-import 'package:berehearsal/start_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../settings_qa_display.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:berehearsal/components/comp_check_text.dart';
 import 'package:berehearsal/functions/function_launch_url.dart';
 import 'package:berehearsal/settings/use_packages_page/use_packages_data.dart';
 

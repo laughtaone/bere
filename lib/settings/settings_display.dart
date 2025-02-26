@@ -84,7 +84,6 @@ class SettingsPageState extends State<SettingsPage> {
                   description: const Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
                   initialValue: skipStartPage,
                   onToggle: (value) async {
-                    debugPrint(value ? 'スイッチがオンになりました' : 'スイッチがオフになりました');
                     setSkipStartPagePreference(value);
                     bool keepSkipStartPage = await loadSkipStartPagePreference() ?? false;
                     setState(() {
