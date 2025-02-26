@@ -9,17 +9,19 @@ import 'package:flutter/material.dart';
 class CompCommonAppbar extends StatefulWidget implements PreferredSizeWidget {
   const CompCommonAppbar({super.key,
     required this.isCompactDisplay,
-    required this.leftHandedMode
+    required this.leftHandedMode,
+    this.customOnPressed
   });
 
   final bool isCompactDisplay;
   final bool leftHandedMode;
+  final void Function()? customOnPressed;
 
   @override
   CompCommonAppbarState createState() => CompCommonAppbarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight); // Specify height
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class CompCommonAppbarState extends State<CompCommonAppbar> {
@@ -30,14 +32,18 @@ class CompCommonAppbarState extends State<CompCommonAppbar> {
       title: widget.isCompactDisplay ? const CautionEnableSukusho() : const CompTitleAppBar(),
       actions: (widget.leftHandedMode)
         ? [IconButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: (widget.customOnPressed == null)
+              ? () => Navigator.pop(context)
+              : widget.customOnPressed!,
             icon: const Icon(Icons.expand_more_outlined),
         )]
         : const [CompSettingButton()],
       leading: (widget.leftHandedMode)
         ? const CompSettingButton()
         : IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: (widget.customOnPressed == null)
+              ? () => Navigator.pop(context)
+              : widget.customOnPressed!,
           icon: const Icon(Icons.expand_more_outlined),
         )
     );

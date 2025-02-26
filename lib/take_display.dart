@@ -435,6 +435,7 @@ class TakePageState extends State<TakePage> {
                           aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
                           child: CompLoading(
                             message: '撮影中...',
+                            subMessage: '本家と異なりシャッター音は2回鳴ります'
                           ),
                         )
                         : Stack(

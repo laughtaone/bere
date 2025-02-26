@@ -56,6 +56,15 @@ class ConfirmPageState extends State<ConfirmPage> {
     }
   }
 
+  void backTakeDisplay() async {
+    setState(() {
+      isPressedCloseButton = true;
+      filteredCond = ImageFilter.blur(sigmaX: 16, sigmaY: 16);
+    });
+    await Future.delayed(const Duration(milliseconds: 550));
+    Navigator.pop(context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +78,8 @@ class ConfirmPageState extends State<ConfirmPage> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: CompCommonAppbar(
           isCompactDisplay: isCompactDisplay,
-          leftHandedMode: leftHandedMode
+          leftHandedMode: leftHandedMode,
+          customOnPressed: backTakeDisplay
         ),
         body: CompCommonBodyColumn(
           isCompactDisplay: isCompactDisplay,
@@ -159,14 +169,7 @@ class ConfirmPageState extends State<ConfirmPage> {
                   left: (!leftHandedMode) ? null : 10,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(1000),
-                    onTap: () async{
-                      setState(() {
-                        isPressedCloseButton = true;
-                        filteredCond = ImageFilter.blur(sigmaX: 16, sigmaY: 16);
-                      });
-                      await Future.delayed(const Duration(milliseconds: 700));
-                      Navigator.pop(context);
-                    },
+                    onTap: backTakeDisplay,
                     child: ImageFiltered(
                       imageFilter: filteredCond,
                       child: AnimatedOpacity(
