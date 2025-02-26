@@ -70,16 +70,22 @@ class ConfirmPageState extends State<ConfirmPage> {
               // ------------------------------- メイン画像 ------------------------------
               Center(
                 child: GestureDetector(
-                  onLongPressStart: (_) {
+                  onLongPressStart: (_) async {
                     setState(() {
-                      isOnlyMainImage = true;
                       subMaterialOpacity = 0;
                     });
+                    await Future.delayed(Duration(milliseconds: secChangeSubMaterialOpacity));
+                    setState(() {
+                      isOnlyMainImage = true;
+                    });
                   },
-                  onLongPressEnd: (_) {
+                  onLongPressEnd: (_) async {
+                    setState(() {
+                      subMaterialOpacity = 1;
+                    });
+                    await Future.delayed(Duration(milliseconds: secChangeSubMaterialOpacity));
                     setState(() {
                       isOnlyMainImage = false;
-                      subMaterialOpacity = 1;
                     });
                   },
                   child: TextButton(
@@ -101,70 +107,74 @@ class ConfirmPageState extends State<ConfirmPage> {
               ),
               // -----------------------------------------------------------------------
               // --------------------------- 右上の閉じるボタン ---------------------------
-              Positioned(
-                top: 10,
-                right: (!leftHandedMode) ? 10 : null,
-                left: (!leftHandedMode) ? null : 10,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: AnimatedOpacity(
-                    opacity: subMaterialOpacity,
-                    duration: Duration(milliseconds: secChangeSubMaterialOpacity),
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black.withAlpha((0.5 * 255).round()),
-                      ),
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.white.withAlpha((0.8 * 255).round()),
-                        size: 25,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              // -----------------------------------------------------------------------
-
-              // ------------------------------- サブ画像 -------------------------------
-              Positioned(
-                top: 15,
-                right: (!leftHandedMode) ? null : 15,
-                left: (!leftHandedMode) ? 15 : null,
-                child: AnimatedOpacity(
-                  opacity: subMaterialOpacity,
-                  duration: Duration(milliseconds: secChangeSubMaterialOpacity),
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.all(0),
-                      side: const BorderSide(color: Colors.black, width: 1.8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      )
-                    ),
-                    onPressed: () {
-                      HapticFeedback.lightImpact();     // 触覚フィードバック
-                      setState(() {
-                        isImageSwap = !isImageSwap;
-                      });
+              (!isOnlyMainImage)
+                ? Positioned(
+                  top: 10,
+                  right: (!leftHandedMode) ? 10 : null,
+                  left: (!leftHandedMode) ? null : 10,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
                     },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: SizedBox(
-                        width: 120,
-                        child: AnimatedImageSwitcher(
-                          imagePath: (isImageSwap)
-                            ? widget.mainImagePath
-                            : widget.subImagePath,
+                    child: AnimatedOpacity(
+                      opacity: subMaterialOpacity,
+                      duration: Duration(milliseconds: secChangeSubMaterialOpacity),
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black.withAlpha((0.5 * 255).round()),
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white.withAlpha((0.8 * 255).round()),
+                          size: 25,
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
+                )
+                : const SizedBox(),
+              // -----------------------------------------------------------------------
+
+              // ------------------------------- サブ画像 -------------------------------
+              (!isOnlyMainImage)
+                ? Positioned(
+                  top: 15,
+                  right: (!leftHandedMode) ? null : 15,
+                  left: (!leftHandedMode) ? 15 : null,
+                  child: AnimatedOpacity(
+                    opacity: subMaterialOpacity,
+                    duration: Duration(milliseconds: secChangeSubMaterialOpacity),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(0),
+                        side: const BorderSide(color: Colors.black, width: 1.8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        )
+                      ),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();     // 触覚フィードバック
+                        setState(() {
+                          isImageSwap = !isImageSwap;
+                        });
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: SizedBox(
+                          width: 120,
+                          child: AnimatedImageSwitcher(
+                            imagePath: (isImageSwap)
+                              ? widget.mainImagePath
+                              : widget.subImagePath,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+                : const SizedBox(),
             // -----------------------------------------------------------------------
             ],
           ),
