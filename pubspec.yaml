@@ -38,6 +38,9 @@ flutter:
   assets:
     - assets/images/debug/undefined_image.png
 
+    - assets/sample/sea_png.png
+    - assets/sample/sea_in_png.png
+
 
   fonts:
     - family: NotoSansJP-ExtraBold

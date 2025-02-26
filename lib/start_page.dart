@@ -21,8 +21,8 @@ class StartPageState extends State<StartPage> {
     super.initState();
     firstLoad();
     // スクショ禁止機能
-    ScreenProtector.preventScreenshotOn();
-    ScreenProtector.protectDataLeakageWithColor(Colors.black);
+    // ScreenProtector.preventScreenshotOn();
+    // ScreenProtector.protectDataLeakageWithColor(Colors.black);
     _checkSkipStartPage(); //スタート画面をスキップするかどうか判断する関数を呼び出す
   }
 
@@ -30,8 +30,8 @@ class StartPageState extends State<StartPage> {
   void dispose() {
     // スクショ禁止機能
     super.dispose();
-    ScreenProtector.preventScreenshotOff();
-    ScreenProtector.protectDataLeakageWithColorOff();
+    // ScreenProtector.preventScreenshotOff();
+    // ScreenProtector.protectDataLeakageWithColorOff();
   }
 
   // スタート画面をスキップするかどうか判断する関数(あくまで関数)

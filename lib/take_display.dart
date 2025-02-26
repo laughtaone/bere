@@ -166,8 +166,8 @@ class TakePageState extends State<TakePage> {
 
     setState(() {
       leftHandedMode = leftHandedModePreference;   // 設定値読み込み
-      isCameraAllowed = keepIsCameraAllowed;       // カメラ権限確認
-      isMicAllowed = keepIsMicAllowed;             // マイク権限確認
+      isCameraAllowed = true;       // カメラ権限確認
+      isMicAllowed = true;             // マイク権限確認
       isFirstLoaded = true;
     });
   }
@@ -414,7 +414,7 @@ class TakePageState extends State<TakePage> {
                     aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
                     child: CompLoading(message: '準備中...')
                   )
-                  :(!isCameraAllowed || !isMicAllowed)     // カメラとマイクの権限が許可されていないかどうか
+                  :(false)     // カメラとマイクの権限が許可されていないかどうか
                     // カメラまたはマイクの権限が許可されていない場合の表示
                     ? AspectRatio(
                         aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
@@ -423,14 +423,14 @@ class TakePageState extends State<TakePage> {
                           isMicAllowed: isMicAllowed
                         ),
                     )
-                    : (!isPrepaired)
+                    : (false)
                       // カメラ切り替え中の表示
                       ? const AspectRatio(
                         aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
                         child: CompLoading(message: '準備中...')
                       )
                       // 撮影中の表示
-                      :(isTaking)
+                      :(false)
                         ? const AspectRatio(
                           aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
                           child: CompLoading(
@@ -455,7 +455,11 @@ class TakePageState extends State<TakePage> {
                                 borderRadius: BorderRadius.circular(16.0),
                                 child: AspectRatio(
                                   aspectRatio: 3 / 4,
-                                  child: CameraPreview(_controller!),
+                                  // child: CameraPreview(_controller!),
+                                  child: Image.asset(
+                                    'assets/sample/sea_png.png',
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),
@@ -507,8 +511,8 @@ class TakePageState extends State<TakePage> {
                                         (_cameraIndex != inCameraIndex)
                                           ? CompCameraMagnificationIcon(
                                             isChangingCamera: isChangingCamera,
-                                            isNormalCamera: _cameraIndex==normalOutCameraIndex,
-                                            cameraRate: _currentZoomLevel,
+                                            isNormalCamera: true,
+                                            cameraRate: 1,
                                             onPressed: (bool recvBool) {
                                               switchCameraMagnification(
                                                 nowCameraIndex: _cameraIndex,
@@ -543,8 +547,8 @@ class TakePageState extends State<TakePage> {
                                         (_cameraIndex != inCameraIndex)
                                           ? CompCameraMagnificationIcon(
                                             isChangingCamera: isChangingCamera,
-                                            isNormalCamera: _cameraIndex==normalOutCameraIndex,
-                                            cameraRate: _currentZoomLevel,
+                                            isNormalCamera: true,
+                                            cameraRate: 1,
                                             onPressed: (bool recvBool) {
                                               switchCameraMagnification(
                                                 nowCameraIndex: _cameraIndex,
@@ -584,11 +588,20 @@ class TakePageState extends State<TakePage> {
                     padding: EdgeInsets.zero,
                     iconSize: (constraints.maxHeight >= 100) ? 100 : constraints.maxHeight,       // アイコンサイズを利用可能なスペースに合わせる
                     icon: const Icon(Icons.radio_button_unchecked),
-                    onPressed: (isTaking || !isCameraAllowed || !isMicAllowed)
-                      ? null
-                      : (isPrepaired)
-                        ? () => _takePicture(nowCameraIndex: _cameraIndex, isFlashOn: isFlashOn)     // 準備中かつ撮影中でなければ写真を撮る関数を呼び出せる
-                        : null,
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => ConfirmPage(
+                            leftHandedMode: leftHandedMode,
+                            mainImagePath: 'assets/sample/sea_png.png',
+                            subImagePath: 'assets/sample/sea_in_png.png',
+                          ),
+                          transitionDuration: Duration.zero, // アニメーション時間を0にする
+                          reverseTransitionDuration: Duration.zero, // 戻るときのアニメーションも0にする
+                          fullscreenDialog: true
+                        ),
+                      );
+                    }
                   );
                 },
               )

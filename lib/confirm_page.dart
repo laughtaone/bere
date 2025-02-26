@@ -145,11 +145,15 @@ class ConfirmPageState extends State<ConfirmPage> {
                             offset: currentOffset, // 指の位置に合わせたオフセットを適用
                             child: Transform.scale(
                               scale: mainImageScale,
-                              child: ClipRRect( // ここで適用する
-                                borderRadius: BorderRadius.circular(imageBorderRadius),
-                                child: Image.asset(
-                                  isImageSwap ? widget.subImagePath : widget.mainImagePath,
-                                  fit: BoxFit.cover,
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: 500,
+                                child: ClipRRect( // ここで適用する
+                                  borderRadius: BorderRadius.circular(imageBorderRadius),
+                                  child: Image.asset(
+                                    'assets/sample/sea_png.png',
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),
@@ -223,10 +227,10 @@ class ConfirmPageState extends State<ConfirmPage> {
                           borderRadius: BorderRadius.circular(15),
                           child: SizedBox(
                             width: 120,
-                            child: AnimatedImageSwitcher(
-                              imagePath: (isImageSwap)
-                                ? widget.mainImagePath
-                                : widget.subImagePath,
+                            height: 150,
+                            child: Image.asset(
+                              'assets/sample/sea_in_png.png',
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
