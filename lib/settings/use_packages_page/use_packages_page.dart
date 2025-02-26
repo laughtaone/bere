@@ -81,7 +81,7 @@ class UsePackagesPageState extends State<UsePackagesPage> {
             // --------------------- 使用パッケージ・バージョン ---------------------
             SettingsSection(
               title: const Text(
-                'ライセンス',
+                'ライセンス (pub.devより引用)',
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.white,

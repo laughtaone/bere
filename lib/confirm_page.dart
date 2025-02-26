@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:ui';
 
 
 // ConfirmPageの定義
@@ -34,6 +35,8 @@ class ConfirmPageState extends State<ConfirmPage> {
   Offset focalPoint = Offset.zero; // 指の初期タッチ位置
   Offset baseOffset = Offset.zero; // 移動前のオフセット
   Offset currentOffset = Offset.zero; // 現在のオフセット
+  bool isPressedCloseButton = false;
+  ImageFilter filteredCond = ImageFilter.blur(sigmaX: 0, sigmaY: 0);
 
 
   final int secChangeSubMaterialOpacity = 100;    // サブ素材の透過度を変更する時間（ms）
@@ -47,10 +50,10 @@ class ConfirmPageState extends State<ConfirmPage> {
 
   // 設定値読み込み
   Future<void> firstSettingLoad() async {
-    setState(() async {
-      // leftHandedMode = await loadLeftHandedModePreference() ?? false;
-      leftHandedMode = widget.leftHandedMode;   // 設定値読み込み
-    });
+    leftHandedMode = widget.leftHandedMode;   // 設定値読み込み
+    if (mounted) {
+      setState(() {});
+    }
   }
 
 
@@ -77,6 +80,24 @@ class ConfirmPageState extends State<ConfirmPage> {
               // ------------------------------- メイン画像 ------------------------------
               Center(
                 child: GestureDetector(
+                  onLongPressStart: (_) async {
+                    setState(() {
+                      subMaterialOpacity = 0;
+                    });
+                    await Future.delayed(Duration(milliseconds: secChangeSubMaterialOpacity));
+                    setState(() {
+                      isOnlyMainImage = true;
+                    });
+                  },
+                  onLongPressEnd: (_) async {
+                    setState(() {
+                      subMaterialOpacity = 1;
+                    });
+                    await Future.delayed(Duration(milliseconds: secChangeSubMaterialOpacity));
+                    setState(() {
+                      isOnlyMainImage = false;
+                    });
+                  },
                   onScaleStart: (details) {
                     mainBaseScale = mainImageScale;
                     focalPoint = details.focalPoint; // 指の開始位置を記録
@@ -103,25 +124,28 @@ class ConfirmPageState extends State<ConfirmPage> {
                       isOnlyMainImage = false;
                     });
                   },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(imageBorderRadius),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Transform.translate(
-                          offset: currentOffset, // 指の位置に合わせたオフセットを適用
-                          child: Transform.scale(
-                            scale: mainImageScale,
-                            child: ClipRRect( // ここで適用する
-                              borderRadius: BorderRadius.circular(imageBorderRadius),
-                              child: Image.asset(
-                                isImageSwap ? widget.subImagePath : widget.mainImagePath,
-                                fit: BoxFit.cover,
+                  child: ImageFiltered(
+                    imageFilter: filteredCond,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(imageBorderRadius),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Transform.translate(
+                            offset: currentOffset, // 指の位置に合わせたオフセットを適用
+                            child: Transform.scale(
+                              scale: mainImageScale,
+                              child: ClipRRect( // ここで適用する
+                                borderRadius: BorderRadius.circular(imageBorderRadius),
+                                child: Image.asset(
+                                  isImageSwap ? widget.subImagePath : widget.mainImagePath,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   )
                 ),
@@ -134,22 +158,31 @@ class ConfirmPageState extends State<ConfirmPage> {
                   right: (!leftHandedMode) ? 10 : null,
                   left: (!leftHandedMode) ? null : 10,
                   child: InkWell(
-                    onTap: () {
+                    borderRadius: BorderRadius.circular(1000),
+                    onTap: () async{
+                      setState(() {
+                        isPressedCloseButton = true;
+                        filteredCond = ImageFilter.blur(sigmaX: 16, sigmaY: 16);
+                      });
+                      await Future.delayed(const Duration(milliseconds: 700));
                       Navigator.pop(context);
                     },
-                    child: AnimatedOpacity(
-                      opacity: subMaterialOpacity,
-                      duration: Duration(milliseconds: secChangeSubMaterialOpacity),
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.black.withAlpha((0.5 * 255).round()),
-                        ),
-                        child: Icon(
-                          Icons.close,
-                          color: Colors.white.withAlpha((0.8 * 255).round()),
-                          size: 25,
+                    child: ImageFiltered(
+                      imageFilter: filteredCond,
+                      child: AnimatedOpacity(
+                        opacity: subMaterialOpacity,
+                        duration: Duration(milliseconds: secChangeSubMaterialOpacity),
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black.withAlpha((0.5 * 255).round()),
+                          ),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.white.withAlpha((0.8 * 255).round()),
+                            size: 25,
+                          ),
                         ),
                       ),
                     ),
@@ -164,31 +197,34 @@ class ConfirmPageState extends State<ConfirmPage> {
                   top: 15,
                   right: (!leftHandedMode) ? null : 15,
                   left: (!leftHandedMode) ? 15 : null,
-                  child: AnimatedOpacity(
-                    opacity: subMaterialOpacity,
-                    duration: Duration(milliseconds: secChangeSubMaterialOpacity),
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(0),
-                        side: const BorderSide(color: Colors.black, width: 1.8),
-                        shape: RoundedRectangleBorder(
+                  child: ImageFiltered(
+                    imageFilter: filteredCond,
+                    child: AnimatedOpacity(
+                      opacity: subMaterialOpacity,
+                      duration: Duration(milliseconds: secChangeSubMaterialOpacity),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(0),
+                          side: const BorderSide(color: Colors.black, width: 1.8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          )
+                        ),
+                        onPressed: () {
+                          HapticFeedback.lightImpact();     // 触覚フィードバック
+                          setState(() {
+                            isImageSwap = !isImageSwap;
+                          });
+                        },
+                        child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
-                        )
-                      ),
-                      onPressed: () {
-                        HapticFeedback.lightImpact();     // 触覚フィードバック
-                        setState(() {
-                          isImageSwap = !isImageSwap;
-                        });
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: SizedBox(
-                          width: 120,
-                          child: AnimatedImageSwitcher(
-                            imagePath: (isImageSwap)
-                              ? widget.mainImagePath
-                              : widget.subImagePath,
+                          child: SizedBox(
+                            width: 120,
+                            child: AnimatedImageSwitcher(
+                              imagePath: (isImageSwap)
+                                ? widget.mainImagePath
+                                : widget.subImagePath,
+                            ),
                           ),
                         ),
                       ),

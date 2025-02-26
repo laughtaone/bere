@@ -190,20 +190,24 @@ class TakePageState extends State<TakePage> {
         isFlashOn: isFlashOn
       );
       await _initializeControllerFuture; // 初期化が完了するまで待機
-      await Future.delayed(const Duration(milliseconds: 400));  // 0.4秒待機
+      await Future.delayed(const Duration(milliseconds: 550));  // 0.55秒待機
       final subImage = await _controller!.takePicture();
       subImagePath = subImage.path;
 
+      await Future.delayed(const Duration(milliseconds: 1600));  // 1.6秒待機
+
       // 両方のカメラで撮影完了後にConfirmPageに遷移
       if (mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ConfirmPage(
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => ConfirmPage(
               leftHandedMode: leftHandedMode,
               mainImagePath: mainImagePath ?? '',
               subImagePath: subImagePath ?? ''
             ),
+            transitionDuration: Duration.zero, // アニメーション時間を0にする
+            reverseTransitionDuration: Duration.zero, // 戻るときのアニメーションも0にする
+            fullscreenDialog: true
           ),
         );
       }
@@ -389,11 +393,6 @@ class TakePageState extends State<TakePage> {
               // ================================================== カメラ画像部分 ===================================================
               centerElement:
                 (!isFirstLoaded)
-                  // カメラ準備中の表示
-                  // ? const AspectRatio(
-                  //     aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                  //     child: CompLoading(message: '準備中...')
-                  //   )
                   ? AspectRatio(
                       aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
                       child: CompLoading(message: isFirstLoaded.toString())
