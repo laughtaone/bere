@@ -55,6 +55,9 @@ class TakePageState extends State<TakePage> {
     super.initState();
     _initializeCamera();
     firstLoad();
+    setState(() {
+      isFirstLoaded = true;
+    });
   }
 
   // カメラの初期化 (アプリ起動時)
@@ -149,7 +152,6 @@ class TakePageState extends State<TakePage> {
       leftHandedMode = widget.leftHandedMode;   // 設定値読み込み
       isCameraAllowed = await functionCheckCameraPermission();          // カメラ権限確認
       isMicAllowed = await functionCheckMicPermission();                // マイク権限確認
-      isFirstLoaded = true;
     });
   }
 
@@ -388,9 +390,13 @@ class TakePageState extends State<TakePage> {
               centerElement:
                 (!isFirstLoaded)
                   // カメラ準備中の表示
-                  ? const AspectRatio(
+                  // ? const AspectRatio(
+                  //     aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
+                  //     child: CompLoading(message: '準備中...')
+                  //   )
+                  ? AspectRatio(
                       aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                      child: CompLoading(message: '準備中...')
+                      child: CompLoading(message: isFirstLoaded.toString())
                     )
                   :(!isCameraAllowed || !isMicAllowed)     // カメラとマイクの権限が許可されていないかどうか
                     // カメラまたはマイクの権限が許可されていない場合の表示

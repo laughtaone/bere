@@ -194,7 +194,7 @@ class ConfirmPageState extends State<ConfirmPage> {
                     }
                   },
                   child: const Text(
-                    'BeReal.を開く>',
+                    'BeReal.様を開く>',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,

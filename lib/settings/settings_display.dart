@@ -127,7 +127,10 @@ class SettingsPageState extends State<SettingsPage> {
                           ),
                           actions: <Widget>[
                             TextButton(
-                              child: const Text('トップ画面へ遷移', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                              child: const Text(
+                                'トップ画面へ遷移',
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.red)
+                              ),
                               onPressed: () {
                                 Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(builder: (context) => const StartPage()),
