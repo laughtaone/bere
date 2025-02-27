@@ -12,7 +12,6 @@ void main() async {
   // 画面の向きを縦に固定
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp, // 縦向き（標準）
-    DeviceOrientation.portraitDown, // 縦向き（逆さ）
   ]);
 
   final prefs = await SharedPreferences.getInstance();

@@ -100,9 +100,9 @@ class TakePageState extends State<TakePage> {
 
     _initializeControllerFuture = _controller!.initialize();
 
-    // フラッシュをオフに設定
     await _initializeControllerFuture;
-    await _controller!.setFlashMode(FlashMode.off);
+    await _controller!.setFlashMode(FlashMode.off);    // フラッシュを設定
+    await _controller!.lockCaptureOrientation(DeviceOrientation.portraitUp);            // カメラの向きを縦に固定
 
     // ズームレベルの範囲を取得
     _minZoomLevel = await _controller!.getMinZoomLevel();
@@ -145,9 +145,9 @@ class TakePageState extends State<TakePage> {
 
     _initializeControllerFuture = _controller!.initialize();
 
-    // フラッシュをオフに設定
     await _initializeControllerFuture;
-    await _controller!.setFlashMode((isFlashOn) ? FlashMode.always : FlashMode.off);
+    await _controller!.setFlashMode((isFlashOn) ? FlashMode.always : FlashMode.off);    // フラッシュを設定
+    await _controller!.lockCaptureOrientation(DeviceOrientation.portraitUp);            // カメラの向きを縦に固定
 
     // ズームレベルの範囲を取得
     _minZoomLevel = await _controller!.getMinZoomLevel();
