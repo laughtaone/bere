@@ -1,6 +1,7 @@
 import 'package:berehearsal/components/comp_common_appbar.dart';
 import 'package:berehearsal/components/comp_common_body_column.dart';
 import 'package:berehearsal/components/comp_image_animation.dart';
+import 'package:berehearsal/functions/function_launch_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -267,7 +268,13 @@ class ConfirmPageState extends State<ConfirmPage> {
                               content: const Text('BeReal.を開けませんでした。\nアプリがインストールされているか確認してください。\n\nインストール済みの場合は、お手数ですが手動で開いてください。'),
                               actions: <Widget>[
                                 TextButton(
-                                  child: const Text('OK'),
+                                  child: Text('AppStoreページへ', style: TextStyle(fontSize: 17, color: Colors.blue[800])),
+                                  onPressed: () async {
+                                    await functionLaunchUrl(url);
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('閉じる', style: TextStyle(fontSize: 17, color: Colors.indigo)),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:berehearsal/settings/settings_display.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,12 @@ import 'package:berehearsal/start_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 画面の向きを縦に固定
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // 縦向き（標準）
+    DeviceOrientation.portraitDown, // 縦向き（逆さ）
+  ]);
 
   final prefs = await SharedPreferences.getInstance();
   // 初回起動時に 'skipStartPage' が設定されていない場合、false に設定

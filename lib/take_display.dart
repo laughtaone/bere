@@ -26,7 +26,7 @@ class TakePage extends StatefulWidget {
 class TakePageState extends State<TakePage> {
   CameraController? _controller;
   Future<void>? _initializeControllerFuture;
-  int _cameraIndex = 0;     // 0:外カメラ・1:内カメラ
+  int _cameraIndex = 0;
   String? mainImagePath;
   String? subImagePath;
   bool isTaking = false;
@@ -82,10 +82,10 @@ class TakePageState extends State<TakePage> {
       if (cameras[i].lensDirection == CameraLensDirection.back) {
         if (cameras[i].name.contains('built-in_video:5')) {
           wideOutCameraIndex = i;
-          // debugPrint('🔵 超広角カメラは、$i');
+          debugPrint('🔵 超広角カメラは、$i');
         } else if (cameras[i].name.contains('built-in_video:0')) {
           normalOutCameraIndex = i;
-          // debugPrint('🔵 通常カメラは、$i');
+          debugPrint('🔵 通常カメラは、$i');
         }
       } else if (cameras[i].lensDirection == CameraLensDirection.front) {
         inCameraIndex = i;
