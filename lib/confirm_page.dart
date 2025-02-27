@@ -274,7 +274,7 @@ class ConfirmPageState extends State<ConfirmPage> {
                                   },
                                 ),
                                 TextButton(
-                                  child: Text('閉じる', style: TextStyle(fontSize: 17, color: Colors.indigo)),
+                                  child: const Text('閉じる', style: TextStyle(fontSize: 17, color: Colors.indigo)),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
