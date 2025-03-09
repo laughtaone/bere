@@ -335,7 +335,7 @@ class SettingsPageState extends State<SettingsPage> {
                 SettingsTile.navigation(
                   leading: const Icon(Icons.tag_outlined),
                   title: const Text('アプリバージョン'),
-                  value: const Text('1.0'),
+                  value: const Text('1.0.1'),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://laughtaone.notion.site/BeRehearsal-1a5b5b93908180e1a3add560fbcc066a?pvs=4');
                   },
