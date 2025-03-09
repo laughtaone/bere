@@ -285,7 +285,7 @@ class SettingsPageState extends State<SettingsPage> {
                   leading: const FaIcon(FontAwesomeIcons.appStoreIos),
                   title: const Text('開発者 その他アプリ'),
                   onPressed: (BuildContext context) async {
-                    await functionLaunchUrl('');
+                    await functionLaunchUrl('https://apps.apple.com/us/developer/taichi-usuba/id1798659459');
                   },
                 ),
               ],

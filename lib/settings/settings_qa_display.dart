@@ -11,7 +11,7 @@ const List<Map<String, dynamic>> qaData = [
   },
   {
     'title': '',
-    'q': 'BeRehearsal.っていう名前は英語の意味としておかしくないですか？',
+    'q': 'BeRehearsal.っていう名前は、英語の意味としておかしくないですか？',
     'a': 'BeRehearsal.という名前に特別な意味はなく、あくまでBeReal.のリハーサル撮影アプリという本アプリの目的を伝えるためにこのような名前を付けました。'
   },
   {
@@ -22,9 +22,9 @@ const List<Map<String, dynamic>> qaData = [
   {
     'title': '',
     'q': 'このアプリでバグを見つけました！',
-    'a': 'お手数ですが、下記のフォームより報告していただけたら幸いです',
+    'a': 'お手数ですが、下記のフォームより報告していただけたら幸いです。',
     'url': 'https://forms.gle/kVS6BXarzvrNWxsK6',
-    'customUrlOpenText': 'フォームを開く'
+    'customUrlOpenText': 'バグ報告フォーム'
   },
   {
     'title': '開発者について',
@@ -33,10 +33,10 @@ const List<Map<String, dynamic>> qaData = [
   },
   {
     'title': '',
-    'q': '機能の追加など、このアプリへの要望・感想を開発者に伝えたいです。',
-    'a': '開発者の X(Twitter) のDMより教えていただければ幸いです。',
-    'url': 'https://x.com/laughtaone',
-    'customUrlOpenText': 'X(Twitter) を開く'
+    'q': '機能の追加など、このアプリへの要望・感想・問い合わせを開発者に伝えたいです。',
+    'a': 'お手数ですが、下記のフォームより報告していただけたら幸いです。',
+    'url': 'https://forms.gle/NERKzeJkrjysmysFA',
+    'customUrlOpenText': '問い合わせフォーム'
   },
   {
     'title': 'BeReal.運営者さまへ\n (For BeReal. developers)',

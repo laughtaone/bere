@@ -100,45 +100,50 @@ class QaWidget extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 3),
                                   if (url != '')
-                                    TextButton(
-                                      onPressed: () async {
-                                        await functionLaunchUrl(url);
-                                      },
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 50,
-                                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(30),
-                                          color: const Color(0xff505050),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Flexible(
-                                              child: Text(
-                                                (customUrlOpenText == '') ? '開く' : customUrlOpenText,
-                                                style: TextStyle(
-                                                  fontSize: qaTextSize() + 1,
-                                                  color: Colors.white,
-                                                  fontFamily: qaTextFont(),
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: TextButton(
+                                          onPressed: () async {
+                                            await functionLaunchUrl(url);
+                                          },
+                                          style: TextButton.styleFrom(
+                                            padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+                                            backgroundColor: const Color(0xff404040),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(30),
+                                            ),
+                                            // fixedSize: const Size(double.infinity, 50)
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Flexible(
+                                                child: Text(
+                                                  (customUrlOpenText == '') ? '開く' : customUrlOpenText,
+                                                  style: TextStyle(
+                                                    fontSize: qaTextSize() + 1,
+                                                    color: Colors.white,
+                                                    fontFamily: qaTextFont(),
+                                                  ),
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  textAlign: TextAlign.center,
                                                 ),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                                textAlign: TextAlign.center,
                                               ),
-                                            ),
-                                            const SizedBox(width: 5),
-                                            const Padding(
-                                              padding: EdgeInsets.only(top: 3),
-                                              child: Icon(
-                                                Icons.open_in_new,
-                                                color: Colors.white,
-                                                size: 22,
+                                              const SizedBox(width: 5),
+                                              const Padding(
+                                                padding: EdgeInsets.only(top: 3),
+                                                child: Icon(
+                                                  Icons.open_in_new,
+                                                  color: Colors.white,
+                                                  size: 22,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          )
                                         ),
                                       ),
                                     ),
@@ -205,7 +210,7 @@ class QaWidget extends StatelessWidget {
 
   // アイコン・文字・仕切り線の背景色を指定
   Color qaBackgroundColor() {
-    const qaBackgroundColor = Color(0xFF2e2e2e);
+    const qaBackgroundColor = Color(0xFF2a2a2a);
     return qaBackgroundColor;
   }
 
