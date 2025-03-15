@@ -166,8 +166,9 @@ class StartPageState extends State<StartPage> {
                     // -----------------------------------------------------------
 
                     // ------------------------- 注意書き -------------------------
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    Container(
+                      width: screenWidth * 0.85,
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

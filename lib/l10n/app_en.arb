@@ -1,10 +1,11 @@
 {
   "@@locale": "en",
-  "berealUnofficialApp": "BeReal. Unofficial App",
+  "berealUnofficialApp": "BeReal. UNOFFICIAL APP",
   "start": "Start",
   "thisAppIsForRehearsalsOnly": "This app is for rehearsals only.",
   "cannotSaveImages": "You cannot save or take screenshots of any images you take.",
   "cannotSaveImagesAppBar": "You cannot save or screenshot any images.",
+  "cannotSaveImagesAppBarCompact": "Cannot save or screenshot any images.",
   "changedCameraMagnification": "Changed the camera magnification",
   "cannotCameraMagnification": "Cannot be changed because it is a single camera model",
   "flashHasTurnedOn": "The flash is on",

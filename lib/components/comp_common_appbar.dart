@@ -29,7 +29,7 @@ class CompCommonAppbarState extends State<CompCommonAppbar> {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: widget.isCompactDisplay ? const CautionEnableSukusho() : const CompTitleAppBar(),
+      title: widget.isCompactDisplay ? CautionEnableSukusho(isCompactDisplay: widget.isCompactDisplay) : const CompTitleAppBar(),
       actions: (widget.leftHandedMode)
         ? [IconButton(
             onPressed: (widget.customOnPressed == null)

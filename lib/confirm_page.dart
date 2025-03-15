@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 
 
 // ConfirmPageの定義
@@ -269,9 +271,16 @@ class ConfirmPageState extends State<ConfirmPage> {
                               content: Text(AppLocalizations.of(context)!.errorOpenBeReal),
                               actions: <Widget>[
                                 TextButton(
-                                  child: Text(
-                                    AppLocalizations.of(context)!.jumpAppStorePage,
-                                    style: TextStyle(fontSize: 17, color: Colors.blue[800])
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      FaIcon(FontAwesomeIcons.appStoreIos, color: Colors.blue[800]),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        AppLocalizations.of(context)!.jumpAppStorePage,
+                                        style: TextStyle(fontSize: 17, color: Colors.blue[800])
+                                      ),
+                                    ],
                                   ),
                                   onPressed: () async {
                                     await functionLaunchUrl(url);

@@ -5,6 +5,7 @@
   "thisAppIsForRehearsalsOnly": "このアプリはあくまでリハーサル用です",
   "cannotSaveImages": "撮影した画像の保存・スクショは一切できません",
   "cannotSaveImagesAppBar": "撮影した画像の保存・スクショは一切できません",
+  "cannotSaveImagesAppBarCompact": "画像の保存・スクショは一切できません",
   "changedCameraMagnification": "カメラの倍率を変更しました",
   "cannotCameraMagnification": "シングルカメラの機種のため変更できません",
   "flashHasTurnedOn": "フラッシュが オン になりました",
