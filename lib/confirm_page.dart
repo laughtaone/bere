@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 // ConfirmPageの定義
@@ -264,17 +265,23 @@ class ConfirmPageState extends State<ConfirmPage> {
                           context: context,
                           builder: (BuildContext context) {
                             return CupertinoAlertDialog(
-                              title: const Text('⚠️ エラー'),
-                              content: const Text('BeReal.を開けませんでした。\nアプリがインストールされているか確認してください。\n\nインストール済みの場合は、お手数ですが手動で開いてください。'),
+                              title: Text('⚠️ ${AppLocalizations.of(context)!.error}'),
+                              content: Text(AppLocalizations.of(context)!.errorOpenBeReal),
                               actions: <Widget>[
                                 TextButton(
-                                  child: Text('AppStoreページへ', style: TextStyle(fontSize: 17, color: Colors.blue[800])),
+                                  child: Text(
+                                    AppLocalizations.of(context)!.jumpAppStorePage,
+                                    style: TextStyle(fontSize: 17, color: Colors.blue[800])
+                                  ),
                                   onPressed: () async {
                                     await functionLaunchUrl(url);
                                   },
                                 ),
                                 TextButton(
-                                  child: const Text('閉じる', style: TextStyle(fontSize: 17, color: Colors.indigo)),
+                                  child: Text(
+                                    AppLocalizations.of(context)!.close,
+                                    style: const TextStyle(fontSize: 17, color: Colors.indigo)
+                                  ),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
@@ -290,8 +297,8 @@ class ConfirmPageState extends State<ConfirmPage> {
                         context: context,
                         builder: (BuildContext context) {
                           return CupertinoAlertDialog(
-                            title: const Text('⚠️ エラー'),
-                            content: const Text('BeReal.を開けませんでした。\nアプリがインストールされているか確認してください。\n\nインストール済みの場合は、お手数ですが手動で開いてください。'),
+                            title: Text('⚠️ ${AppLocalizations.of(context)!.error}'),
+                            content: Text(AppLocalizations.of(context)!.errorOpenBeReal),
                             actions: <Widget>[
                               TextButton(
                                 child: const Text('OK'),
@@ -305,9 +312,9 @@ class ConfirmPageState extends State<ConfirmPage> {
                       );
                     }
                   },
-                  child: const Text(
-                    'BeReal.様を開く>',
-                    style: TextStyle(
+                  child: Text(
+                    AppLocalizations.of(context)!.openBeReal,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 25,
                       fontWeight: FontWeight.bold,

@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 class CompCheckText extends StatelessWidget {
   final String text;
 
-  const CompCheckText({
-    super.key,
-    required this.text,
-  });
+  const CompCheckText(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {

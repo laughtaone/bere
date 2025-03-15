@@ -5,12 +5,16 @@ class CompSettingsAppbar extends StatelessWidget implements PreferredSizeWidget 
   const CompSettingsAppbar({super.key,
     required this.leftHandedMode,
     required this.icon,
-    required this.text
+    required this.text,
+    this.customActionIcon = Icons.close,
+    this.customActionIconSize = 30
   });
 
   final IconData icon;
   final String text;
   final bool leftHandedMode;
+  final IconData customActionIcon;
+  final double customActionIconSize;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -35,13 +39,13 @@ class CompSettingsAppbar extends StatelessWidget implements PreferredSizeWidget 
       ),
       actions: (!leftHandedMode)
         ? [IconButton(
-          icon: const Icon(Icons.close, size: 30),
+          icon: Icon(customActionIcon, size: customActionIconSize),
           onPressed: () => Navigator.pop(context)
         )]
         : null,
       leading: (leftHandedMode)
         ? IconButton(
-          icon: const Icon(Icons.close, size: 30),
+          icon: Icon(customActionIcon, size: customActionIconSize),
           onPressed: () => Navigator.pop(context)
         )
         : null,

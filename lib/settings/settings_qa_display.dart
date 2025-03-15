@@ -1,51 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:berehearsal/components/comp_qa.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
-// 質問データをリスト管理
-const List<Map<String, dynamic>> qaData = [
-  {
-    'title': 'このアプリについて',
-    'q': 'BeReal.と機能は同じですか？',
-    'a': '本アプリはBeReal.を再現したため、写真撮影の機能は同じですが、本家様にあるビデオ撮影には対応していません。\n\n加えて、外/内カメラの切り替えにかける時間や画像処理など細かい部分には、多少の差がある可能性があります。\n\nまた本アプリは、Flutterという開発フレームワークを用いていますが、本家様はSwiftなどのFlutter以外を用いている可能性が高いため、開発手法による差も生じている可能性はあります。'
-  },
-  {
-    'title': '',
-    'q': 'BeRehearsal.っていう名前は、英語の意味としておかしくないですか？',
-    'a': 'BeRehearsal.という名前に特別な意味はなく、あくまでBeReal.のリハーサル撮影アプリという本アプリの目的を伝えるためにこのような名前を付けました。'
-  },
-  {
-    'title': '',
-    'q': 'このアプリのプログラムを見たいです。',
-    'a': '今後、GitHubへの公開を検討しています。'
-  },
-  {
-    'title': '',
-    'q': 'このアプリでバグを見つけました！',
-    'a': 'お手数ですが、下記のフォームより報告していただけたら幸いです。',
-    'url': 'https://forms.gle/kVS6BXarzvrNWxsK6',
-    'customUrlOpenText': 'バグ報告フォーム'
-  },
-  {
-    'title': '開発者について',
-    'q': 'このアプリを通して、アプリ開発者にお金は入っていますか？',
-    'a': '本アプリでは、アプリ内においてインターネット通信機能や撮影データ保存機能を実装していません。\nそのため、プログラム的にそもそも広告を掲載できない上、データや使用状況の収集も不可能であるため、本アプリを通して、本アプリ開発者には1円たりとも、お金・使用分析データは入っていませんのでご安心ください。\n\nあくまで、本アプリ開発者が「n回の再撮影」と表示されずにBeReal.の撮影の練習をしたいという目的で開発したアプリです。\n\nまた、BeReal.様を支えるこのアプリから収益を得るのは、本アプリ開発者の自分の中のポリシーに反するため、今後も同様に広告を掲載せず、使用データの収集・分析もいたしません。'
-  },
-  {
-    'title': '',
-    'q': '機能の追加など、このアプリへの要望・感想・問い合わせを開発者に伝えたいです。',
-    'a': 'お手数ですが、下記のフォームより報告していただけたら幸いです。',
-    'url': 'https://forms.gle/NERKzeJkrjysmysFA',
-    'customUrlOpenText': '問い合わせフォーム'
-  },
-  {
-    'title': 'BeReal.運営者さまへ\n (For BeReal. developers)',
-    'q': 'BeReal.の運営者からですが、至急、このアプリの配信の中止をしてください。\n（English translation by Google Translate: This is a message from the BeReal. developers to please stop distributing this rehearsal app as soon as possible.）',
-    'a': 'この度は、勝手にリハーサルアプリの作成・配信を行い、大変申し訳ありません。まずは、BeReal.運営者であることを確認し、必要に応じ、即時、配信の中止を行います。そのため、お手数ですが、当アプリ開発者のX(@laughtaone)のDMまでお願いいたします。\n(English translation by Google Translate: I am very sorry for creating and distributing this rehearsal app without permission. First of all, I will confirm that you are the operator of BeReal., and if necessary, I will immediately stop the distribution. Therefore, I apologize for the inconvenience, but please send a DM to X (@laughtaone), the developer of this rehearsal app.)',
-    'url': 'https://x.com/laughtaone',
-    'customUrlOpenText': 'Xを開く (Open X)'
-  },
-];
 
 
 
@@ -54,15 +10,58 @@ class QAPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ------------------------------ Q&Aデータ(多言語対応でcontextが必要なのでここで定義) ------------------------------
+    final List<Map<String, dynamic>> qaData = [
+      {
+        'title': AppLocalizations.of(context)!.qaTitle1,
+        'q': AppLocalizations.of(context)!.q1,
+        'a': AppLocalizations.of(context)!.a1
+      },
+      {
+        'title': '',
+        'q': AppLocalizations.of(context)!.q2,
+        'a': AppLocalizations.of(context)!.a2
+      },
+      {
+        'title': '',
+        'q': AppLocalizations.of(context)!.q3,
+        'a': AppLocalizations.of(context)!.a3
+      },
+      {
+        'title': '',
+        'q': AppLocalizations.of(context)!.q4,
+        'a': AppLocalizations.of(context)!.a4,
+        'url': 'https://forms.gle/kVS6BXarzvrNWxsK6',
+        'customUrlOpenText': AppLocalizations.of(context)!.a4OpenText
+      },
+      {
+        'title': AppLocalizations.of(context)!.qaTitle2,
+        'q': AppLocalizations.of(context)!.q5,
+        'a': AppLocalizations.of(context)!.a5,
+      },
+      {
+        'title': '',
+        'q': AppLocalizations.of(context)!.q6,
+        'a': AppLocalizations.of(context)!.a6,
+        'url': 'https://forms.gle/NERKzeJkrjysmysFA',
+        'customUrlOpenText': AppLocalizations.of(context)!.a6OpenText
+      },
+      {
+        'title': AppLocalizations.of(context)!.qaTitle3,
+        'q': AppLocalizations.of(context)!.q7,
+        'a': AppLocalizations.of(context)!.a7,
+        'url': 'https://x.com/laughtaone',
+        'customUrlOpenText': AppLocalizations.of(context)!.a7OpenText
+      }
+    ];
+    // -----------------------------------------------------------------------------------------------------------
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text(
-          'よくある質問',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Text(
+          AppLocalizations.of(context)!.faq,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: const Icon(
@@ -93,5 +92,4 @@ class QAPage extends StatelessWidget {
       )
     );
   }
-
 }

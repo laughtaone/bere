@@ -33,3 +33,19 @@ Future<void> setLeftHandedModePreference(bool value) async {
   await prefs.setBool('leftHandedMode', value);
 }
 // --------------------------------------------------------------------------
+
+
+
+// --------------------------------- 言語設定 --------------------------------
+// 読み込み
+Future<String?> loadLangugagePreference() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('language');
+}
+
+// 書き込み
+Future<void> setLangugagePreference(String value) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('language', value);
+}
+// --------------------------------------------------------------------------

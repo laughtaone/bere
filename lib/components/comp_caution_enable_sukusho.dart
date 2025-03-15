@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 
@@ -14,9 +15,9 @@ class CautionEnableSukusho extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: customBottomPadding),
-      child: const Text(
-        '画像の保存・スクショは一切できません',
-        style: TextStyle(
+      child: Text(
+        AppLocalizations.of(context)!.cannotSaveImagesAppBar,
+        style: const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.bold,
         ),

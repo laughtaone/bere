@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'take_display.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:screen_protector/screen_protector.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class StartPage extends StatefulWidget {
@@ -68,49 +69,56 @@ class StartPageState extends State<StartPage> {
         child: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: SizedBox(
-            height: screenHeight,
+            height: screenHeight * 0.8,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // ------------------------- タイトル -------------------------
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 3),
-                    // - - - - メインタイトル - - - -
-                    RichText(
-                      text: const TextSpan(
-                        children: [
-                          TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
-                          TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
-                          TextSpan(text: 'al.', style: TextStyle(color: Colors.white)),
-                        ],
+                SizedBox(
+                  height: screenHeight * 0.3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 3),
+                      // - - - - メインタイトル - - - -
+                      RichText(
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
+                            TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
+                            TextSpan(text: 'al.', style: TextStyle(color: Colors.white)),
+                          ],
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 45,
+                          )
+                        ),
+                      ),
+                      // - - - - - - - - - - - - -
+                      // - - - - サブタイトル - - - -
+                      const Text(
+                        'To support enjoying BeReal.',
                         style: TextStyle(
+                          fontSize: 14,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.bold,
-                          fontSize: 45,
-                        )
+                        ),
                       ),
-                    ),
-                    // - - - - - - - - - - - - -
-                    // - - - - サブタイトル - - - -
-                    const Text(
-                      'To support enjoying BeReal.',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.bold,
+                      // - - - - - - - - - - - - -
+                      const SizedBox(height: 10),
+                      // - - - - 非公式案内 - - - -
+                      Text(
+                        AppLocalizations.of(context)!.berealUnofficialApp,
+                        style: const TextStyle(fontSize: 14, color: Color(0xffd0d0d0), fontWeight: FontWeight.bold)
                       ),
-                    ),
-                    // - - - - - - - - - - - - -
-                    const SizedBox(height: 10),
-                    // - - - - 非公式案内 - - - -
-                    const Text('BeReal.非公式アプリ', style: TextStyle(fontSize: 14, color: Color(0xffd0d0d0), fontWeight: FontWeight.bold)),
-                    // - - - - - - - - - - - - -
-                  ],
+                      // - - - - - - - - - - - - -
+                    ],
+                  ),
                 ),
                 // -----------------------------------------------------------
-            
+
                 // --------------------- 「はじめる」ボタン ---------------------
                 Column(
                   children: [
@@ -134,20 +142,20 @@ class StartPageState extends State<StartPage> {
                           ),
                         );
                       },
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'はじめる',
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.start,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 43,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Icon(
+                          const Icon(
                             Icons.chevron_right_outlined,
                             color: Colors.white,
                             size: 50,
@@ -156,40 +164,43 @@ class StartPageState extends State<StartPage> {
                       ),
                     ),
                     // -----------------------------------------------------------
-            
-                    const SizedBox(height: 40),
-            
+
                     // ------------------------- 注意書き -------------------------
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 6),
-                          child: Icon(
-                            Icons.info_outline,
-                            size: 22,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Icon(
+                              Icons.info_outline,
+                              size: 22,
+                            ),
                           ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'このアプリはあくまでリハーサル用です',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.thisAppIsForRehearsalsOnly,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)!.cannotSaveImages,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              '撮影した画像の保存・スクショは一切できません',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                     // -----------------------------------------------------------
                   ]

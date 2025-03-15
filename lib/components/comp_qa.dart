@@ -1,5 +1,6 @@
 import 'package:berehearsal/functions/function_launch_url.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Q＆A用のウィジェット
 class QaWidget extends StatelessWidget {
@@ -122,7 +123,7 @@ class QaWidget extends StatelessWidget {
                                             children: [
                                               Flexible(
                                                 child: Text(
-                                                  (customUrlOpenText == '') ? '開く' : customUrlOpenText,
+                                                  (customUrlOpenText == '') ? AppLocalizations.of(context)!.open : customUrlOpenText,
                                                   style: TextStyle(
                                                     fontSize: qaTextSize() + 1,
                                                     color: Colors.white,

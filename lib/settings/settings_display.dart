@@ -1,4 +1,5 @@
 import 'package:berehearsal/functions/function_setting.dart';
+import 'package:berehearsal/settings/settings_language_page.dart';
 import 'package:berehearsal/start_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,10 @@ import 'package:berehearsal/components/comp_check_text.dart';
 import 'package:berehearsal/functions/function_launch_url.dart';
 import 'package:berehearsal/settings/use_packages_page/use_packages_page.dart';
 import 'package:berehearsal/components/comp_settings_appbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:berehearsal/main.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 
@@ -18,6 +23,7 @@ class SettingsPage extends StatefulWidget {
   @override
   SettingsPageState createState() => SettingsPageState();
 }
+
 
 class SettingsPageModel extends ChangeNotifier {
   bool _skipStartPage = false;
@@ -60,11 +66,12 @@ class SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final String language = Provider.of<LanguageProvider>(context).locale.toString().split('.').last;
     return Scaffold(
       appBar: CompSettingsAppbar(
         leftHandedMode: leftHandedMode,
         icon: Icons.settings,
-        text: '設定',
+        text: AppLocalizations.of(context)!.settings
       ),
       body: Theme(
         data: ThemeData.dark(),
@@ -73,15 +80,15 @@ class SettingsPageState extends State<SettingsPage> {
           sections: [
             // ----------------------- スタート画面スキップ設定 -----------------------
             SettingsSection(
-              title: const Text(
-                'スタート画面',
+              title: Text(
+                AppLocalizations.of(context)!.startScreen,
                 style: SettingTitleTextStyle.myTextStyle,
               ),
               tiles: [
                 SettingsTile.switchTile(
                   leading: const Icon(Icons.directions_run_outlined),
-                  title: const Text('スタート画面をスキップする'),
-                  description: const Text('このスイッチをオンにすると、立ち上げ時にスタート画面をスキップし、いきなり撮影画面に進みます。'),
+                  title: Text(AppLocalizations.of(context)!.skipStartScreen),
+                  description: Text(AppLocalizations.of(context)!.descriptionSkipStartScreen),
                   initialValue: skipStartPage,
                   onToggle: (value) async {
                     setSkipStartPagePreference(value);
@@ -96,15 +103,15 @@ class SettingsPageState extends State<SettingsPage> {
             // --------------------------------------------------------------------
             // --------------------------- 左利きモード設定 --------------------------
             SettingsSection(
-              title: const Text(
-                '左利きモード',
+              title: Text(
+                AppLocalizations.of(context)!.leftHandedMode,
                 style: SettingTitleTextStyle.myTextStyle,
               ),
               tiles: [
                 SettingsTile.switchTile(
                   leading: const Icon(Icons.pan_tool_alt),
-                  title: const Text('左利きモードをオンにする'),
-                  description: const Text('このスイッチをオンにすると、左利きの方にも使いやすいように、ほとんどのボタンの配置がデフォルトとは逆になります。'),
+                  title: Text(AppLocalizations.of(context)!.turnOnLeftHandedMode),
+                  description: Text(AppLocalizations.of(context)!.descriptionTurnOnLeftHandedMode),
                   initialValue: leftHandedMode,
                   onToggle: (value) async {
                     setLeftHandedModePreference(value);
@@ -116,19 +123,19 @@ class SettingsPageState extends State<SettingsPage> {
                       context: context,
                       builder: (context) {
                         return CupertinoAlertDialog(
-                          title: const Text('確認'),
-                          content: const Text(
-                            '左利きモードの切り替えを反映するには、トップ画面に戻る必要があります\n\n次のボタンを押して\nトップ画面へ遷移してください',
-                            style: TextStyle(
+                          title: Text(AppLocalizations.of(context)!.confirm),
+                          content: Text(
+                            AppLocalizations.of(context)!.descriptionAfterTurnOnLeftHandedMode,
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 14,
                             ),
                           ),
                           actions: <Widget>[
                             TextButton(
-                              child: const Text(
-                                'トップ画面へ遷移',
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.red)
+                              child: Text(
+                                AppLocalizations.of(context)!.jumpTopPage,
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.red)
                               ),
                               onPressed: () {
                                 Navigator.of(context).pushAndRemoveUntil(
@@ -146,21 +153,52 @@ class SettingsPageState extends State<SettingsPage> {
               ],
             ),
             // --------------------------------------------------------------------
+            // ------------------------------ 言語設定 ------------------------------
+            SettingsSection(
+              title: Text(
+                AppLocalizations.of(context)!.languageSettings,
+                style: SettingTitleTextStyle.myTextStyle,
+              ),
+              tiles: [
+                SettingsTile.navigation(
+                  leading: const Icon(Icons.language_outlined),
+                  title: Text(AppLocalizations.of(context)!.changeLanguageSettings),
+                  value: Text(
+                    language == 'ja'
+                      ? '日本語'
+                      : language == 'en'
+                        ? 'English'
+                        : '日本語',
+                  ),
+                  description: Text(AppLocalizations.of(context)!.descriptionLanguageSettings),
+                  onPressed: (_) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const SettingsLanguagePage();
+                        },
+                      ),
+                    );
+                  }
+                ),
+              ],
+            ),
+            // --------------------------------------------------------------------
             // ------------------------------ アプリ説明 ----------------------------
             SettingsSection(
-              title: const Text(
-                'このアプリについて',
+              title: Text(
+                AppLocalizations.of(context)!.aboutThisApp,
                 style: SettingTitleTextStyle.myTextStyle,
               ),
               tiles: <SettingsTile>[
                 SettingsTile(
-                  title: const Column(
+                  title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CompCheckText(text: '本アプリはBeReal.様に許可をいただいて作成したアプリではない、非公式のBeReal.リハーサルアプリです。'),
-                      CompCheckText(text: '本アプリで撮影した写真を、保存・スクショすることは一切できません。\nこれは、BeRehearsal.とBeReal.の画像の見分けが付かず、BeReal.の楽しみを奪ってしまうことを防ぐためです。'),
-                      CompCheckText(text: 'ホームに戻ろうとしたり、スクショや画面収録を行うと、画面は黒くなっていますが、通常通り使用する際には元に戻りますので、ご安心ください。'),
-                      CompCheckText(text: '本アプリは、あくまで開発者が「n回の再撮影」と表示されずに、BeReal.の撮影の練習をしたいという目的で開発したアプリです。'),
+                      CompCheckText(AppLocalizations.of(context)!.aboutThisAppContent1),
+                      CompCheckText(AppLocalizations.of(context)!.aboutThisAppContent2),
+                      CompCheckText(AppLocalizations.of(context)!.aboutThisAppContent3),
+                      CompCheckText(AppLocalizations.of(context)!.aboutThisAppContent4)
                     ],
                   ),
                 ),
@@ -169,14 +207,14 @@ class SettingsPageState extends State<SettingsPage> {
             // --------------------------------------------------------------------
             // ----------------------------- よくある質問 ---------------------------
             SettingsSection(
-              title: const Text(
-                'よくある質問',
+              title: Text(
+                AppLocalizations.of(context)!.faq,
                 style: SettingTitleTextStyle.myTextStyle,
               ),
               tiles: <SettingsTile>[
                 SettingsTile.navigation(
                   leading: const Icon(Icons.contact_support),
-                  title: const Text('よくある質問'),
+                  title: Text(AppLocalizations.of(context)!.faq),
                   onPressed: (context) {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => const QAPage(),
@@ -188,14 +226,14 @@ class SettingsPageState extends State<SettingsPage> {
             // --------------------------------------------------------------------
             // ------------------------------- バグ状況 ----------------------------
             SettingsSection(
-              title: const Text(
-                'バグ状況',
+              title: Text(
+                AppLocalizations.of(context)!.bugStatus,
                 style: SettingTitleTextStyle.myTextStyle,
               ),
               tiles: <SettingsTile>[
                 SettingsTile.navigation(
                   leading: const Icon(Icons.bug_report_outlined),
-                  title: const Text('現在確認しているバグ'),
+                  title: Text(AppLocalizations.of(context)!.currentlyConfirmedBugs),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://laughtaone.notion.site/1a5b5b93908180eeb25cf2575515832c?pvs=4');
                   },
@@ -205,14 +243,14 @@ class SettingsPageState extends State<SettingsPage> {
             // --------------------------------------------------------------------
             // -------------------------- 動作確認済み端末 ---------------------------
             SettingsSection(
-              title: const Text(
-                '動作確認済み端末',
+              title: Text(
+                AppLocalizations.of(context)!.verifiedDevices,
                 style: SettingTitleTextStyle.myTextStyle,
               ),
               tiles: <SettingsTile>[
                 SettingsTile.navigation(
                   leading: const Icon(Icons.mobile_friendly_outlined),
-                  title: const Text('現在確認済みの端末'),
+                  title: Text(AppLocalizations.of(context)!.currentlyConfirmedDevices),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://laughtaone.notion.site/BeRehearsal-1a5b5b9390818055b00ee12902fa819f?pvs=4');
                   },
@@ -222,18 +260,18 @@ class SettingsPageState extends State<SettingsPage> {
             // --------------------------------------------------------------------
             // ------------------------------ 本家様関連 ----------------------------
             SettingsSection(
-              title: const Text('本家様', style: SettingTitleTextStyle.myTextStyle),
+              title: Text(AppLocalizations.of(context)!.honkeApp, style: SettingTitleTextStyle.myTextStyle),
               tiles: <SettingsTile>[
                 SettingsTile.navigation(
                   leading: const FaIcon(FontAwesomeIcons.appStoreIos),
-                  title: const Text('AppStore ページ'),
+                  title: Text(AppLocalizations.of(context)!.appStoreTitle),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://apps.apple.com/jp/app/bereal-%E3%83%AA%E3%82%A2%E3%83%AB%E3%81%AA%E6%97%A5%E5%B8%B8%E3%82%92%E5%8F%8B%E9%81%94%E3%81%A8/id1459645446');
                   },
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.language_outlined),
-                  title: const Text('公式サイト'),
+                  title: Text(AppLocalizations.of(context)!.officialWebsite),
                   value: const Text('https://bereal.com/jp/'),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://bereal.com/ja/');
@@ -241,7 +279,7 @@ class SettingsPageState extends State<SettingsPage> {
                 ),
                 SettingsTile.navigation(
                   leading: const FaIcon(FontAwesomeIcons.xTwitter),
-                  title: const Text('公式X'),
+                  title: Text(AppLocalizations.of(context)!.officialX),
                   value: const Text('@BeReal_App'),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://x.com/BeReal_App');
@@ -249,7 +287,7 @@ class SettingsPageState extends State<SettingsPage> {
                 ),
                 SettingsTile.navigation(
                   leading: const FaIcon(FontAwesomeIcons.instagram),
-                  title: const Text('公式Instagram'),
+                  title: Text(AppLocalizations.of(context)!.officialInstagram),
                   value: const Text('@bereal'),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://www.instagram.com/bereal/');
@@ -260,8 +298,8 @@ class SettingsPageState extends State<SettingsPage> {
             // --------------------------------------------------------------------
             // ---------------------------- 開発者について --------------------------
             SettingsSection(
-              title: const Text(
-                '開発者について',
+              title: Text(
+                AppLocalizations.of(context)!.aboutTheDeveloper,
                 style: SettingTitleTextStyle.myTextStyle,
               ),
               tiles: <SettingsTile>[
@@ -283,7 +321,7 @@ class SettingsPageState extends State<SettingsPage> {
                 ),
                 SettingsTile.navigation(
                   leading: const FaIcon(FontAwesomeIcons.appStoreIos),
-                  title: const Text('開発者 その他アプリ'),
+                  title: Text(AppLocalizations.of(context)!.developerOtherApps),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://apps.apple.com/us/developer/taichi-usuba/id1798659459');
                   },
@@ -293,32 +331,31 @@ class SettingsPageState extends State<SettingsPage> {
             // --------------------------------------------------------------------
             // ---------------------------- アプリについて --------------------------
             SettingsSection(
-              title: const Text(
-                'アプリについて',
+              title: Text(
+                AppLocalizations.of(context)!.aboutTheApp,
                 style: SettingTitleTextStyle.myTextStyle,
               ),
               tiles: <SettingsTile>[
                 SettingsTile.navigation(
                   leading: const Icon(Icons.description_outlined),
-                  title: const Text('利用規約'),
+                  title: Text(AppLocalizations.of(context)!.termsOfService),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://laughtaone.notion.site/BeRehearsal-1a5b5b93908180738f1fc4e24974e0a9?pvs=4');
                   },
                 ),
                 SettingsTile.navigation(
-                  leading: const Icon(Icons.book_outlined),
-                  title: const Text('プライバシーポリシー'),
+                  leading: const Icon(Icons.description_outlined),
+                  title: Text(AppLocalizations.of(context)!.privacyPolicy),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://laughtaone.notion.site/BeRehearsal-1a5b5b9390818009acd9ff8e2ba76998?pvs=4');
                   },
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.book_outlined),
-                  title: const Text('使用パッケージ'),
+                  title: Text(AppLocalizations.of(context)!.package),
                   onPressed: (BuildContext context)  {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => UsePackagesPage(leftHandedMode: leftHandedMode),
-                      fullscreenDialog: true
+                      builder: (_) => UsePackagesPage(leftHandedMode: leftHandedMode)
                     ));
                   },
                 ),
@@ -327,14 +364,14 @@ class SettingsPageState extends State<SettingsPage> {
             // --------------------------------------------------------------------
             // -------------------------- アプリバージョン ---------------------------
             SettingsSection(
-              title: const Text(
-                'アプリバージョン',
+              title: Text(
+                AppLocalizations.of(context)!.appVersion,
                 style: SettingTitleTextStyle.myTextStyle,
               ),
               tiles: <SettingsTile>[
                 SettingsTile.navigation(
                   leading: const Icon(Icons.tag_outlined),
-                  title: const Text('アプリバージョン'),
+                  title: Text(AppLocalizations.of(context)!.appVersion),
                   value: const Text('1.0.1'),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://laughtaone.notion.site/BeRehearsal-1a5b5b93908180e1a3add560fbcc066a?pvs=4');

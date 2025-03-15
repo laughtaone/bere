@@ -2,6 +2,8 @@ PODS:
   - camera_avfoundation (0.0.1):
     - Flutter
   - Flutter (1.0.0)
+  - flutter_localization (0.0.1):
+    - Flutter
   - permission_handler_apple (9.3.0):
     - Flutter
   - screen_protector (1.2.1):
@@ -17,6 +19,7 @@ PODS:
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - Flutter (from `Flutter`)
+  - flutter_localization (from `.symlinks/plugins/flutter_localization/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - screen_protector (from `.symlinks/plugins/screen_protector/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -31,6 +34,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/camera_avfoundation/ios"
   Flutter:
     :path: Flutter
+  flutter_localization:
+    :path: ".symlinks/plugins/flutter_localization/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   screen_protector:
@@ -43,6 +48,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   camera_avfoundation: 04b44aeb14070126c6529e5ab82cc7c9fca107cf
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_localization: 72299fb6cb4e51cae587bd953ed0b958040b71e6
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   screen_protector: 3d90d44ac886b25335aebd93230b454aef45794a
   ScreenProtectorKit: 83a6281b02c7a5902ee6eac4f5045f674e902ae4

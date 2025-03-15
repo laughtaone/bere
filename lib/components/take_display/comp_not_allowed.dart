@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 
@@ -28,18 +29,18 @@ class CompNotAllowedState extends State<CompNotAllowed> {
         const SizedBox(height: 10),
         Text(
           (!widget.isCameraAllowed && widget.isMicAllowed)
-            ? 'カメラへのアクセスが\n許可されていません'
+            ? AppLocalizations.of(context)!.notAllowedCamera
             : (widget.isCameraAllowed && !widget.isMicAllowed)
-              ? 'マイクへのアクセスが\n許可されていません'
-              : 'カメラとマイクへのアクセスが\n許可されていません',
+              ? AppLocalizations.of(context)!.notAllowedMic
+              : AppLocalizations.of(context)!.notAllowedCameraAndMic,
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
           textAlign: TextAlign.center
         ),
         const SizedBox(height: 30),
-        const Text(
-            '初回起動時は許可していても\nこのように表示される可能性があります\n再度、アプリを開き直してみてください',
-            style: TextStyle(color: Color(0xffc5c5c5), fontWeight: FontWeight.bold, fontSize: 12),
-            textAlign: TextAlign.center,
+        Text(
+          AppLocalizations.of(context)!.descriptionNotAllowed,
+          style: const TextStyle(color: Color(0xffc5c5c5), fontWeight: FontWeight.bold, fontSize: 12),
+          textAlign: TextAlign.center
         ),
         const SizedBox(height: 50),
         TextButton(
@@ -50,13 +51,16 @@ class CompNotAllowedState extends State<CompNotAllowed> {
           onPressed: () async {
             await openAppSettings();
           },
-          child: const Row(
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(Icons.settings_suggest_outlined, color: Colors.white, size: 27),
-              SizedBox(width: 5),
-              Text('設定を開く', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20))
+              const Icon(Icons.settings_suggest_outlined, color: Colors.white, size: 27),
+              const SizedBox(width: 5),
+              Text(
+                AppLocalizations.of(context)!.openSettings,
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)
+              )
             ]
           )
         ),

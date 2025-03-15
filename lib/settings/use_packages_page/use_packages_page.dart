@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:berehearsal/functions/function_launch_url.dart';
 import 'package:berehearsal/settings/use_packages_page/use_packages_data.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class UsePackagesPage extends StatefulWidget {
@@ -37,9 +37,11 @@ class UsePackagesPageState extends State<UsePackagesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CompSettingsAppbar(
-        leftHandedMode: leftHandedMode,
+        leftHandedMode: true,
         icon: Icons.book_outlined,
-        text: '使用パッケージ',
+        text: AppLocalizations.of(context)!.usePackage,
+        customActionIcon: Icons.arrow_back_ios_outlined,
+        customActionIconSize: 23
       ),
       body: Theme(
         data: ThemeData.dark(),
@@ -48,9 +50,9 @@ class UsePackagesPageState extends State<UsePackagesPage> {
           sections: [
             // --------------------- 使用パッケージ・バージョン ---------------------
             SettingsSection(
-              title: const Text(
-                '使用パッケージ・バージョン',
-                style: TextStyle(
+              title: Text(
+                AppLocalizations.of(context)!.usePackageAndVersion,
+                style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -75,9 +77,9 @@ class UsePackagesPageState extends State<UsePackagesPage> {
             // ------------------------------------------------------------------
             // --------------------------- ライセンス ----------------------------
             SettingsSection(
-              title: const Text(
-                'ライセンス (pub.devより引用)',
-                style: TextStyle(
+              title: Text(
+                AppLocalizations.of(context)!.licenses,
+                style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

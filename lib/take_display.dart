@@ -9,6 +9,7 @@ import 'package:berehearsal/components/comp_loading.dart';
 import 'package:berehearsal/components/take_display/comp_take_display_icon.dart';
 import 'package:berehearsal/functions/function_check_permission.dart';
 import 'package:berehearsal/confirm_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 
@@ -410,9 +411,9 @@ class TakePageState extends State<TakePage> {
               // ================================================== カメラ画像部分 ===================================================
               centerElement:
                 (!isFirstLoaded)
-                  ? const AspectRatio(
+                  ? AspectRatio(
                     aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                    child: CompLoading(message: '準備中...')
+                    child: CompLoading(message: AppLocalizations.of(context)!.prepairing)
                   )
                   :(!isCameraAllowed || !isMicAllowed)     // カメラとマイクの権限が許可されていないかどうか
                     // カメラまたはマイクの権限が許可されていない場合の表示
@@ -425,17 +426,17 @@ class TakePageState extends State<TakePage> {
                     )
                     : (!isPrepaired)
                       // カメラ切り替え中の表示
-                      ? const AspectRatio(
+                      ? AspectRatio(
                         aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
-                        child: CompLoading(message: '準備中...')
+                        child: CompLoading(message: AppLocalizations.of(context)!.prepairing)
                       )
                       // 撮影中の表示
                       :(isTaking)
-                        ? const AspectRatio(
+                        ? AspectRatio(
                           aspectRatio: 3 / 4, // 3:4のアスペクト比を設定
                           child: CompLoading(
-                            message: '撮影中...',
-                            subMessage: '本家と異なりシャッター音は2回鳴ります'
+                            message: AppLocalizations.of(context)!.taking,
+                            subMessage: AppLocalizations.of(context)!.differentFromBeReal
                           ),
                         )
                         : Stack(
@@ -470,20 +471,24 @@ class TakePageState extends State<TakePage> {
                                   // ------------ 切り替え表示 ------------
                                   // フラッシュ
                                   (isSwitchFlash)
-                                    ? CompDisplaySwitch(targetVeriable: isFlashOn, targetText: 'フラッシュ')
+                                    // ? CompDisplaySwitch('フラッシュが ${(isFlashOn) ? 'オン' : 'オフ'} になりました')
+                                    ? CompDisplaySwitch((isFlashOn)
+                                      ? AppLocalizations.of(context)!.flashHasTurnedOn
+                                      : AppLocalizations.of(context)!.flashHasTurnedOff
+                                    )
                                     : const SizedBox.shrink(),
                                   // カメラ
                                   (isSwitchCamera)
-                                    ? CompDisplaySwitch(targetVeriable: _cameraIndex==0 , targetText: 'カメラ', customOnText: '外カメラ', customOffText: '内カメラ')
+                                    ? CompDisplaySwitch((_cameraIndex==0)
+                                      ? AppLocalizations.of(context)!.cameraHasSwitchedToOuter
+                                      : AppLocalizations.of(context)!.cameraHasSwitchedToInner
+                                    )
                                     : const SizedBox.shrink(),
                                   // 倍率
                                   (isSwitchCameraRate)
-                                    ? CompDisplaySwitch(
-                                      targetVeriable: false,
-                                      targetText: '',
-                                      customFullText: (wideOutCameraIndex != null)
-                                        ? 'カメラの倍率を変更しました'
-                                        : 'シングルカメラの機種のため変更できません'
+                                    ? CompDisplaySwitch((wideOutCameraIndex != null)
+                                      ? AppLocalizations.of(context)!.changedCameraMagnification
+                                      : AppLocalizations.of(context)!.cannotCameraMagnification
                                     )
                                     : const SizedBox.shrink(),
 

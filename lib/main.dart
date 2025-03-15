@@ -4,6 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:berehearsal/settings/settings_display.dart';
 import 'package:provider/provider.dart';
 import 'package:berehearsal/start_page.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 
 void main() async {
@@ -15,58 +18,95 @@ void main() async {
   ]);
 
   final prefs = await SharedPreferences.getInstance();
-  // 初回起動時に 'skipStartPage' が設定されていない場合、false に設定
+  
+  // 初回起動時の設定
   if (!prefs.containsKey('skipStartPage')) {
     await prefs.setBool('skipStartPage', false);
   }
 
+  // 言語設定の取得
+  final String? languageCode = prefs.getString('languageCode') ?? 'ja';
+
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => SettingsPageModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SettingsPageModel()),
+        ChangeNotifierProvider(create: (context) => LanguageProvider(languageCode)), // ✅ 追加
+      ],
       child: const StartPageHome(),
     ),
   );
 }
 
-class StartPageHome extends StatelessWidget {
+
+class StartPageHome extends StatefulWidget {
   const StartPageHome({super.key});
 
+  static void setLocale(BuildContext context, Locale newLocale) {
+    Provider.of<LanguageProvider>(context, listen: false).setLanguage(newLocale.languageCode);
+  }
+
+  @override
+  StartPageHomeState createState() => StartPageHomeState();
+}
+
+class StartPageHomeState extends State<StartPageHome> {
   @override
   Widget build(BuildContext context) {
+    final locale = Provider.of<LanguageProvider>(context).locale;
+
     Color commonBackColor = const Color(0xff1E1E1E);
+
     return MaterialApp(
+      // ------------------- 多言語対応用 ------------------
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: locale,
+      // -------------------------------------------------
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.light,
       theme: ThemeData(
-        scaffoldBackgroundColor: commonBackColor, // 背景色
+        scaffoldBackgroundColor: commonBackColor,
         appBarTheme: AppBarTheme(
           backgroundColor: commonBackColor,
-          titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),   // デフォルトの文字色
+          titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
           iconTheme: const IconThemeData(
-            color: Colors.white, // デフォルトのアイコン色
-            size: 25
+            color: Colors.white,
+            size: 25,
           ),
         ),
         iconTheme: const IconThemeData(
-          color: Colors.white, // デフォルトのアイコン色
+          color: Colors.white,
         ),
         textTheme: const TextTheme(
-          bodyMedium: TextStyle(color: Colors.white),   // デフォルトの文字色
-        ),
-        textButtonTheme: TextButtonThemeData(
-          style: ButtonStyle(
-            overlayColor: WidgetStateProperty.resolveWith<Color?>(
-              (Set<WidgetState> states) {
-                if (states.contains(WidgetState.pressed)) {
-                  return Colors.white.withOpacity(0.2); // 押した時の色
-                }
-                return null; // デフォルトの色を使用
-              },
-            ),
-          ),
+          bodyMedium: TextStyle(color: Colors.white),
         ),
       ),
       home: const StartPage(),
     );
+  }
+}
+
+
+
+
+class LanguageProvider extends ChangeNotifier {
+  late Locale _locale;
+
+  LanguageProvider(String? languageCode) {
+    _locale = Locale(languageCode ?? 'ja'); // デフォは日本語
+  }
+
+  Locale get locale => _locale;
+
+  Future<void> setLanguage(String languageCode) async {
+    _locale = Locale(languageCode);
+    notifyListeners(); // UIを更新
+    await saveLanguage(languageCode);
+  }
+
+  Future<void> saveLanguage(String languageCode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('languageCode', languageCode);
   }
 }
