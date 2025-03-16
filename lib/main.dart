@@ -18,20 +18,20 @@ void main() async {
   ]);
 
   final prefs = await SharedPreferences.getInstance();
-  
+
   // 初回起動時の設定
   if (!prefs.containsKey('skipStartPage')) {
     await prefs.setBool('skipStartPage', false);
   }
 
   // 言語設定の取得
-  final String? languageCode = prefs.getString('languageCode') ?? 'ja';
+  final String languageCode = prefs.getString('language') ?? 'ja';
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => SettingsPageModel()),
-        ChangeNotifierProvider(create: (context) => LanguageProvider(languageCode)), // ✅ 追加
+        ChangeNotifierProvider(create: (context) => LanguageProvider(languageCode))
       ],
       child: const StartPageHome(),
     ),
@@ -107,6 +107,6 @@ class LanguageProvider extends ChangeNotifier {
 
   Future<void> saveLanguage(String languageCode) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('languageCode', languageCode);
+    await prefs.setString('language', languageCode);
   }
 }

@@ -1,4 +1,7 @@
+import 'package:berehearsal/components/comp_common_appbar.dart';
+import 'package:berehearsal/components/comp_language_button.dart';
 import 'package:berehearsal/functions/function_setting.dart';
+import 'package:berehearsal/settings/settings_language_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'take_display.dart';
@@ -53,8 +56,9 @@ class StartPageState extends State<StartPage> {
   }
 
   Future<void> firstLoad() async {
-    setState(() async {
-      leftHandedMode = await loadLeftHandedModePreference() ?? false;   // 設定値読み込み
+    final bool keepLeftHandedMode = await loadLeftHandedModePreference() ?? false;   // 設定値読み込み
+    setState(() {
+      leftHandedMode = keepLeftHandedMode;
     });
   }
 
@@ -63,62 +67,70 @@ class StartPageState extends State<StartPage> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;     // 画面の高さを取得
     double screenWidth = MediaQuery.of(context).size.width;     // 画面の幅を取得
+    double bodyHeight = screenHeight - AppBar().preferredSize.height;     // 本体の高さを取得
 
     return Scaffold(
+      // ------------------------- AppBar -------------------------
+      appBar: AppBar(
+        actions: (leftHandedMode)
+          ? null
+          : [CompLanguageButton(leftHandedMode: leftHandedMode)],
+        leading: (leftHandedMode)
+          ? CompLanguageButton(leftHandedMode: leftHandedMode)
+          : null,
+      ),
+      // -----------------------------------------------------------
       body: Center(
         child: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: SizedBox(
-            height: screenHeight * 0.8,
+            height: bodyHeight * 0.8,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // ------------------------- タイトル -------------------------
-                SizedBox(
-                  height: screenHeight * 0.3,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 3),
-                      // - - - - メインタイトル - - - -
-                      RichText(
-                        text: const TextSpan(
-                          children: [
-                            TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
-                            TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
-                            TextSpan(text: 'al.', style: TextStyle(color: Colors.white)),
-                          ],
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 45,
-                          )
-                        ),
-                      ),
-                      // - - - - - - - - - - - - -
-                      // - - - - サブタイトル - - - -
-                      const Text(
-                        'To support enjoying BeReal.',
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 3),
+                    // - - - - メインタイトル - - - -
+                    RichText(
+                      text: const TextSpan(
+                        children: [
+                          TextSpan(text: 'BeRe', style: TextStyle(color: Colors.white)),
+                          TextSpan(text: 'hears', style: TextStyle(color: Color(0xffB6E6AF))),
+                          TextSpan(text: 'al.', style: TextStyle(color: Colors.white)),
+                        ],
                         style: TextStyle(
-                          fontSize: 14,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.bold,
-                        ),
+                          fontSize: 45,
+                        )
                       ),
-                      // - - - - - - - - - - - - -
-                      const SizedBox(height: 10),
-                      // - - - - 非公式案内 - - - -
-                      Text(
-                        AppLocalizations.of(context)!.berealUnofficialApp,
-                        style: const TextStyle(fontSize: 14, color: Color(0xffd0d0d0), fontWeight: FontWeight.bold)
+                    ),
+                    // - - - - - - - - - - - - -
+                    // - - - - サブタイトル - - - -
+                    const Text(
+                      'To support enjoying BeReal.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.bold,
                       ),
-                      // - - - - - - - - - - - - -
-                    ],
-                  ),
+                    ),
+                    // - - - - - - - - - - - - -
+                    const SizedBox(height: 10),
+                    // - - - - 非公式案内 - - - -
+                    Text(
+                      AppLocalizations.of(context)!.berealUnofficialApp,
+                      style: const TextStyle(fontSize: 14, color: Color(0xffd0d0d0), fontWeight: FontWeight.bold)
+                    ),
+                    // - - - - - - - - - - - - -
+                  ],
                 ),
                 // -----------------------------------------------------------
-
+            
                 // --------------------- 「はじめる」ボタン ---------------------
                 Column(
                   children: [
@@ -164,7 +176,7 @@ class StartPageState extends State<StartPage> {
                       ),
                     ),
                     // -----------------------------------------------------------
-
+            
                     // ------------------------- 注意書き -------------------------
                     Container(
                       width: screenWidth * 0.85,

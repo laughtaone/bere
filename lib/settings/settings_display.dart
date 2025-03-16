@@ -1,3 +1,4 @@
+import 'package:berehearsal/functions/function_code_to_language.dart';
 import 'package:berehearsal/functions/function_setting.dart';
 import 'package:berehearsal/settings/settings_language_page.dart';
 import 'package:berehearsal/start_page.dart';
@@ -163,13 +164,7 @@ class SettingsPageState extends State<SettingsPage> {
                 SettingsTile.navigation(
                   leading: const Icon(Icons.language_outlined),
                   title: Text(AppLocalizations.of(context)!.changeLanguageSettings),
-                  value: Text(
-                    language == 'ja'
-                      ? '日本語'
-                      : language == 'en'
-                        ? 'English'
-                        : '日本語',
-                  ),
+                  value: Text(codeToLanguage(language)),
                   description: Text(AppLocalizations.of(context)!.descriptionLanguageSettings),
                   onPressed: (_) {
                     Navigator.of(context).push(
@@ -372,7 +367,7 @@ class SettingsPageState extends State<SettingsPage> {
                 SettingsTile.navigation(
                   leading: const Icon(Icons.tag_outlined),
                   title: Text(AppLocalizations.of(context)!.appVersion),
-                  value: const Text('1.0.1'),
+                  value: const Text('1.1.0'),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://laughtaone.notion.site/BeRehearsal-1a5b5b93908180e1a3add560fbcc066a?pvs=4');
                   },

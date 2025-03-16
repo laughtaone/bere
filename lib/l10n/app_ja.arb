@@ -4,7 +4,7 @@
   "start": "スタート",
   "thisAppIsForRehearsalsOnly": "このアプリはあくまでリハーサル用です",
   "cannotSaveImages": "撮影した画像の保存・スクショは一切できません",
-  "cannotSaveImagesAppBar": "撮影した画像の保存・スクショは一切できません",
+  "cannotSaveImagesAppBar": "画像の保存・スクショはできません",
   "cannotSaveImagesAppBarCompact": "画像の保存・スクショは一切できません",
   "changedCameraMagnification": "カメラの倍率を変更しました",
   "cannotCameraMagnification": "シングルカメラの機種のため変更できません",
@@ -32,6 +32,7 @@
   "jumpTopPage": "トップ画面へ遷移",
   "languageSettings": "言語設定",
   "defaultText": "デフォルト",
+  "defaultAndOriginalText": "デフォルト/原文",
   "changeLanguageSettings": "言語を変更する",
   "descriptionLanguageSettings": "アプリ全体の言語を設定できます。（日本語以外の言語を選択すると、Google翻訳で翻訳したものが表示されるため、正確な翻訳でない可能性があります）",
   "aboutThisApp": "このアプリについて",
@@ -60,7 +61,7 @@
   "notAllowedCamera": "カメラへのアクセスが\n許可されていません",
   "notAllowedMic": "マイクへのアクセスが\n許可されていません",
   "notAllowedCameraAndMic": "カメラとマイクへのアクセスが\n許可されていません",
-  "descriptionNotAllowed": "初回起動時は許可していても\nこのように表示される可能性があります\n再度、アプリを開き直してみてください'",
+  "descriptionNotAllowed": "初回起動時は許可していても\nこのように表示される可能性があります\n再度、アプリを開き直してみてください",
   "openSettings": "設定を開く",
   "qaTitle1": "このアプリについて",
   "q1": "BeReal.と機能は同じですか？",
@@ -85,5 +86,6 @@
   "descriptionLanguageSettingsPage": "アプリ全体の言語を設定できます。(日本語以外の言語を選択すると、Google翻訳で翻訳したものが表示されるため、正確な翻訳でない可能性があります)",
   "usePackage": "使用パッケージ",
   "usePackageAndVersion": "使用パッケージ・バージョン",
-  "licenses": "ライセンス (pub.devより引用)"
+  "licenses": "ライセンス (pub.devより引用)",
+  "language": "言語"
 }
