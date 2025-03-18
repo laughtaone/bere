@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:berehearsal/main.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 
 
@@ -315,6 +316,20 @@ class SettingsPageState extends State<SettingsPage> {
                   },
                 ),
                 SettingsTile.navigation(
+                  leading:   SvgPicture.asset(
+                    'assets/images/logo/zenn_logo.svg',
+                    semanticsLabel: 'shopping',
+                    width: 20,
+                    height: 20,
+                    colorFilter: const ColorFilter.mode(Color(0xffafafaf), BlendMode.srcIn)
+                  ),
+                  title: const Text('Zenn'),
+                  value: const Text('@laughtaone'),
+                  onPressed: (BuildContext context) async {
+                    await functionLaunchUrl('https://zenn.dev/laughtaone');
+                  },
+                ),
+                SettingsTile.navigation(
                   leading: const FaIcon(FontAwesomeIcons.appStoreIos),
                   title: Text(AppLocalizations.of(context)!.developerOtherApps),
                   onPressed: (BuildContext context) async {
@@ -367,7 +382,7 @@ class SettingsPageState extends State<SettingsPage> {
                 SettingsTile.navigation(
                   leading: const Icon(Icons.tag_outlined),
                   title: Text(AppLocalizations.of(context)!.appVersion),
-                  value: const Text('1.1.0'),
+                  value: const Text('1.1.1'),
                   onPressed: (BuildContext context) async {
                     await functionLaunchUrl('https://laughtaone.notion.site/BeRehearsal-1a5b5b93908180e1a3add560fbcc066a?pvs=4');
                   },
